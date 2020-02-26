@@ -1,0 +1,11 @@
+.desk {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1200px;
+	text-align: center;
+	margin-top: 30px;
+}
+.desk .column {
+	display: inline-block;
+	width: 270px;
+}

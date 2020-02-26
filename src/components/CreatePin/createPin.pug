@@ -1,0 +1,14 @@
+div.create_pin_all
+     div.create_pin
+         h1.title Создать пин
+         div#banner
+         div.add_img
+            img(src=image alt="pin" id="new_pin" width="300px" height="400px")
+            input(type="submit" name="login" class="red_btn" value="Добавить изображение" id="submit_edit")
+         div.add_text
+             form(name="add_pin" method="post" action="/")
+             div.line
+                 input#pin_name(type="text" placeholder="Название пина")
+             div.line_area
+                 textarea#pin_desc(placeholder="Описание пина" maxlength="512" rows="14" cols="33")
+             input(type="submit" name="login" class="red_btn" value="Создать" id="submit_pin")
