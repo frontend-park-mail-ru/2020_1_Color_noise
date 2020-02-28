@@ -1,4 +1,4 @@
-export function ajax(method, url, body = null, callback) {
+export function ajax(method, url, body = null, callback, image = false) {
 	const xhr = new XMLHttpRequest();
 	xhr.open(method, url, true);
 	xhr.withCredentials = true;
@@ -10,8 +10,14 @@ export function ajax(method, url, body = null, callback) {
 	});
 
 	if (body) {
-		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=utf8');
-		xhr.send(JSON.stringify(body));
+		if (image) {
+			xhr.setRequestHeader('Content-type', 'multipart/form-data');
+			xhr.send(body);
+		} else {
+			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=utf8');
+			xhr.send(JSON.stringify(body));
+		}
+		
 		return;
 	}
 

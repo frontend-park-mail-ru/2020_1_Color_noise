@@ -16,16 +16,19 @@ export const createProfile = (login, email, about, image, id) => {
         evt.preventDefault();
         const my_avatar = document.getElementById('avatar');
         const input = document.createElement('input');
+        input.name = 'file'
         input.type = 'file';
         input.accept = ".jpg, .jpeg, .png";
         input.onchange = function () {
             if (input.value != "") {
                 if (input.files && input.files[0]) {
                     const formData = new FormData();
-                    formData.append("myFile", input.files[0]);
+                    formData.append("file", input.files[0]);
+                    //alert(formData.get(file));
+                    //alert(input.files[0]);
 
                     ajax(
-                        'PUT',
+                        'POST',
                         'http://95.163.212.121/avatar',
                         formData,
                         function (status, response) {
@@ -39,7 +42,8 @@ export const createProfile = (login, email, about, image, id) => {
                             } else {
                                 setInfo('Что-то пошло не так');
                             }
-                        }
+                        },
+                        true
                     )
                 }
             }
@@ -167,7 +171,7 @@ const addPinListeners = () => {
                     formData.append("myFile", input.files[0]);
 
                     ajax(
-                        'PUT',
+                        'POST',
                         'http://95.163.212.121/pin/image',
                         formData,
                         function (status, response) {
@@ -181,7 +185,8 @@ const addPinListeners = () => {
                             } else {
                                 setInfo('Что-то пошло не так');
                             }
-                        }
+                        },
+                        true
                     )
                 }
             }
@@ -199,8 +204,8 @@ const addPinListeners = () => {
         const description = document.getElementById('pin_desc');
         if (my_pin.src != "http://95.163.212.121/a4817adc02e2f8d902d0002b6f793b82.jpg" && name.value.length > 0  && description.value.length > 0) {
             ajax(
-                'PUT',
-                'http://95.163.212.121/pin',
+                'POST',
+                'http://95.163.212.121/pin/id',
                 {
                     name : name.value.length,
                     description : description.value.length
