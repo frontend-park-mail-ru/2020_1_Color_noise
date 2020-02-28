@@ -10,7 +10,7 @@ export function ajax(method, url, body = null, callback) {
 	});
 
 	if (body) {
-		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=utf8');
+		xhr.setRequestHeader('Content-type', 'multipart/form-data');
 		xhr.send(JSON.stringify(body));
 		return;
 	}
