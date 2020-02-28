@@ -183,7 +183,7 @@ function goProfile() {
     // TODO: promise network-module
     ajax(
         'GET',
-        'http://95.163.212.121/profile/1',
+        'http://95.163.212.121/profile',
         null,
         function (status, response) {
             if (status === 200) {

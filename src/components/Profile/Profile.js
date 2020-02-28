@@ -69,7 +69,7 @@ export const createProfile = (login, email, about, image, id) => {
             // TODO: promise network-module
             ajax(
                 'PUT',
-                'http://95.163.212.121/profile/1',
+                'http://95.163.212.121/profile',
                 { 
                     login : username_form,  
                     email : email_form,  
