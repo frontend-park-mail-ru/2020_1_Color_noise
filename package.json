@@ -10,7 +10,6 @@
     "lint-fix": "eslint -c .eslintrc.js --fix src/"
   },
   "dependencies": {
-    "pug-loader": "^2.4.0"
   },
   "devDependencies": {
     "babel-loader": "^8.0.0",
@@ -26,6 +25,7 @@
     "file-loader": "^5.0.2",
     "html-webpack-plugin": "^3.2.0",
     "loader": "^2.1.1",
+    "pug-loader": "^2.4.0",
     "pug-html-loader": "^1.1.5",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.20.2",
