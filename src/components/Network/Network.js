@@ -11,7 +11,7 @@ export function ajax(method, url, body = null, callback) {
 
 	if (body) {
 		xhr.setRequestHeader('Content-type', 'multipart/form-data');
-		xhr.send(JSON.stringify(body));
+		xhr.send(body);
 		return;
 	}
 
