@@ -3,6 +3,7 @@ import MenuTemplate from './menu.pug';
 import { createProfile } from '../Profile/Profile';
 import { setInfo } from '../Profile/Profile';
 import { validators } from '../Validation/Validation';
+import { ajax } from '../Network/Network';
 import './menu.css';
 
 import '../Autorization/authorization.css';
@@ -19,25 +20,25 @@ const buildMenu = () => {
 }
 
 const menuItems = {
-	follows: 'Подписки',
+    follows: 'Подписки',
     desks: 'Доски',
     logo: '',
     chats: 'Чаты',
-	profile: 'Профиль'
+    profile: 'Профиль'
 };
 
 const addElements = () => {
     const root = document.getElementById('elements');
 
     root.innerHTML = '';
-	Object.keys(menuItems).forEach(function (key) {
-		const menuItem = document.createElement('a');
-		menuItem.textContent = menuItems[key];
-		menuItem.href = `/${key}`;
-		menuItem.dataset.section = key;
+    Object.keys(menuItems).forEach(function (key) {
+        const menuItem = document.createElement('a');
+        menuItem.textContent = menuItems[key];
+        menuItem.href = `/${key}`;
+        menuItem.dataset.section = key;
 
-		root.appendChild(menuItem);
-	});
+        root.appendChild(menuItem);
+    });
 }
 
 export const createMenu = () => {
@@ -46,44 +47,24 @@ export const createMenu = () => {
 }
 
 const routes = {
-	follows: goFollows,
+    follows: goFollows,
     desks: goDesks,
     logo: null,
     chats: goChats,
-	profile: goProfile
+    profile: goProfile
 };
 
 
 function goFollows() {
-    alert("Раздел в разработке");
+    //alert("Раздел в разработке");
 }
 
 function goDesks() {
-    alert("Раздел в разработке");
+    //alert("Раздел в разработке");
 }
 
 function goChats() {
-    alert("Раздел в разработке");
-}
-
-function ajax(method, url, body = null, callback) {
-	const xhr = new XMLHttpRequest();
-	xhr.open(method, url, true);
-	xhr.withCredentials = true;
-
-	xhr.addEventListener('readystatechange', function() {
-		if (xhr.readyState !== 4) return;
-
-		callback(xhr.status, xhr.responseText);
-	});
-
-	if (body) {
-		xhr.setRequestHeader('Content-type', 'application/json; charset=utf8');
-		xhr.send(JSON.stringify(body));
-		return;
-	}
-
-	xhr.send();
+    //alert("Раздел в разработке");
 }
 
 function setError() {
@@ -97,7 +78,7 @@ function setError() {
 }
 
 function createAutorization() {
-    const choose = AutorizationTemplate( { image: logoImage });
+    const choose = AutorizationTemplate({ image: logoImage });
     const root = document.getElementById('modal');
     root.innerHTML = choose;
 
@@ -113,19 +94,37 @@ function createAutorization() {
 }
 
 function createLogin() {
-    const login_modal = LoginTemplate( { image: logoImage });
+    const login_modal = LoginTemplate({ image: logoImage });
     const root = document.getElementById('modal');
     root.innerHTML = login_modal;
 
     const login = document.getElementById('submit_login');
     login.addEventListener('click', function (evt) {
         evt.preventDefault();
-        // TODO: promise network-module
         const username_form = document.getElementById('flogin').value;
         const password_form = document.getElementById('fpass').value;
         if (validators.username(username_form) && validators.password(password_form)) {
-            // TODO: promise network-module
-            setInfo('ТУТ ОТПРАВКА ДАННЫХ! Пароль или логин не верны');
+            //TODO: promise network-module
+            ajax(
+                'POST',
+                'http://95.163.212.121/login',
+                {
+                    login: username_form,
+                    password: password_form
+                },
+                function (status, response) {
+                    if (status === 200) {
+                        const data = JSON.parse(response);
+                        if (data.status == 200) {
+                            root.innerHTML = "";
+                        } else {
+                            setInfo('Пароль или логин не верны');
+                        }
+                    } else {
+                        setInfo('Что-то пошло не так');
+                    }
+                }
+            )
         } else {
             setInfo('Данные в форме некорректны');
         }
@@ -133,7 +132,7 @@ function createLogin() {
 }
 
 function createReg() {
-    const reg_modal = RegTemplate( { image: logoImage });
+    const reg_modal = RegTemplate({ image: logoImage });
     const root = document.getElementById('modal');
     root.innerHTML = reg_modal;
 
@@ -143,11 +142,39 @@ function createReg() {
         const email_form = document.getElementById('femail').value;
         const username_form = document.getElementById('flogin').value;
         const password_form = document.getElementById('fpass').value;
-        if (validators.email(email_form) && validators.username(username_form) && validators.password(password_form)) {
+        const email_valid = validators.email(email_form);
+        const login_valid = validators.username(username_form);
+        const password_valid = validators.password(password_form)
+
+        if (email_valid && login_valid && password_valid) {
             // TODO: promise network-module
-            alert("Одну минуту, ща мы тебя зарегаем!");
-        } else {
-            setInfo('Данные в форме некорректны');
+            ajax(
+                'POST',
+                'http://95.163.212.121/signup',
+                {
+                    login: username_form,
+                    email: email_form,
+                    password: password_form
+                },
+                function (status, response) {
+                    if (status === 200) {
+                        const data = JSON.parse(response);
+                        if (data.status == 200) {
+                            root.innerHTML = "";
+                        } else {
+                            setInfo('Что-то пошло не так');
+                        }
+                    } else {
+                        setInfo('Что-то пошло не так');
+                    }
+                }
+            )
+        } else if (!email_valid) {
+            setInfo('Введите корректный email');
+        }  else if (!login_valid) {
+            setInfo('Логин должен быть более,<br>чем из трех символов: a-z, A-Z, 0-9, _');
+        }  else if (!password_valid) {
+            setInfo('Пароль должен быть из шести символов и более символов');
         }
     });
 }
@@ -155,28 +182,15 @@ function createReg() {
 function goProfile() {
     // TODO: promise network-module
     ajax(
-        'POST',
-        '/api/login/',
+        'GET',
+        'http://95.163.212.121/profile/1',
         null,
         function (status, response) {
             if (status === 200) {
                 const data = JSON.parse(response);
                 if (data.status == 200) {
-                    ajax(
-                        'POST',
-                        '/api/profile/',
-                        null,
-                        function (status, response) {
-                            if (status === 200) {
-                                const data = JSON.parse(response);
-                                if (data.status == 200) {
-                                    createProfile(data.body.login, data.body.email, data.body.about, data.body.image, data.body.id);
-                                }
-                            } else {
-                                setError();
-                            }
-                        }
-                    )
+                    createProfile(data.body.user.login, data.body.user.email,
+                        data.body.user.about, data.body.user.avatar, data.body.id);
                 } else {
                     createAutorization();
                 }
@@ -188,10 +202,10 @@ function goProfile() {
 }
 
 application.addEventListener('click', function (evt) {
-	const {target} = evt;
+    const { target } = evt;
 
-	if (target instanceof HTMLAnchorElement) {
-		evt.preventDefault();
-		routes[target.dataset.section]();
-	}
+    if (target instanceof HTMLAnchorElement) {
+        evt.preventDefault();
+        routes[target.dataset.section]();
+    }
 });

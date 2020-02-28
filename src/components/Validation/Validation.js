@@ -1,9 +1,8 @@
 const regExpressions = {
-    // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
     email: /^[a-zA-Z0-9\-_]+[a-zA-Z0-9\-_\.]*@[a-zA-Z]+[a-zA-Z0-9\.]+$/,
-    username: /^[a-zA-Z0-9_]{2,}$/,
+    username: /^[a-zA-Z0-9_]{4,}$/,
     // ASCII chars from ! to ~
-    password: /[!-~]{4,}/
+    password: /[!-~]{6,}/
 };
 
 export const validators = {
