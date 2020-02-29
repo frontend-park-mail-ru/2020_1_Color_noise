@@ -34,9 +34,9 @@ npm run lint-fix
 
 
 ## Команда разработки
-* [@k-t-l-h] (https://github.com/k-t-l-h)
-* [@proeugene97] (https://github.com/proeugene97)
-* [@slava-romanov] (https://github.com/slava-romanov)
+* [@k-t-l-h](https://github.com/k-t-l-h)
+* [@proeugene97](https://github.com/proeugene97)
+* [@slava-romanov](https://github.com/slava-romanov)
 
 ## Лучшие люди на свете a.k.a менторы
 
