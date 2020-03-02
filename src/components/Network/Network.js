@@ -11,7 +11,6 @@ export function ajax(method, url, body = null, callback, image = false) {
 
 	if (body) {
 		if (image) {
-			xhr.setRequestHeader('Content-type', 'multipart/form-data');
 			xhr.send(body);
 		} else {
 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=utf8');
