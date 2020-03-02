@@ -46,5 +46,5 @@ npm run lint-fix
 
 ## Репозитории
 
-[Фронтенд](https://github.com/frontend-park-mail-ru/2020_1_Color_noise)
+[Фронтенд](https://github.com/frontend-park-mail-ru/2020_1_Color_noise)  
 [Бекенд](https://github.com/go-park-mail-ru/2020_1_Color_noise)
