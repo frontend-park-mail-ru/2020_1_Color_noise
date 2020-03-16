@@ -5,7 +5,6 @@ export function ajax(method, url, body = null, callback, image = false) {
 
 	xhr.addEventListener('readystatechange', function() {
 		if (xhr.readyState !== 4) return;
-
 		callback(xhr.status, xhr.responseText);
 	});
 
