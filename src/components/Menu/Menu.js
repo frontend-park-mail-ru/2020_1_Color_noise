@@ -3,13 +3,17 @@ import MenuTemplate from './menu.pug';
 import { createProfile } from '../Profile/Profile';
 import { setInfo } from '../Profile/Profile';
 import { validators } from '../Validation/Validation';
-import { ajax } from '../Network/Network';
 import './menu.css';
 
 import '../Autorization/authorization.css';
 import AutorizationTemplate from '../Autorization/choose.pug';
 import LoginTemplate from '../Autorization/login.pug';
 import RegTemplate from '../Autorization/reg.pug';
+
+import { changeLocation } from '../../utils/changeLocation.js'
+import { FetchModule } from '../Network/Network.js'
+import { serverLocate } from '../../utils/constants.js'
+import { Requests } from '../Network/Requests.js'
 
 const application = document.getElementById('root');
 
@@ -93,7 +97,8 @@ function createAutorization() {
     });
 }
 
-function createLogin() {
+export function createLogin() {
+    changeLocation('/login','Login');
     const login_modal = LoginTemplate({ image: logoImage });
     const root = document.getElementById('modal');
     root.innerHTML = login_modal;
@@ -104,27 +109,28 @@ function createLogin() {
         const username_form = document.getElementById('flogin').value;
         const password_form = document.getElementById('fpass').value;
         if (validators.username(username_form) && validators.password(password_form)) {
-            //TODO: promise network-module
-            ajax(
-                'POST',
-                'http://95.163.212.121/login',
-                {
+
+            FetchModule.fetchRequest({url: serverLocate + '/login', method: 'post', body:{
                     login: username_form,
                     password: password_form
-                },
-                function (status, response) {
-                    if (status === 200) {
-                        const data = JSON.parse(response);
-                        if (data.status == 200) {
-                            root.innerHTML = "";
-                        } else {
-                            setInfo('Пароль или логин не верны');
-                        }
-                    } else {
-                        setInfo('Что-то пошло не так');
+                }})
+                .then((res) => {
+                    return res.ok ? res : Promise.reject(res);
+                })
+                .then((response) => {
+                        return response.json();
+                    },
+                )
+                .then((result) => {
+                    if (result.status === 200) {
+                        Requests.getUserProfile(null); // get user data after login
+                        root.innerHTML = "";
                     }
-                }
-            )
+                })
+                .catch(function(error) {
+                    setInfo('Пароль или логин не верны'); // @todo switch for error
+                    // setInfo('Что-то пошло не так'); // Promise.reject(res)
+                });
         } else {
             setInfo('Данные в форме некорректны');
         }
@@ -147,28 +153,29 @@ function createReg() {
         const password_valid = validators.password(password_form)
 
         if (email_valid && login_valid && password_valid) {
-            // TODO: promise network-module
-            ajax(
-                'POST',
-                'http://95.163.212.121/signup',
-                {
+
+            FetchModule.fetchRequest({url:serverLocate + '/signup', method: 'post', body: {
                     login: username_form,
                     email: email_form,
                     password: password_form
-                },
-                function (status, response) {
-                    if (status === 200) {
-                        const data = JSON.parse(response);
-                        if (data.status == 200) {
-                            root.innerHTML = "";
-                        } else {
-                            setInfo('Что-то пошло не так');
-                        }
-                    } else {
-                        setInfo('Что-то пошло не так');
+                }})
+                .then((res) => {
+                    return res.ok ? res : Promise.reject(res);
+                })
+                .then((response) => {
+                        return response.json();
+                    },
+                )
+                .then((result) => {
+                    if (result.status === 200) {
+                        Requests.getUserProfile(null); // get user data after signUp
+                        root.innerHTML = "";
                     }
-                }
-            )
+                })
+                .catch(function(error) {
+                    setInfo('Что-то пошло не так');
+                });
+
         } else if (!email_valid) {
             setInfo('Введите корректный email');
         }  else if (!login_valid) {
@@ -180,25 +187,27 @@ function createReg() {
 }
 
 function goProfile() {
-    // TODO: promise network-module
-    ajax(
-        'GET',
-        'http://95.163.212.121/profile',
-        null,
-        function (status, response) {
-            if (status === 200) {
-                const data = JSON.parse(response);
-                if (data.status == 200) {
-                    createProfile(data.body.login, data.body.email,
-                        data.body.about, data.body.avatar, data.body.id);
-                } else {
-                    createAutorization();
-                }
-            } else {
-                setError();
+
+    FetchModule.fetchRequest({url:serverLocate + '/profile', method: 'get', body:null })
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+                return response.json();
             }
-        }
-    );
+        )
+        .then((result) => {
+            if (result.status === 200) {
+                createProfile(result.body.login, result.body.email,
+                    result.body.about, result.body.avatar, result.body.id);
+            }
+            else {
+                createAutorization();
+            }
+        })
+        .catch(function(error) {
+            setError();
+        });
 }
 
 application.addEventListener('click', function (evt) {
