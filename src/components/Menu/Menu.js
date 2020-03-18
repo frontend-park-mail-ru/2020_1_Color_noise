@@ -189,8 +189,8 @@ function goProfile() {
             if (status === 200) {
                 const data = JSON.parse(response);
                 if (data.status == 200) {
-                    createProfile(data.body.user.login, data.body.user.email,
-                        data.body.user.about, data.body.user.avatar, data.body.id);
+                    createProfile(data.body.login, data.body.email,
+                        data.body.about, data.body.avatar, data.body.id);
                 } else {
                     createAutorization();
                 }
