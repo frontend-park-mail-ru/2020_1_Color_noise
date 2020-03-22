@@ -8,6 +8,8 @@ import {default as CurrentUser} from './utils/userDataSingl.js';
 import { Requests } from './components/Network/Requests.js'
 
 import { createLogin } from './components/Menu/Menu.js'
+import {createProfile} from "./components/Profile/Profile.js";
+import {createProfileSettings} from "./components/ProfileSettings/ProfileSettings.js";
 
 /**
  *  router
@@ -47,7 +49,11 @@ function showPage() {
             return;
         }
         case '/profile': {
-            Requests.getUserProfile(createMainPage);  // @todo createProfile here
+            Requests.getUserProfile(createProfile);
+            break;
+        }
+        case '/profileSettings': {
+            Requests.getUserProfile(createProfileSettings);
             break;
         }
         default: {

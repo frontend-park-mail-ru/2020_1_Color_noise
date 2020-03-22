@@ -1,20 +1,16 @@
 div.create_pin_all
-     div.create_pin.change_profile
-         h1.title Мой профиль
-         input(type="submit" class="red_btn" name="login" value="Создать пин" id="submit_pin")
-         input(type="submit" class="red_btn" name="login" value="Выйти" id="submit_exit")
-         div.profile
-             div#banner
-             form(action="/api/profile", method="post")
-                 img(src=image alt="avatar" id="avatar")
-                 input(type="submit" class="red_btn" name="login" value="Изменить" id="submit_edit")
-                 div.line
-                     input#fpass(type="password" placeholder="Пароль")
-                 input(type="submit" class="red_btn" name="login" value="Сохранить" id="submit_pass")
-                 div.line
-                     input#femail(type="email" placeholder="Почта" value=email)
-                 div.line
-                     input#flogin(type="text" placeholder="Логин" value=login)
-                 div.line_area
-                     textarea#fabout(placeholder="О себе" maxlength="512" rows="14" cols="33")= about
-                 input(type="submit" class="red_btn" name="login" value="Сохранить" id="submit_save")
+    div.create_pin.change_profile
+        h1.title Мой профиль
+
+        div.profile
+            div#banner
+
+            div#profileInfo
+                img(src=image alt="avatar" id="avatar")
+                div(id="profileLogin" class="ProfileUserInfo")
+                div(id="profileAbout")
+                input(type="submit" class="red_btn" name="login" value="Создать пин" id="submit_pin")
+                a(id="changeProfileLink" class="red_btn")
+                   div(id = "changeProfileLinkText") Редактирвоание профиля
+                   img(id="settingsLinkPic", src=changeProfileLinkImage)
+                input(type="submit" class="red_btn" name="exit" value="Выйти" id="submit_exit")
