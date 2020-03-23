@@ -31,7 +31,7 @@ export const createProfileSettings = () => {
                     //alert(formData.get(file));
                     //alert(input.files[0]);
 
-                    FetchModule.fetchRequestSendImage({url:serverLocate + '/profile/avatar', method: 'post',
+                    FetchModule.fetchRequestSendImage({url:serverLocate + '/api/user/settings/avatar', method: 'put',
                         body: formData})
                         .then((res) => {
                             return res.ok ? res : Promise.reject(res);
@@ -62,13 +62,13 @@ export const createProfileSettings = () => {
         evt.preventDefault();
         const email_form = document.getElementById('femail').value;
         const username_form = document.getElementById('flogin').value;
-        const about_form = document.getElementById('fabout').value;
+        const about_form = document.getElementById('fabout').value;  // not user
         if (validators.email(email_form) && validators.username(username_form)) {
 
-            FetchModule.fetchRequest({url:serverLocate + '/profile', method: 'put', body: {
+            FetchModule.fetchRequest({url:serverLocate + '/api/user/settings/profile', method: 'put', body: {
                     login : username_form,
                     email : email_form,
-                    about : about_form
+                    //about : about_form // в api отдельный запрос about
                 }})
                 .then((res) => {
                     return res.ok ? res : Promise.reject(res);
@@ -103,7 +103,7 @@ export const createProfileSettings = () => {
         if (validators.password(password_form)) {
 
             // @todo 404 /password
-            FetchModule.fetchRequest({url:serverLocate + '/password', method: 'put', body: {
+            FetchModule.fetchRequest({url:serverLocate + '/api/user/settings/password', method: 'put', body: {
                     password: password_form
                 }})
                 .then((res) => {

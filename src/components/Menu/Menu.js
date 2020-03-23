@@ -4,6 +4,7 @@ import { createProfile } from '../Profile/Profile.js'
 import { setInfo } from '../ProfileSettings/ProfileSettings';
 import { validators } from '../Validation/Validation';
 import './menu.css';
+import {default as CurrentUser} from '../../utils/userDataSingl.js';
 
 import '../Autorization/authorization.css';
 import AutorizationTemplate from '../Autorization/choose.pug';
@@ -117,7 +118,7 @@ export function createLogin() {
         const password_form = document.getElementById('fpass').value;
         if (validators.username(username_form) && validators.password(password_form)) {
 
-            FetchModule.fetchRequest({url: serverLocate + '/login', method: 'post', body:{
+            FetchModule.fetchRequest({url: serverLocate + '/api/auth', method: 'post', body:{
                     login: username_form,
                     password: password_form
                 }})
@@ -132,11 +133,12 @@ export function createLogin() {
                     if (result.status === 200) {
                         Requests.getUserProfile(null); // get user data after login
                         root.innerHTML = "";
+                    } else {
+                        throw "bad login or password";
                     }
                 })
                 .catch(function(error) {
                     setInfo('Пароль или логин не верны'); // @todo switch for error
-                    // setInfo('Что-то пошло не так'); // Promise.reject(res)
                 });
         } else {
             setInfo('Данные в форме некорректны');
@@ -167,8 +169,8 @@ function createReg() {
         const password_valid = validators.password(password_form)
 
         if (email_valid && login_valid && password_valid) {
-
-            FetchModule.fetchRequest({url:serverLocate + '/signup', method: 'post', body: {
+            console.log("requstration request!");
+            FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'post', body: {
                     login: username_form,
                     email: email_form,
                     password: password_form
@@ -202,7 +204,9 @@ function createReg() {
 
 function goProfile() {
 
-    FetchModule.fetchRequest({url:serverLocate + '/profile', method: 'get', body:null })
+    //Requests.getUserProfile(createProfile);
+
+    FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'get', body:null })
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -213,8 +217,6 @@ function goProfile() {
         .then((result) => {
             if (result.status === 200) {
                 createProfile();
-                //createProfileSettings(result.body.login, result.body.email,
-                //   result.body.about, result.body.avatar, result.body.id);
             }
             else {
                 createAutorization();
@@ -223,6 +225,8 @@ function goProfile() {
         .catch(function(error) {
             setError();
         });
+
+
 }
 
 application.addEventListener('click', function (evt) {
