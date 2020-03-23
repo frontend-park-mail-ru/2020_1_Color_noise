@@ -1,0 +1,20 @@
+div.create_pin_all
+     div.create_pin.change_profile
+         h1.title Настройки профиля
+         div.profile
+             div#backToProfileLink
+                 input(type="submit" class="red_btn" name="backProfile" value="Вернуться в профиль" id="returnProfile")
+             div#banner
+             form(action="/api/profile", method="post")
+                 img(src=image alt="avatar" id="avatar")
+                 input(type="submit" class="red_btn" name="login" value="Изменить аватарку" id="submit_edit")
+                 div.line
+                     input#fpass(type="password" placeholder="Пароль")
+                 input(type="submit" class="red_btn" name="login" value="Сохранить новый пароль" id="submit_pass")
+                 div.line
+                     input#femail(type="email" placeholder="Почта" value=email)
+                 div.line
+                     input#flogin(type="text" placeholder="Логин" value=login)
+                 div.line_area
+                     textarea#fabout(placeholder="О себе" maxlength="512" rows="12" cols="33")= about
+                 input(type="submit" class="red_btn" name="login" value="Сохранить личные данные" id="submit_save")

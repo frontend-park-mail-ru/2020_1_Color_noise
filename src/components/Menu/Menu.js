@@ -1,7 +1,7 @@
 import logoImage from '../../images/logo.svg';
 import MenuTemplate from './menu.pug';
-import { createProfile } from '../Profile/Profile';
-import { setInfo } from '../Profile/Profile';
+import { createProfile } from '../Profile/Profile.js'
+import { setInfo } from '../ProfileSettings/ProfileSettings';
 import { validators } from '../Validation/Validation';
 import './menu.css';
 
@@ -21,7 +21,7 @@ const buildMenu = () => {
     const menu = MenuTemplate();
     const root = document.getElementById('menu');
     root.innerHTML = menu;
-}
+};
 
 const menuItems = {
     follows: 'Подписки',
@@ -43,12 +43,12 @@ const addElements = () => {
 
         root.appendChild(menuItem);
     });
-}
+};
 
 export const createMenu = () => {
     buildMenu();
     addElements();
-}
+};
 
 const routes = {
     follows: goFollows,
@@ -103,6 +103,13 @@ export function createLogin() {
     const root = document.getElementById('modal');
     root.innerHTML = login_modal;
 
+    const registrationLink = document.getElementById("registrationLink");
+    registrationLink.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        createReg();
+    }
+    );
+
     const login = document.getElementById('submit_login');
     login.addEventListener('click', function (evt) {
         evt.preventDefault();
@@ -141,6 +148,13 @@ function createReg() {
     const reg_modal = RegTemplate({ image: logoImage });
     const root = document.getElementById('modal');
     root.innerHTML = reg_modal;
+
+    const loginLink = document.getElementById("loginLink");
+    loginLink.addEventListener('click', (evt) => {
+            evt.preventDefault();
+            createLogin();
+        }
+    );
 
     const reg = document.getElementById('submit_reg');
     reg.addEventListener('click', function (evt) {
@@ -198,8 +212,9 @@ function goProfile() {
         )
         .then((result) => {
             if (result.status === 200) {
-                createProfile(result.body.login, result.body.email,
-                    result.body.about, result.body.avatar, result.body.id);
+                createProfile();
+                //createProfileSettings(result.body.login, result.body.email,
+                //   result.body.about, result.body.avatar, result.body.id);
             }
             else {
                 createAutorization();
@@ -215,6 +230,9 @@ application.addEventListener('click', function (evt) {
 
     if (target instanceof HTMLAnchorElement) {
         evt.preventDefault();
-        routes[target.dataset.section]();
+        // add undefined check (need for <a> change login to registration form
+        var section = routes[target.dataset.section];
+        if (section !== undefined)
+            section();
     }
 });

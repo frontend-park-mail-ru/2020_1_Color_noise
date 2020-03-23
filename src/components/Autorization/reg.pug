@@ -2,6 +2,7 @@ div.authorization
      img(src=image alt="zinterest.space" width="54px" height="54px" title="Zinterest")
      div.mini_title Добро пожаловать в  Zinterest.space
      div.mini_text Находите новые идеи для вдохновения
+     div.title_text Регистрация
      div#banner
      form(name="login" method="post" action="/")
          div.line
@@ -12,6 +13,6 @@ div.authorization
              input#fpass(type="password" placeholder="Пароль")
          input(type="submit" class="red_btn" name="reg" value="Продолжить" id="submit_reg")
      div.mini_text
-         a(href="/registration") Уже есть аккаунт в Zinterest? <br> Войти
+         a(id="loginLink")(href="/registration") Уже есть аккаунт в Zinterest? <br> Войти
 
 div.background

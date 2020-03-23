@@ -9,6 +9,7 @@ class UserDataCur {
             email: 'null email',
             token: "",
             avatarPath: "NULL PATH",
+            about: ""
         };
     }
 }

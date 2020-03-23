@@ -28,7 +28,6 @@ export class Requests {
                 CurrentUser.Data.about = result.body.about;
                 CurrentUser.Data.avatarPath = result.body.avatar;
                 // @todo add set CurrentUser.Data.token
-                console.log("Network::user login from getUserProfile():",CurrentUser.Data.login); // @todo delete this debug
                 if (createFunction != null)
                     createFunction();
             })
