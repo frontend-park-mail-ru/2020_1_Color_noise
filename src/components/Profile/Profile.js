@@ -12,6 +12,7 @@ import {changeLocation} from "../../utils/changeLocation";
 
 export function createProfile() {
     changeLocation("/profile", "Profile");
+    console.log("AVATAR:", CurrentUser.Data.avatarPath);
     const profile = ProfileTemplate( { image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
         login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about,
         changeProfileLinkImage: "settingsLinkPic.png"} );
@@ -47,7 +48,7 @@ export function createProfile() {
     exit.addEventListener('click', function (evt) {
         evt.preventDefault();
 
-        FetchModule.fetchRequest({url:serverLocate + '/logout', method: 'post', body: null})
+        FetchModule.fetchRequest({url:serverLocate + '/api/auth', method: 'delete', body: null})
             .then((res) => {
                 return res.ok ? res : Promise.reject(res);
             })
@@ -105,10 +106,11 @@ const addPinListeners = () => {
         if (my_pin.src !== serverLocate + '/a4817adc02e2f8d902d0002b6f793b82.jpg' && name.value.length > 0
             && description.value.length > 0) {
 
-            FetchModule.fetchRequest({url:serverLocate + '/pin', method: 'post', body: {
+            FetchModule.fetchRequest({url:serverLocate + '/api/pin ', method: 'post', body: {
                     name : name.value,
                     description : description.value,
-                    image : my_pin.src
+                    board_id: 10, //todo add BOARD ID
+                    image : my_pin.src //todo base64
                 }})
                 .then((res) => {
                     return res.ok ? res : Promise.reject(res);

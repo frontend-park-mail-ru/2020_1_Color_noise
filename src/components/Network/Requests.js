@@ -15,7 +15,8 @@ export class Requests {
      * @return {void}
      */
     static getUserProfile(createFunction = createMainPage) {
-        FetchModule.fetchRequest( {url: serverLocate + '/profile', method: 'get'})
+        console.log("try send request!");
+        FetchModule.fetchRequest( {url: serverLocate + '/api/user', method: 'get'})
             .then((res) => res.ok ? res : Promise.reject(res))
             .then( (response) =>
                 response.json(),
@@ -27,12 +28,13 @@ export class Requests {
                 CurrentUser.Data.email = result.body.email;
                 CurrentUser.Data.about = result.body.about;
                 CurrentUser.Data.avatarPath = result.body.avatar;
+                CurrentUser.Data.subscribers = result.body.subscribers;
+                CurrentUser.Data.subscriptions = result.body.subscriptions;
                 // @todo add set CurrentUser.Data.token
                 if (createFunction != null)
                     createFunction();
             })
             .catch((error) => {
-                console.log(error); //@todo check and show err
                 createMainPage(); // @todo добавить какой-то параметр в createMainPage чтоб понимать
                 // рисовать станицу для авторизованного или нет
             });
