@@ -4,7 +4,6 @@ import { createProfile } from '../Profile/Profile.js'
 import { setInfo } from '../ProfileSettings/ProfileSettings';
 import { validators } from '../Validation/Validation';
 import './menu.css';
-import {default as CurrentUser} from '../../utils/userDataSingl.js';
 
 import '../Autorization/authorization.css';
 import AutorizationTemplate from '../Autorization/choose.pug';
@@ -15,6 +14,8 @@ import { changeLocation } from '../../utils/changeLocation.js'
 import { FetchModule } from '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { Requests } from '../Network/Requests.js'
+
+import { getSubPins, getMainPins, setScroll, unSetScroll, clearColumns } from '../Desk/Desk.js'
 
 const application = document.getElementById('root');
 
@@ -41,6 +42,8 @@ const addElements = () => {
         menuItem.textContent = menuItems[key];
         menuItem.href = `/${key}`;
         menuItem.dataset.section = key;
+        if (key === 'follows')
+            menuItem.id = 'followsOrMainLink';
 
         root.appendChild(menuItem);
     });
@@ -60,9 +63,35 @@ const routes = {
 };
 
 
+
+
+/**
+ *  GoFollows
+ *  use GoFollows boolean
+ *  Create Main or User follows pins
+ *  change menu item innerText after
+ * @return {void}
+ */
+var isSubLink = true;
 function goFollows() {
-    //alert("Раздел в разработке");
+    const followsOrMainLink = document.getElementById('followsOrMainLink');
+    if (isSubLink) {
+        unSetScroll(getMainPins);
+        clearColumns();
+        getSubPins();
+        setScroll(getSubPins);
+        isSubLink = false;
+        followsOrMainLink.innerText = 'Главная';
+    } else {
+        unSetScroll(getSubPins);
+        clearColumns();
+        getMainPins();
+        setScroll(getMainPins);
+        isSubLink = true;
+        followsOrMainLink.innerText = 'Подписки';
+    }
 }
+
 
 function goDesks() {
     //alert("Раздел в разработке");
@@ -225,7 +254,6 @@ function goProfile() {
         .catch(function(error) {
             setError();
         });
-
 
 }
 
