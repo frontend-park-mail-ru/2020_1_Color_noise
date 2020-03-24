@@ -8,4 +8,5 @@
 .desk .column {
 	display: inline-block;
 	width: 270px;
+	vertical-align: top;
 }

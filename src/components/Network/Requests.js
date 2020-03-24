@@ -15,7 +15,6 @@ export class Requests {
      * @return {void}
      */
     static getUserProfile(createFunction = createMainPage) {
-        console.log("try send request!");
         FetchModule.fetchRequest( {url: serverLocate + '/api/user', method: 'get'})
             .then((res) => res.ok ? res : Promise.reject(res))
             .then( (response) =>
