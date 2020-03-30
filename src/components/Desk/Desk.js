@@ -6,6 +6,7 @@ import {FetchModule} from '../Network/Network.js'
 import {serverLocate} from '../../utils/constants.js'
 import {default as CurrentDesk} from './CurrentDesk.js';
 
+
 const isDeBug = true;
 /*
    use fake Pins and fake sub pins(one img)
@@ -14,14 +15,19 @@ const isDeBug = true;
    and add img with arr names
    WARNING! fakePins Arrays not have limits check!
  */
-const fakePinsArr = ['1.jpeg', '2.jpg', '3.jpeg', '4.jpeg', '5.jpg',
-    '6.jpg', '7.jpg', '8.jpeg', '9.jpg', '10.jpg'
-    , '11.jpeg', '12.jpg', '13.jpeg', '14.jpg' , '15.jpg', '16.jpg',
-    '17.jpg', '21.jpeg', '22.jpg', '23.jpg', '24.jpg', '25.jpg', '26.jpeg', '28.jpeg', '29.jpg'];
+const fakePinsArr = [ {id: 1, src:'1.jpeg'}, {id: 2, src:'2.jpg'}, {id: 3, src:'3.jpeg'}, {id: 4, src:'4.jpeg'},
+    {id: 5, src:'5.jpg'}, {id: 6, src:'6.jpg'}, {id: 7, src:'7.jpg'}, {id: 8, src:'8.jpeg'}, {id: 9, src:'9.jpg'},
+    {id: 10, src:'10.jpg'}, {id: 11, src:'11.jpeg'}, {id: 12, src:'12.jpg'}, {id: 13, src:'13.jpeg'},
+    {id: 14, src:'14.jpg'}, {id: 15, src:'15.jpg'}, {id: 16, src:'16.jpg'}, {id: 17, src:'17.jpg'},
+    {id: 21, src:'21.jpeg'}, {id: 22, src:'22.jpg'}, {id: 23, src:'23.jpg'}, {id: 24, src:'24.jpg'},
+    {id: 25, src:'25.jpg'}, {id: 26, src:'26.jpeg'}, {id: 28, src:'28.jpeg'}, {id: 29, src:'29.jpg'}];
 
-const fakePinsArrSub = ['1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg',
-    '1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg','1.jpeg',
-    '1.jpeg','1.jpeg','1.jpeg','1.jpeg'];
+const fakePinsArrSub = [{id: 1, src:'1.jpeg'},{id: 2, src:'1.jpeg'},{id: 3, src:'1.jpeg'},{id: 4, src:'1.jpeg'},
+    {id: 5, src:'1.jpeg'},{id: 6, src:'1.jpeg'},{id: 7, src:'1.jpeg'},{id: 8, src:'1.jpeg'}, {id: 9, src:'1.jpeg'},
+    {id: 10, src:'1.jpeg'},{id: 11, src:'1.jpeg'},{id: 12, src:'1.jpeg'}, {id: 13, src:'1.jpeg'},{id: 14, src:'1.jpeg'},
+    {id: 15, src:'1.jpeg'},{id: 16, src:'1.jpeg'},{id: 17, src:'1.jpeg'},{id: 18, src:'1.jpeg'}, {id: 19, src:'1.jpeg'},
+    {id: 20, src:'1.jpeg'},{id: 21, src:'1.jpeg'},{id: 22, src:'1.jpeg'}];
+
 
 /**
  *  getMainPins
@@ -39,8 +45,8 @@ export function getMainPins() {
             return response.json();
         })
         .then((result) => {
-            console.log("PINS:", result.pins);
-            showPins(result.pins)
+            console.log("PINS:", result);
+            showPins(result)
        })
 
         .catch(function(error) {
@@ -68,8 +74,8 @@ export function getSubPins() {
             return response.json();
         })
         .then((result) => {
-            console.log("PINS:", result.pins);
-            showPins(result.pins)
+            console.log("PINS:", result);
+            showPins(result)
         })
         .catch(function(error) {
             console.log("ERR_SUB", error);
@@ -86,7 +92,7 @@ export function getSubPins() {
  *  columnArr - array of column on main page
  *  sortColumnArr - func for sorting with comparator (add picture in the lowest column)
  *
- * @param {[string]} pinsArr - array of pins file names
+ * @param {[{string, string}]} pinsArr - array of pins file names
  * @return {void}
  */
 function showPins(pinsArr) {
@@ -105,7 +111,7 @@ function showPins(pinsArr) {
     };
     pinsArr.forEach((item) => {
         sortColumnArr();
-        addCard('fakeImages/' + item, columnArr[0].id ); // @todo fakeImages only on deBug mod !!!
+        addCard(item, columnArr[0].id ); // @todo fakeImages only on deBug mod !!!
     });
 }
 
@@ -148,10 +154,8 @@ export function setScroll(getSomePinsFuncInPut) {
  *
  * @return {void}
  */
-export function unSetScroll(getSomePinsFuncInPut) {
+export function unSetScroll() {
     //console.log("unset:", getSomePinsFuncInPut);
-    CurrentDesk.State.numberOfPins = 0;
-    CurrentDesk.getSomePinsFunc = getSomePinsFuncInPut;
     window.removeEventListener("scroll", scroll)
 }
 
@@ -170,14 +174,19 @@ export function clearColumns() {
 /**
  * createDesk
  * create main desk (random content)
- *
+ * @param {string} deskContent follows or mainRandom
  * @return {void}
  */
-export const createDesk = () => {
+export const createDesk = (deskContent) => {
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate();
-    getMainPins();
-    setScroll(getMainPins);
+    if (deskContent === "mainRandom") {
+        getMainPins();
+        setScroll(getMainPins);
+    } else if (deskContent === "follows") {
+        getSubPins();
+        setScroll(getSubPins);
+    }
 };
 
 /**
