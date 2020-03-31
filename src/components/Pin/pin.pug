@@ -1,0 +1,38 @@
+div.pin
+    img(src=image alt="icon" id = PinId class="OnePinImage")
+    div(class = "pinInfo")
+        button(id="savePinBtn" class="addPinBtn") Save
+        div(class="pinInfoPinName" ) #{pinName}
+        div(class="pinInfoPinMeta") #{pinMeta}
+
+        div(class="commentsTitle")    Комментарии
+           div(class="pinInfoPinCommentSection" id="OnePinComments")
+
+        div(id="addCommentMsg" class="addCommentMsg")
+        textarea( id="addCommentInput" class="commentInput" placeholder="Ваш комментарий" maxlength="512" rows="2" cols=28)
+        button( id="addCommentBtn" class="addCommentBtn") Отправить
+
+
+        <!-- Full Img-->
+        div( id="popupWin" class="fullImg")
+            img(src=image alt="icon" id = PinId + 'Full' class="pinFullImg")
+
+        <!-- Save from-->
+        div( id="savePinForm" class="savePinForm")
+            div( class="SavePinForm" )
+                img(src=image class="OnePinImageSave")
+                div(class="chooseOrCreateBoard")
+
+                    div(class="saveFormTitles") Сохранеине Пина
+                    div(id="savePinMsg" class="saveFormMsg")
+                    div(id="chooseBoards" class="chooseBoards")
+                        form(class="savePinChooseForm") Выбирите доску:
+                            select( id="chooseBoardsSelect")
+                        button(id="saveSelectedPinBtn" class="savePinBtn") Сохранить
+
+                    div(class="saveFormTitles") или Вы можете создать доску
+                    div(id="createBoardMsg" class="saveFormMsg")
+                    div(class="SavePinCreateDesk")
+                        textarea( id="savePinNameBoard" class="savePinBoardInput" placeholder="Название доски" maxlength="64" rows="2" cols=30)
+                        textarea( id="savePinAboutBoard" class="savePinBoardInput" placeholder="Описание доски" maxlength="512" rows="4" cols=30)
+                        button(id="createNewBoardBtn" class="saveCreateBoardBtn") Создать доску

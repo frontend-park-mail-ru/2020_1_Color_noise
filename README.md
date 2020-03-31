@@ -39,6 +39,7 @@ http://95.163.212.121/
 * [@k-t-l-h](https://github.com/k-t-l-h)
 * [@proeugene97](https://github.com/proeugene97)
 * [@slava-romanov](https://github.com/slava-romanov)
+* [@AlekseySirmais7](https://github.com/AlekseySirmais7)
 
 ## Лучшие люди на свете a.k.a менторы
 

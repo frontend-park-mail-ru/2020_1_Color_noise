@@ -16,6 +16,8 @@ import { serverLocate } from '../../utils/constants.js'
 import { Requests } from '../Network/Requests.js'
 
 import { getSubPins, getMainPins, setScroll, unSetScroll, clearColumns } from '../Desk/Desk.js'
+import {default as CurrentDesk} from "../Desk/CurrentDesk";
+import {createDesk} from "../Desk/Desk";
 
 const application = document.getElementById('root');
 
@@ -74,16 +76,30 @@ const routes = {
  */
 var isSubLink = true;
 function goFollows() {
+
     const followsOrMainLink = document.getElementById('followsOrMainLink');
+    const firstColumn = document.getElementById('column1');
+
     if (isSubLink) {
-        unSetScroll(getMainPins);
+        if (firstColumn === null)
+            createDesk("follows");
+
+        unSetScroll();
+        CurrentDesk.State.numberOfPins = 0;
+        CurrentDesk.getSomePinsFunc = getMainPins;
         clearColumns();
         getSubPins();
         setScroll(getSubPins);
         isSubLink = false;
         followsOrMainLink.innerText = 'Главная';
+
     } else {
-        unSetScroll(getSubPins);
+        if (firstColumn === null)
+            createDesk("mainRandom");
+
+        unSetScroll();
+        CurrentDesk.State.numberOfPins = 0;
+        CurrentDesk.getSomePinsFunc = getSubPins;
         clearColumns();
         getMainPins();
         setScroll(getMainPins);
@@ -198,7 +214,6 @@ function createReg() {
         const password_valid = validators.password(password_form)
 
         if (email_valid && login_valid && password_valid) {
-            console.log("requstration request!");
             FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'post', body: {
                     login: username_form,
                     email: email_form,
@@ -232,8 +247,6 @@ function createReg() {
 }
 
 function goProfile() {
-
-    //Requests.getUserProfile(createProfile);
 
     FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'get', body:null })
         .then((res) => {

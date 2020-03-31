@@ -11,6 +11,6 @@ import {changeLocation} from "../utils/changeLocation.js"
 export function createMainPage() {
     changeLocation("/main", "Main");
     createContent();
-    createDesk();
+    createDesk("mainRandom");
     createMenu();
 }
