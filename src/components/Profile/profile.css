@@ -1,15 +1,15 @@
-#changeProfileLink {
+#change_profile_link {
     cursor: pointer;
     text-align: center;
 }
 
-#changeProfileLinkText {
+#change_profile_link_text {
     display: inline;
     vertical-align: middle;
     padding-bottom: 20px;
 }
 
-#settingsLinkPic {
+#settings_link_pic {
     height: 27px;
     width: 27px;
     display: inline;
@@ -19,24 +19,24 @@
     border-radius: 0;
 }
 
-.ProfileUserInfo {
+.profile_user_info {
     font-size: 20px;
     text-align: center;
 }
-.Icons {
+.icons {
     margin: auto;
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
 }
 
-.Icons img{
+.icons img{
     width: 20px;
     height: 20px;
     margin: 10px;
 }
 
-.ProfileUp {
+.profile_up {
     text-align: center;
 }
 

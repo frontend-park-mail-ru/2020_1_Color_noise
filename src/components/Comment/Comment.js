@@ -118,7 +118,7 @@ function commentsRequest() {
                 showComment(item)
             });
             // show comments or not have comments
-            const commentsTitle = document.getElementsByClassName("commentsTitle")[0];
+            const commentsTitle = document.getElementsByClassName("comments_title")[0];
             commentsTitle.innerText =  (CurrentComments.State.numberOfComments === 0) ?
                 "У пина еще нет комментариев" : commentsTitle.innerText = "Комментарии"
         })

@@ -37,7 +37,7 @@ export function createProfile(user_id = CurrentUser.Data.id) {
 
 
 
-    const changeProfileLink = document.getElementById('changeProfileLink');
+    const changeProfileLink = document.getElementById('change_profile_link');
     changeProfileLink.addEventListener('click', (evt) => {
         evt.preventDefault();
         createProfileSettings();

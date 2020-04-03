@@ -184,7 +184,7 @@ function setSavePinBtn(target) {
 
         const showBlock = document.getElementById('savePinForm');
         showBlock.style.display = 'block';
-        const SavePinForm = document.getElementsByClassName("SavePinForm")[0];
+        const SavePinForm = document.getElementsByClassName("save_pin_form")[0];
         SavePinForm.style.display = 'block';
 
         darkLayer.onclick = () => {
