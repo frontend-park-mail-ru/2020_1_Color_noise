@@ -22,6 +22,64 @@
 .ProfileUserInfo {
     font-size: 20px;
     text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+}
+.Icons {
+    margin: auto;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.Icons img{
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+}
+
+.ProfileUp {
+    text-align: center;
+}
+
+.profile {
+    text-align: center;
+}
+
+
+.buttons_user {
+
+
+}
+.grey_btn {
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    width: 120px;
+    background: #BABABA;
+    border-radius: 18px;
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+}
+
+.grey_btn:hover {
+    background: #8A8A8A;
+}
+
+.grey_text_btn {
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    background: #BABABA;
+    border-radius: 18px;
+    display: inline-block;
+    padding: 10px;
+    margin: auto;
+    margin-bottom: 20px;
+    width: auto;
+}
+
+.grey_text_btn:hover {
+    background: #8A8A8A;
 }

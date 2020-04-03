@@ -5,12 +5,13 @@ import { FetchModule } from  '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import { createProfile } from '../Profile/Profile.js'
-import {changeLocation} from "../../utils/changeLocation";
+import { changeLocation } from "../../utils/changeLocation";
+import Back from "../../images/004-back.svg";
 
 
 export const createProfileSettings = () => {
     changeLocation("/profileSettings", "Profile Settings");
-    const profile = ProfileTemplate( { image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
+    const profile = ProfileTemplate( { back : Back, image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
         login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about } );
     const root = document.getElementById('content');
     root.innerHTML = profile;
@@ -43,6 +44,7 @@ export const createProfileSettings = () => {
                         .then((result) => {
                             if (result.status === 201) {
                                 my_avatar.src = serverLocate + '/' + result.body.image;
+                                CurrentUser.Data.avatarPath = result.body.image;
                             } else {
                                 setInfo('Что-то пошло не так');
                             }
@@ -80,6 +82,8 @@ export const createProfileSettings = () => {
                 .then((result) => {
                     if (result.status === 200) {
                         setInfo('Данные профиля обновлены');
+                        CurrentUser.Data.email = email_form;
+                        CurrentUser.Data.login = username_form;
                     } else {
                         setInfo('Что-то пошло не так');
                     }

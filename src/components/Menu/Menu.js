@@ -1,38 +1,51 @@
 import logoImage from '../../images/logo.svg';
 import MenuTemplate from './menu.pug';
-import { createProfile } from '../Profile/Profile.js'
+import { createProfile } from '../Profile/Profile.js';
 import { setInfo } from '../ProfileSettings/ProfileSettings';
 import { validators } from '../Validation/Validation';
+import { addChooseListeners } from '../Profile/Profile';
+
+import PlusImage from "../../images/002-plus.svg";
 import './menu.css';
 
 import '../Autorization/authorization.css';
 import AutorizationTemplate from '../Autorization/choose.pug';
 import LoginTemplate from '../Autorization/login.pug';
 import RegTemplate from '../Autorization/reg.pug';
+import ChatsTemplate from '../Profile/chats.pug';
+import NotifTemplate from '../Profile/notifications.pug';
 
 import { changeLocation } from '../../utils/changeLocation.js'
 import { FetchModule } from '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { Requests } from '../Network/Requests.js'
 
-import { getSubPins, getMainPins, setScroll, unSetScroll, clearColumns } from '../Desk/Desk.js'
+import { getSubPins, getMainPins, setScroll, unSetScroll, clearColumns, createDesk } from '../Desk/Desk.js'
 import {default as CurrentDesk} from "../Desk/CurrentDesk";
-import {createDesk} from "../Desk/Desk";
+import ChooseCreate from "../ChooseCreate/choose.pug";
 
 const application = document.getElementById('root');
 
 const buildMenu = () => {
-    const menu = MenuTemplate();
+    const menu = MenuTemplate({ plus : PlusImage });
     const root = document.getElementById('menu');
     root.innerHTML = menu;
+    const plus_btn = document.getElementById('plus_btn');
+    plus_btn.addEventListener('click', function (evt) {
+        evt.preventDefault();
+        const chooseWindow = ChooseCreate({ image : logoImage });
+        const root = document.getElementById('modal');
+        root.innerHTML = chooseWindow;
+        addChooseListeners();
+    });
 };
 
 const menuItems = {
     follows: 'Подписки',
-    desks: 'Доски',
-    logo: '',
+    profile: 'Профиль',
+    desks: '',
     chats: 'Чаты',
-    profile: 'Профиль'
+    notif: 'Уведомления'
 };
 
 const addElements = () => {
@@ -59,13 +72,10 @@ export const createMenu = () => {
 const routes = {
     follows: goFollows,
     desks: goDesks,
-    logo: null,
+    notif: goNotif,
     chats: goChats,
     profile: goProfile
 };
-
-
-
 
 /**
  *  GoFollows
@@ -115,6 +125,16 @@ function goDesks() {
 
 function goChats() {
     //alert("Раздел в разработке");
+    const chats = ChatsTemplate();
+    const content = document.getElementById('content');
+    content.innerHTML = chats;
+}
+
+function goNotif() {
+    //alert("Раздел в разработке");
+    const notif = NotifTemplate();
+    const content = document.getElementById('content');
+    content.innerHTML = notif;
 }
 
 function setError() {
@@ -246,6 +266,9 @@ function createReg() {
     });
 }
 
+
+
+
 function goProfile() {
 
     FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'get', body:null })
@@ -257,6 +280,7 @@ function goProfile() {
             }
         )
         .then((result) => {
+            unSetScroll();
             if (result.status === 200) {
                 createProfile();
             }

@@ -2,12 +2,13 @@ div.create_pin_all
      div.create_pin.change_profile
          h1.title Настройки профиля
          div.profile
-             div#backToProfileLink
-                 input(type="submit" class="red_btn" name="backProfile" value="Вернуться в профиль" id="returnProfile")
+             div.backToProfileLink
+                 img(src=back alt="avatar" id="returnProfile")
              div#banner
              form(action="/api/profile", method="post")
-                 img(src=image alt="avatar" id="avatar")
-                 input(type="submit" class="red_btn" name="login" value="Изменить аватарку" id="submit_edit")
+                 div.avatar_change
+                    img(src=image alt="avatar" id="avatar")
+                 input(type="submit" class="grey_text_btn" name="login" value="Изменить аватарку" id="submit_edit")
                  div.line
                      input#fpass(type="password" placeholder="Пароль")
                  input(type="submit" class="red_btn" name="login" value="Сохранить новый пароль" id="submit_pass")

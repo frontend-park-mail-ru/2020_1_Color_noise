@@ -5,6 +5,7 @@ import './desk.css';
 import {FetchModule} from '../Network/Network.js'
 import {serverLocate} from '../../utils/constants.js'
 import {default as CurrentDesk} from './CurrentDesk.js';
+import findIcon from "../../images/find.svg"
 
 
 const isDeBug = true;
@@ -15,18 +16,18 @@ const isDeBug = true;
    and add img with arr names
    WARNING! fakePins Arrays not have limits check!
  */
-const fakePinsArr = [ {id: 1, src:'1.jpeg'}, {id: 2, src:'2.jpg'}, {id: 3, src:'3.jpeg'}, {id: 4, src:'4.jpeg'},
+const fakePinsArr = [{id: 1, src:'1.jpeg'} ];/*/{id: 1, src:'1.jpeg'}, {id: 2, src:'2.jpg'}, {id: 3, src:'3.jpeg'}, {id: 4, src:'4.jpeg'},
     {id: 5, src:'5.jpg'}, {id: 6, src:'6.jpg'}, {id: 7, src:'7.jpg'}, {id: 8, src:'8.jpeg'}, {id: 9, src:'9.jpg'},
     {id: 10, src:'10.jpg'}, {id: 11, src:'11.jpeg'}, {id: 12, src:'12.jpg'}, {id: 13, src:'13.jpeg'},
     {id: 14, src:'14.jpg'}, {id: 15, src:'15.jpg'}, {id: 16, src:'16.jpg'}, {id: 17, src:'17.jpg'},
     {id: 21, src:'21.jpeg'}, {id: 22, src:'22.jpg'}, {id: 23, src:'23.jpg'}, {id: 24, src:'24.jpg'},
-    {id: 25, src:'25.jpg'}, {id: 26, src:'26.jpeg'}, {id: 28, src:'28.jpeg'}, {id: 29, src:'29.jpg'}];
+    {id: 25, src:'25.jpg'}, {id: 26, src:'26.jpeg'}, {id: 28, src:'28.jpeg'}, {id: 29, src:'29.jpg'}];*/
 
-const fakePinsArrSub = [{id: 1, src:'1.jpeg'},{id: 2, src:'1.jpeg'},{id: 3, src:'1.jpeg'},{id: 4, src:'1.jpeg'},
+const fakePinsArrSub = [{id: 1, src:'1.jpeg'} ];/*{id: 1, src:'1.jpeg'},{id: 2, src:'1.jpeg'},{id: 3, src:'1.jpeg'},{id: 4, src:'1.jpeg'},
     {id: 5, src:'1.jpeg'},{id: 6, src:'1.jpeg'},{id: 7, src:'1.jpeg'},{id: 8, src:'1.jpeg'}, {id: 9, src:'1.jpeg'},
     {id: 10, src:'1.jpeg'},{id: 11, src:'1.jpeg'},{id: 12, src:'1.jpeg'}, {id: 13, src:'1.jpeg'},{id: 14, src:'1.jpeg'},
     {id: 15, src:'1.jpeg'},{id: 16, src:'1.jpeg'},{id: 17, src:'1.jpeg'},{id: 18, src:'1.jpeg'}, {id: 19, src:'1.jpeg'},
-    {id: 20, src:'1.jpeg'},{id: 21, src:'1.jpeg'},{id: 22, src:'1.jpeg'}];
+    {id: 20, src:'1.jpeg'},{id: 21, src:'1.jpeg'},{id: 22, src:'1.jpeg'}];*/
 
 
 /**
@@ -179,7 +180,7 @@ export function clearColumns() {
  */
 export const createDesk = (deskContent) => {
     const root = document.getElementById('content');
-    root.innerHTML = DeskTemplate();
+    root.innerHTML = DeskTemplate({image : findIcon});
     if (deskContent === "mainRandom") {
         getMainPins();
         setScroll(getMainPins);

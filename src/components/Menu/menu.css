@@ -35,12 +35,37 @@
 	display : inline-block;
 	text-align: center;
 }
+
 .line_menu {
 	top: 85px;
-	width: 1280px;
+	max-width: 1280px;
 	position: absolute;
 	border-bottom: 2px solid rgba(120, 117, 117, 0.44);
 	right: 0;
 	margin: 0 auto;
 	left: 0;
+}
+
+.plus_btn {
+	position: fixed;
+	bottom: 5%;
+	right: 5%;
+}
+.plus_btn .btn {
+	box-shadow: 0 0 50px 0 rgba(0,0,0,0.20);
+	 width: 50px;
+	 height: 50px;
+	border-radius: 50%;
+	text-align: center;
+	position: relative;
+	cursor: pointer;
+	/*padding: 5px;*/
+ }
+
+.plus_btn .btn img {
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
 }

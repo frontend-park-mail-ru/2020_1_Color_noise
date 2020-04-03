@@ -1,16 +1,22 @@
 div.create_pin_all
-    div.create_pin.change_profile
+    div.create_pin
         h1.title Мой профиль
 
         div.profile
             div#banner
 
             div#profileInfo
-                img(src=image alt="avatar" id="avatar")
-                div(id="profileLogin" class="ProfileUserInfo")
+                div(class="Avatar")
+                    img(src=image alt="avatar" id="avatar")
+                div(class="ProfileUp")
+                    div(id="profileLogin" class="ProfileUserInfo")
+                    div(class="Icons")
+                        img(src=settings alt="avatar" id="changeProfileLink")
+                        img(src=plus alt="avatar" id="submit_pin")
+                        img(src=logout alt="avatar" id="submit_exit")
+                    div(class="buttons_user")
+                        input(type="submit" class="grey_btn" value="Мои пины" id="my_pins")
+                        input(type="submit" class="grey_btn" value="Мои доски" id="my_desks")
+
                 div(id="profileAbout")
-                input(type="submit" class="red_btn" name="login" value="Создать пин" id="submit_pin")
-                a(id="changeProfileLink" class="red_btn")
-                   div(id = "changeProfileLinkText") Редактирвоание профиля
-                   img(id="settingsLinkPic", src=changeProfileLinkImage)
-                input(type="submit" class="red_btn" name="exit" value="Выйти" id="submit_exit")
+

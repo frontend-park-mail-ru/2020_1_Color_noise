@@ -61,7 +61,7 @@ function getUserBoards(target) {
 
     const chooseBoards = document.getElementById("chooseBoardsSelect");
 
-    FetchModule.fetchRequestSendImage({url:serverLocate + '/api/board/user/name/' + CurrentUser.Data.id,
+    FetchModule.fetchRequestSendImage({url:serverLocate + '/api/board/user/' + CurrentUser.Data.id,
         method: 'get'})
         .then((response) => {
             return response.ok ? response : Promise.reject(response);

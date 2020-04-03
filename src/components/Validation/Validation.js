@@ -1,5 +1,5 @@
 const regExpressions = {
-    email: /^[a-zA-Z0-9\-_]+[a-zA-Z0-9\-_\.]*@[a-zA-Z]+[a-zA-Z0-9\.]+$/,
+    email: /^[\w-.]{1,}@[\w-.]{1,}$/,
     username: /^[a-zA-Z0-9_]{4,}$/,
     // ASCII chars from ! to ~
     password: /[!-~]{6,}/

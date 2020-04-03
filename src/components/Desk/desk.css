@@ -10,3 +10,23 @@
 	width: 270px;
 	vertical-align: top;
 }
+
+.find_pin {
+	width: 800px;
+	background: #e4e4e4;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	height: 45px;
+	border-radius: 18px;
+}
+
+.find_pin img {
+	margin-top: 7px;
+	float: left;
+	margin-left: 10px;
+}
+
+.find_pin input[type=text] {
+	font-size: 15px;
+}
