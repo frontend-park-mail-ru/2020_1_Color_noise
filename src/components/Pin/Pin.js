@@ -294,7 +294,7 @@ export function createPinPage(target) {
     pinMeta:target.about});
     const content = document.getElementById('content');
     content.innerHTML = pin;
-    content.className = "commentsSection";
+    content.className = "comments_section";
     createPinComments(target.id);
     setAddPinComment(target.id);
     setShowFullPinImage(target.id);
