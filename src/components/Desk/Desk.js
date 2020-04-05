@@ -238,7 +238,6 @@ function getInfoForShowing(pinIdArr) {
                         showOnePin(result.body);
                     }
 
-
                 }
 
             })
@@ -277,7 +276,7 @@ function setSearch() {
             })
             .then((result) => {
                 if (result.status !== 200) {
-                    throw Error("search request not 200");
+                    setInfoDesk("Ничего не найдено");
                 } else {
 
                     if (isDeBug) {
@@ -288,7 +287,6 @@ function setSearch() {
                         }
                         getInfoForShowing(result.body);
                     }
-
                 }
             })
             .catch( (error) => {
