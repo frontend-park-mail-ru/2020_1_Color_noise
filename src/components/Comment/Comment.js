@@ -34,6 +34,9 @@ const fakeCommentAuthorInfo = {login:"Alex Sirmais", avatar:"fakeImages/28.jpeg"
  */
 //@todo delete Fake CommentAuthorInfo
 function showComment(comment) {
+
+    //console.log("LOAD DATA FOR COMMENT:", comment);
+
     FetchModule.fetchRequest({url:serverLocate + '/api/user/'+ comment.user_id, method:'get'})
         .then((response) => {
             return response.ok ? response : Promise.reject(response);
@@ -48,22 +51,22 @@ function showComment(comment) {
         })
         .then((commentAuthorInfo) => {
 
-            commentAuthorInfo = fakeCommentAuthorInfo;  // delete it ! ! !
+            //commentAuthorInfo = fakeCommentAuthorInfo;  // delete it ! ! !
 
             const OnePinComments =  document.getElementById("OnePinComments");
             const oneComment = document.createElement('div');
 
             oneComment.innerHTML = CommentTemplate({commentText:comment.comment,
-                commentAuthorAvatar:commentAuthorInfo.avatar, authorLogin:commentAuthorInfo.login});
+                 commentAuthorAvatar: serverLocate + '/' + commentAuthorInfo.avatar, authorLogin:commentAuthorInfo.login});
 
-            oneComment.className = "oneComment";
+            oneComment.className = "one_comment";
             OnePinComments.append(oneComment);
 
         })
 
         .catch(function(error) {
+            console.log('Что-то пошло не так с загрузкой инфой комментатора:', error);
             showErrorPinPage('Что-то пошло не так с загрузкой инфой комментатора', "addCommentMsg");
-            console.log('Что-то пошло не так с загрузкой инфой комментатора');
         });
 
 
@@ -133,7 +136,7 @@ function commentsRequest() {
  */
 // todo fix scroll (this case: call for every moving)
 function scroll() {
-    let content = document.getElementById('OnePinComments');
+    let content = document.getElementById('one_pin_comments');
     let contentHeight = content.offsetHeight;
     let yOffset       = window.pageYOffset;
     let window_height = window.innerHeight;
@@ -171,6 +174,6 @@ export function createPinComments(pinId) {
  * @return {void}
  */
 function showErrorPinPage(msg = "Что-то пошло не так с загрузкой комментариев") {
-    const OnePinComments =  document.getElementById("OnePinComments");
+    const OnePinComments =  document.getElementById("One_pin_comments");
     OnePinComments.innerText = msg;
 }

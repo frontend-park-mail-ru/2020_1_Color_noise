@@ -28,7 +28,7 @@ export const addCard = (pin, idColumn) => {
         evt.target.name = pin.name;
         evt.target.about = pin.description;
         evt.target.user_id = pin.user_id;
-        vt.target.board_id = pin.board_id;
+        evt.target.board_id = pin.board_id;
         evt.target.image = pin.image;
 
         createPinPage(evt.target);
