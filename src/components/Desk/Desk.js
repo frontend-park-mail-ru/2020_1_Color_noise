@@ -8,7 +8,7 @@ import {default as CurrentDesk} from './CurrentDesk.js';
 import findIcon from "../../images/find.svg"
 
 
-const isDeBug = true;
+const isDeBug = false;
 /*
    use fake Pins and fake sub pins(one img)
    locate: public/fakeImages/[name of pin]
@@ -17,6 +17,7 @@ const isDeBug = true;
    WARNING! fakePins Arrays not have limits check!
  */
 // [{id: 1, src:'1.jpeg'} ];
+/*
 const fakePinsArr = [{id: 1, src:'1.jpeg'}, {id: 2, src:'2.jpg'}, {id: 3, src:'3.jpeg'}, {id: 4, src:'4.jpeg'},
     {id: 5, src:'5.jpg'}, {id: 6, src:'6.jpg'}, {id: 7, src:'7.jpg'}, {id: 8, src:'8.jpeg'}, {id: 9, src:'9.jpg'},
     {id: 10, src:'10.jpg'}, {id: 11, src:'11.jpeg'}, {id: 12, src:'12.jpg'}, {id: 13, src:'13.jpeg'},
@@ -31,6 +32,7 @@ const fakePinsArrSub = [{id: 1, src:'1.jpeg'},{id: 2, src:'1.jpeg'},{id: 3, src:
     {id: 20, src:'1.jpeg'},{id: 21, src:'1.jpeg'},{id: 22, src:'1.jpeg'}];
 
 const fakePinIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+*/
 
 /**
  *  getMainPins
@@ -49,7 +51,7 @@ export function getMainPins() {
         })
         .then((result) => {
             console.log("PINS:", result);
-            showPins(result)
+            showPins(result.body)
        })
 
         .catch(function(error) {
@@ -78,7 +80,7 @@ export function getSubPins() {
         })
         .then((result) => {
             console.log("PINS:", result);
-            showPins(result)
+            showPins(result.body)
         })
         .catch(function(error) {
             console.log("ERR_SUB", error);

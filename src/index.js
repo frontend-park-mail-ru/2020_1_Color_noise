@@ -56,6 +56,7 @@ function showPage() {
             Requests.getUserProfile(createProfileSettings);
             break;
         }
+
         default: {
             Requests.getUserProfile(createMainPage);
         }
@@ -64,3 +65,5 @@ function showPage() {
 }
 
 showPage();
+
+// "/pin/" + target.id   страница пина

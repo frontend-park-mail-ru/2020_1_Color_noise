@@ -2,6 +2,7 @@ import './card.css';
 import CardTemplate from './card.pug';
 import { createPinPage } from '../Pin/Pin.js'
 import { unSetScroll } from '../Desk/Desk.js'
+import {serverLocate} from "../../utils/constants";
 
 /**
  * addCard
@@ -13,7 +14,7 @@ import { unSetScroll } from '../Desk/Desk.js'
  * @return {void}
  */
 export const addCard = (pin, idColumn) => {
-    const card = CardTemplate( { image: 'fakeImages/' + pin.src, pinId: pin.id }); // todo delete fakeImages
+    const card = CardTemplate( { image: serverLocate + pin.src, pinId: pin.id });
     const root = document.getElementById(idColumn);
 
     let div = document.createElement('div');
@@ -24,9 +25,12 @@ export const addCard = (pin, idColumn) => {
     const addedCard = document.getElementById(pin.id);
 
     addedCard.addEventListener('click', (evt) => {
-        evt.target.name = "fakeNameInCard.js"; // todo delete fake hardcode pin info
-        evt.target.about = "fakeAbout 123 123 123 123 hello,home";
-        evt.target.image = pin.src;
+        evt.target.name = pin.name;
+        evt.target.about = pin.description;
+        evt.target.user_id = pin.user_id;
+        vt.target.board_id = pin.board_id;
+        evt.target.image = pin.image;
+
         createPinPage(evt.target);
         unSetScroll();
     });

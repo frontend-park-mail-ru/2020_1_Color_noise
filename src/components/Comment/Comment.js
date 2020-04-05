@@ -11,7 +11,7 @@ import {default as CurrentComments} from './CurrentComments.js';
 /*
  Можно отобразить фальшивые комментарии для проверки работоспособности
  до завершения работ по API Go сервера
- */
+
 const fakeComments = [{id:1, pin_id:1, user_id:666, comment:" nice pic, bro  nice pic, bro  nice pic," +
         " bro  nice pic, bro  nice pic, bro  nice pic, bro  nice pic, bro  nice pic, bro  nice pic, bro ", created_at:'time???'},
     {id:2, pin_id:1, user_id:3, comment:" bad bad bad  bad bad bad  bad bad bad  bad bad bad ", created_at:'time???'},
@@ -21,6 +21,8 @@ const fakeComments = [{id:1, pin_id:1, user_id:666, comment:" nice pic, bro  nic
 const maxFakeRequestNumber = 1;
 let fakeRequestNumber = 0;
 const fakeCommentAuthorInfo = {login:"Alex Sirmais", avatar:"fakeImages/28.jpeg", about:"some alex info", subscribers:10, subscriptions:10};
+ */
+
 
 /**
  * showComment
@@ -100,14 +102,6 @@ function commentsRequest() {
             commentsArr = commentsArr.body;
 
 
-            /*
-            // delete it ! ! !
-            if (maxFakeRequestNumber >= fakeRequestNumber)
-                commentsArr = fakeComments;
-            fakeRequestNumber++;
-            */
-
-
             // set timeout 5 sec for check new comments OR not check every 5 sec ?
             if (commentsArr.length === 0) {
                 //CurrentComments.State.timeOut = 5000;
@@ -156,7 +150,7 @@ function scroll() {
  *  Запрашивает комментарии для пина
  *  Хранит текущее состояние комментариев в синглтоне CurrentComments
  *  @param {int} pinId
- * @return {void}
+ *  @return {void}
  */
 export function createPinComments(pinId) {
 

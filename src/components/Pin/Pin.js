@@ -2,9 +2,10 @@ import PinTemplate from "./pin.pug";
 import "./pin.css"
 import { FetchModule  } from '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
-import {default as CurrentUser} from '../../utils/userDataSingl.js';
+import { default as CurrentUser } from '../../utils/userDataSingl.js';
 import { validateCreateBoard, validateAddPinComment } from '../Validation/Validation.js'
 import { createPinComments } from '../Comment/Comment.js'
+import { changeLocation } from "../../utils/changeLocation.js";
 
 
 /**
@@ -288,9 +289,9 @@ function setAddPinComment(PinId) {
  * @return {void}
  */
 export function createPinPage(target) {
-
-    const pin = PinTemplate({image:target.src, PinId: target.id, pinName: "My pin name",
-    pinMeta:"some meta info (date or author or ...)"});
+    changeLocation("/pin/" + target.id.toString(), "Pin Page");
+    const pin = PinTemplate({image:target.image, PinId: target.id, pinName: target.name,
+    pinMeta:target.about});
     const content = document.getElementById('content');
     content.innerHTML = pin;
     content.className = "commentsSection";
@@ -298,7 +299,6 @@ export function createPinPage(target) {
     setAddPinComment(target.id);
     setShowFullPinImage(target.id);
     setSavePinBtn(target);
-
 }
 
 /**
