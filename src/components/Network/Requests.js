@@ -14,7 +14,7 @@ export class Requests {
      * @param {function} createFunction - create some SPA page
      * @return {void}
      */
-    static getUserProfile(createFunction = createMainPage) {
+    static getUserProfile(createFunction) {
         FetchModule.fetchRequest( {url: serverLocate + '/api/user', method: 'get'})
             .then((res) => res.ok ? res : Promise.reject(res))
             .then( (response) =>
