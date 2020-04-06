@@ -11,6 +11,21 @@ import { createLogin, goNotif, goChats, createReg } from './components/Menu/Menu
 import {createProfile} from "./components/Profile/Profile.js";
 import {createProfileSettings} from "./components/ProfileSettings/ProfileSettings.js";
 import {changeLocation} from "./utils/changeLocation.js";
+import {createContent} from "./components/Content/Content.js";
+import {createMenu} from "./components/Menu/Menu.js";
+import {createDesk} from "./components/Desk/Desk.js";
+import { createPinPageFromRequest } from "./components/Pin/Pin.js";
+
+
+/**
+ *  isInteger
+ *  check string
+ *  @param {string} value
+ * @return {void}
+ */
+function isInteger(value) {
+    return /^\d+$/.test(value);
+}
 
 
 /**
@@ -20,38 +35,44 @@ import {changeLocation} from "./utils/changeLocation.js";
  */
 function showPage() {
     const url = window.location.pathname;
+
+    Requests.getUserProfile(null); // получим инфу по кукам
+    createContent(); // структура
+    createMenu();
+
+    // конкретный контент
     switch (url) {
         // @todo  add regular expr
         case '': {
-            Requests.getUserProfile(createMainPage);
+            createDesk();
             break;
         }
         case '/': {
-            Requests.getUserProfile(createMainPage);
+            createDesk();
             break;
         }
         case '/main': {
-            Requests.getUserProfile(createMainPage);
+            createDesk();
             break;
         }
         case '/registration': {
             if ( CurrentUser.Data.login !== 'null') {
-                Requests.getUserProfile(createMainPage);
+                createDesk();
             } else {
-                Requests.getUserProfile(createMainPage);
+                createDesk();
                 createReg()
             }
             return
         }
         case '/autorization': {
-            Requests.getUserProfile(createMainPage);
+            createDesk();
             if ( CurrentUser.Data.login === 'null') {
                 createLogin(); // createAutorization()
             }
             return;
         }
         case '/profile': {
-            Requests.getUserProfile(createMainPage);
+            createDesk();
             createProfile();
             break;
         }
@@ -60,32 +81,36 @@ function showPage() {
             break;
         }
         case '/chats': {
-            Requests.getUserProfile(createMainPage);
+            //createDesk();
             goChats();
             break;
         }
         case '/notif': {
-            Requests.getUserProfile(createMainPage);
+            //createDesk();
             goNotif();
             break;
         }
+        // @todo add new pages
 
         default: {
 
-            Requests.getUserProfile(createMainPage);
-            // убрать везде getUserProfile(createMainPage); и запрос после
-            // перед showPage построим меню и потом уже контент
+           if (url.includes("/pin/")) { // если находится на странице пина
+               const pinId = url.substring("/pin/".length, url.length);
+               const isInt = isInteger(pinId);
+               if (!isInt) {
+                   console.log("error get pinID from url");
+                   createDesk();
+                   return;
+               }
+               // если url корректный, то запросим инфу о пине и отобразим его
+               createPinPageFromRequest(pinId);
+           }
 
+           // не страница пина - по дефолту главная
+            createDesk();
         }
-        // @todo add new pages
+
     }
 }
 
 showPage();
-
-// "/pin/" + target.id   страница пина
-// changeLocation("/follows","follows"); // mb goFollows()
-// changeLocation("/main","main"); createDesk
-
-
-//changeLocation('/profile','Profile'); goProfile()

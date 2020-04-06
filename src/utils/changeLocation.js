@@ -8,9 +8,10 @@
 export function changeLocation(curLoc, title) {
     try {
         //history.pushState(null, null, curLoc);
-        //document.title = title;
+        document.title = title;
         return;
     } catch (e) {
-        console.log('setLocation Err');
+        console.log('setLocation Err:' + e.toString());
     }
+    location.hash = '#' + curLoc;
 }
