@@ -258,7 +258,7 @@ function setAddPinComment(PinId) {
         }
 
         FetchModule.fetchRequest({url:serverLocate + '/api/comment', method:'post', body: {
-                pin_id: PinId,
+                pin_id: Number(PinId),
                 comment: commentText,
             }})
             .then((response) => {

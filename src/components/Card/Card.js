@@ -14,7 +14,7 @@ import {serverLocate} from "../../utils/constants";
  * @return {void}
  */
 export const addCard = (pin, idColumn) => {
-    const card = CardTemplate( { image: serverLocate + pin.src, pinId: pin.id });
+    const card = CardTemplate( { image: pin.image, pinId: pin.id });
     const root = document.getElementById(idColumn);
 
     let div = document.createElement('div');
@@ -28,7 +28,7 @@ export const addCard = (pin, idColumn) => {
         evt.target.name = pin.name;
         evt.target.about = pin.description;
         evt.target.user_id = pin.user_id;
-        vt.target.board_id = pin.board_id;
+        evt.target.board_id = pin.board_id;
         evt.target.image = pin.image;
 
         createPinPage(evt.target);
