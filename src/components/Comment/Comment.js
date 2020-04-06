@@ -63,8 +63,26 @@ export function showComment(comment) {
             const avatarImg = oneComment.getElementsByClassName(AvatarClass);
                 avatarImg[0].addEventListener('click', (evt) => {
                     alert(comment.user_id);
+                    FetchModule.fetchRequest({url:serverLocate + '/api/user/'+ comment.user_id, method:'get'})
+                        .then((response) => {
+                            return response.ok ? response : Promise.reject(response);
+                        })
+                        .then((response) => {
+                                return response.json();
+                            }
+                        )
+                        .then((responseJson) => {
+                            //todo replace last responseJson.body => Promise.reject(responseJson) (delete this fake output)
+                            return responseJson.status !== 404 ? responseJson.body : responseJson.body //Promise.reject(responseJson);
+                        })
+                        .then((commentAuthorInfo) => {
+                            const User = [];
+                            User.avatarPath = commentAuthorInfo.avatar;
+                            User.login = commentAuthorInfo.login;
+
+                            createProfile(comment.user_id, User);
+                        })
                     // avatar click code
-                    createProfile(comment.user_id);
                     //console.log("avatar click  user:", commentAuthorInfo.login, "   user ID:", comment.user_id)
                 });
 

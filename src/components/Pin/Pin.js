@@ -271,8 +271,8 @@ function setAddPinComment(PinId) {
             .then((jsonAns) => {
                 console.log("ADD comment ANs:", jsonAns);
 
-                if (jsonAns.status !== 200) {
-                    throw Error("status is no 200")
+                if (jsonAns.status !== 201) {
+                    throw Error("status is no 201")
                }
 
                 //createPinComments(PinId);

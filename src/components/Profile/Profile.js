@@ -109,10 +109,12 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
                 });
         });
     } else {
-        const profile = UserTemplate( { image :  serverLocate + '/' + User.Data.avatarPath,
-            login : User.Data.login, email: User.Data.email, about: User.Data.about } );
+        const profile = UserTemplate( { image :  serverLocate + '/' + User.avatarPath,
+            login : User.login } );
         const root = document.getElementById('content');
         root.innerHTML = profile;
+        const profileLogin = document.getElementById("profileLogin");
+        profileLogin.innerText = User.login;
     }
     //console.log("AVATAR:", CurrentUser.Data.avatarPath);
 
