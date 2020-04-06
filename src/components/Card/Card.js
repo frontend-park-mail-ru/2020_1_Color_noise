@@ -14,7 +14,7 @@ import {serverLocate} from "../../utils/constants";
  * @return {void}
  */
 export const addCard = (pin, idColumn) => {
-    const card = CardTemplate( { image: serverLocate + pin.src, pinId: pin.id });
+    const card = CardTemplate( { image: pin.image, pinId: pin.id });
     const root = document.getElementById(idColumn);
 
     let div = document.createElement('div');

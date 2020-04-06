@@ -219,7 +219,7 @@ const addPinListeners = () => {
             FetchModule.fetchRequest({url:serverLocate + '/api/pin', method: 'post', body: {
                     name : name.value,
                     description : description.value,
-                    board_id: 10, //todo add BOARD ID
+                    board_id: 1, //todo add BOARD ID
                     image : my_pin.src
                 }})
                 .then((res) => {
@@ -243,9 +243,9 @@ const addPinListeners = () => {
 
         } else if (my_pin.src === serverLocate + '/a4817adc02e2f8d902d0002b6f793b82.jpg') {
             setInfo('Загрузите картинку');
-        } else if (name.value.length > 0) {
+        } else if (name.value.length == 0) {
             setInfo('Введите имя пина');
-        } else if (description.value.length > 0) {
+        } else if (description.value.length == 0) {
             setInfo('Введите описание пина');
         }
     });
