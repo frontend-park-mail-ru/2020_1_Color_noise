@@ -23,6 +23,7 @@ import { Requests } from '../Network/Requests.js'
 import { getSubPins, getMainPins, setScroll, unSetScroll, clearColumns, createDesk } from '../Desk/Desk.js'
 import {default as CurrentDesk} from "../Desk/CurrentDesk";
 import ChooseCreate from "../ChooseCreate/choose.pug";
+import CommentTemplate from "../Comment/comment.pug";
 
 const application = document.getElementById('root');
 
@@ -135,6 +136,22 @@ export function goChats() {
     content.innerHTML = chats;
 }
 
+function createNotif(notifiArr) {
+
+    const nitifSection =  document.getElementById("nitifSection");
+
+    for (let i = 0; i < notifiArr.length; i++) {
+
+        const oneNifitic = document.createElement('div');
+        oneNifitic.innerText = notifiArr[i].text; // как будет называться поле!?!??!
+        oneNifitic.className = "one_nitif";
+        nitifSection.append(oneNifitic);
+    }
+
+
+}
+
+
 export function goNotif() {
     //alert("Раздел в разработке");
     console.log("changeLocation(\"/notif\",\"notif\");");
@@ -142,6 +159,43 @@ export function goNotif() {
     const notif = NotifTemplate();
     const content = document.getElementById('content');
     content.innerHTML = notif;
+
+    ///api/notifications - get
+    FetchModule.fetchRequest({url: serverLocate + '/api/notifications?start=1&limit=50', method: 'get', })
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+                return response.json();
+            },
+        )
+        .then((result) => {
+
+
+
+            if (result.status === 200) {
+
+                console.log("BODY:", result.body);
+
+                createNotif(result.body);
+
+
+            } else {
+                throw "bad notifi status code ";
+            }
+        })
+        .catch(function(error) {
+            console.log('bad notifi:', error.toString());
+        });
+
+
+
+
+
+
+
+
+
 }
 
 function setError() {

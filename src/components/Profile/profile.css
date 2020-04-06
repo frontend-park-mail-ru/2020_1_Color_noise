@@ -83,3 +83,12 @@
 .grey_text_btn:hover {
     background: #8A8A8A;
 }
+
+
+.one_nitif{
+    border-radius: 10px;
+    font-size: 17px;
+    padding: 10px;
+    margin: 15px;
+    background: #acacac;
+}
