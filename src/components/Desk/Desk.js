@@ -220,6 +220,8 @@ function getInfoForShowing(pinIdArr) {
 
     pinIdArr.forEach((item) => {
 
+        console.log("URL:",serverLocate + "/api/pin/" + item.id);
+
         FetchModule.fetchRequest({url:serverLocate + "/api/pin/" + item.id, method:'get'})
             .then((res) => {
                 return res.ok ? res : Promise.reject(res);

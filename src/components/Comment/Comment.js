@@ -105,8 +105,8 @@ function commentsRequest() {
         )
         .then((commentsArr) => {
 
-            if (commentsArr.status !== 200) {
-                showErrorPinPage("Сервер вернул не 200 при запросе коментов", "addCommentMsg");
+            if (commentsArr.status === 404) {
+                showErrorPinPage("Сервер вернул 404 при запросе коментов", "addCommentMsg");
                 return;
             }
             commentsArr = commentsArr.body;
