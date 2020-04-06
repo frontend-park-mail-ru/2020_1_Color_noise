@@ -6,7 +6,8 @@ import { default as CurrentUser } from '../../utils/userDataSingl.js';
 import { validateCreateBoard, validateAddPinComment } from '../Validation/Validation.js'
 import { createPinComments } from '../Comment/Comment.js'
 import { changeLocation } from "../../utils/changeLocation.js";
-
+import {default as CurrentComments} from "../Comment/CurrentComments.js";
+import { showComment } from '../Comment/Comment'
 
 /**
  * addPinOnBoard
@@ -269,10 +270,25 @@ function setAddPinComment(PinId) {
             })
             .then((jsonAns) => {
                 console.log("ADD comment ANs:", jsonAns);
-                // @todo add check json.status === 200
 
-                createPinComments(PinId);
+                if (jsonAns.status !== 200) {
+                    throw Error("status is no 200")
+               }
+
+                //createPinComments(PinId);
+                // no created_at and no commentID
+                const myComment = {
+                    pin_id:PinId,
+                    user_id: CurrentUser.Data.id,
+                    comment:commentText
+                };
+
+                showComment(myComment);
+                CurrentComments.State.numberOfComments += 1;
+                const commentsTitle = document.getElementsByClassName("comments_title")[0];
+                commentsTitle.innerText =  commentsTitle.innerText = "Комментарии";
                 showAddPinMsg("Ваш комменатрий добавлен", "addCommentMsg");
+
             })
 
             .catch((error) => {

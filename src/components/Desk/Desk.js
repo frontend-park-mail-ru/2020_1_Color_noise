@@ -6,6 +6,7 @@ import {FetchModule} from '../Network/Network.js'
 import {serverLocate} from '../../utils/constants.js'
 import {default as CurrentDesk} from './CurrentDesk.js';
 import findIcon from "../../images/find.svg"
+import {changeLocation} from "../../utils/changeLocation.js";
 
 
 const isDeBug = false;
@@ -308,13 +309,15 @@ function setSearch() {
  * @param {string} deskContent follows or mainRandom
  * @return {void}
  */
-export const createDesk = (deskContent) => {
+export const createDesk = (deskContent = "mainRandom") => {
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : findIcon});
     if (deskContent === "mainRandom") {
+        changeLocation("/main","main");
         getMainPins();
         setScroll(getMainPins);
     } else if (deskContent === "follows") {
+        changeLocation("/follows","follows");
         getSubPins();
         setScroll(getSubPins);
     }

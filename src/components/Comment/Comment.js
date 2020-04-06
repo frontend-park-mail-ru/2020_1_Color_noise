@@ -29,11 +29,10 @@ const fakeCommentAuthorInfo = {login:"Alex Sirmais", avatar:"fakeImages/28.jpeg"
  *  Показывает комментарий
  *  Для того чтобы показать комментарий надо получить аватарку и логин того, кто написал коммент
  *  Выполянется для каждого комментария
- * @param {string} comment
+ * @param {map} comment
  * @return {void}
  */
-//@todo delete Fake CommentAuthorInfo
-function showComment(comment) {
+export function showComment(comment) {
 
     //console.log("LOAD DATA FOR COMMENT:", comment);
 
@@ -51,16 +50,24 @@ function showComment(comment) {
         })
         .then((commentAuthorInfo) => {
 
-            //commentAuthorInfo = fakeCommentAuthorInfo;  // delete it ! ! !
-
             const OnePinComments =  document.getElementById("OnePinComments");
+
             const oneComment = document.createElement('div');
-
-            oneComment.innerHTML = CommentTemplate({commentText:comment.comment,
-                 commentAuthorAvatar: serverLocate + '/' + commentAuthorInfo.avatar, authorLogin:commentAuthorInfo.login});
-
+            const AvatarClass = " avtarId" + comment.user_id;
+            oneComment.innerHTML += CommentTemplate({commentText:comment.comment, commentAuthorAvatar: serverLocate +
+                    '/' + commentAuthorInfo.avatar, authorLogin:commentAuthorInfo.login, userAvatarClass:AvatarClass});
             oneComment.className = "one_comment";
             OnePinComments.append(oneComment);
+
+            // используем класс а не id тк у одного пользователя может быть много комментов
+            const avatarImg = document.getElementsByClassName(AvatarClass);
+            for (let i = 0; i < avatarImg.length; i++) {
+                avatarImg[i].addEventListener('click', (evt) => {
+
+                    // avatar click code
+                    console.log("avatar click  user:", commentAuthorInfo.login, "   user ID:", comment.user_id)
+                })
+            }
 
         })
 
@@ -174,6 +181,6 @@ export function createPinComments(pinId) {
  * @return {void}
  */
 function showErrorPinPage(msg = "Что-то пошло не так с загрузкой комментариев") {
-    const OnePinComments =  document.getElementById("One_pin_comments");
+    const OnePinComments =  document.getElementById("OnePinComments");
     OnePinComments.innerText = msg;
 }
