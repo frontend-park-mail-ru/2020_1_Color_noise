@@ -271,8 +271,8 @@ function setAddPinComment(PinId) {
             .then((jsonAns) => {
                 console.log("ADD comment ANs:", jsonAns);
 
-                if (jsonAns.status !== 200) {
-                    throw Error("status is no 200")
+                if (jsonAns.status !== 201) {
+                    throw Error("status is no 201")
                }
 
                 //createPinComments(PinId);
@@ -307,7 +307,7 @@ function setAddPinComment(PinId) {
 export function createPinPage(target) {
     changeLocation("/pin/" + target.id.toString(), "Pin Page");
 
-    const pin = PinTemplate({image: serverLocate + target.src, PinId: target.id, pinName: target.name,
+    const pin = PinTemplate({image: "/" + target.src, PinId: target.id, pinName: target.name,
     pinMeta:target.about});
     const content = document.getElementById('content');
     content.innerHTML = pin;

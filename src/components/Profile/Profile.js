@@ -1,5 +1,6 @@
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import ProfileTemplate from "../Profile/profile.pug";
+import UserTemplate from "../Profile/user.pug";
 import {serverLocate} from "../../utils/constants";
 import { createProfileSettings } from '../ProfileSettings/ProfileSettings.js'
 import {FetchModule} from "../Network/Network";
@@ -17,98 +18,106 @@ import {createDesk} from "../Desk/Desk";
 import './profile.css';
 import {changeLocation} from "../../utils/changeLocation";
 
-export function createProfile(user_id = CurrentUser.Data.id) {
-
+export function createProfile(user_id = CurrentUser.Data.id, User = null) {
     console.log("changeLocation('/profile','Profile');");
     changeLocation("/profile", "Profile");
+    if (user_id === CurrentUser.Data.id) {
+        const profile = ProfileTemplate( { image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
+            login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about,
+            changeProfileLinkImage: "settingsLinkPic.png", settings: SettingsImage, plus: PlusImage,
+            logout: LogoutImage } );
+        const root = document.getElementById('content');
+        root.innerHTML = profile;
 
-    //console.log("AVATAR:", CurrentUser.Data.avatarPath);
-    const profile = ProfileTemplate( { image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
-        login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about,
-        changeProfileLinkImage: "settingsLinkPic.png", settings: SettingsImage, plus: PlusImage,
-        logout: LogoutImage } );
-    const root = document.getElementById('content');
-    root.innerHTML = profile;
+        const profileLogin = document.getElementById("profileLogin");
+        profileLogin.innerText = CurrentUser.Data.login;
 
-    const profileLogin = document.getElementById("profileLogin");
-    profileLogin.innerText = CurrentUser.Data.login;
+        const profileAbout = document.getElementById("profileAbout");
+        if (CurrentUser.Data.about !== undefined) {
+            profileAbout.innerText = CurrentUser.Data.about;
+        }
 
-    const profileAbout = document.getElementById("profileAbout");
-    if (CurrentUser.Data.about !== undefined) {
-        profileAbout.innerText = CurrentUser.Data.about;
+
+
+        const changeProfileLink = document.getElementById('change_profile_link');
+        changeProfileLink.addEventListener('click', (evt) => {
+            evt.preventDefault();
+            createProfileSettings();
+        });
+
+        const pin = document.getElementById('submit_pin');
+        pin.addEventListener('click', function (evt) {
+            evt.preventDefault();
+            const chooseWindow = ChooseCreate({ image : logoImage });
+            const root = document.getElementById('modal');
+            root.innerHTML = chooseWindow;
+            addChooseListeners();
+        });
+
+        const exit = document.getElementById('submit_exit');
+        exit.addEventListener('click', function (evt) {
+            evt.preventDefault();
+
+            FetchModule.fetchRequest({url:serverLocate + '/api/auth', method: 'delete', body: null})
+                .then((res) => {
+                    return res.ok ? res : Promise.reject(res);
+                })
+                .then((response) => {
+                        return response.json();
+                    },
+                )
+                .then((result) => {
+                    if (result.status === 200) {
+                        createDesk();
+                    } else {
+                        setInfo('Что-то пошло не так с обработкой запроса');
+                    }
+                })
+                .catch(function(error) {
+                    setInfo('Что-то пошло не так с отправкой запроса');
+                });
+        });
+
+        const pins = document.getElementById('my_pins');
+        pins.addEventListener('click', function (evt) {
+            evt.preventDefault();
+
+        });
+
+        const desks = document.getElementById('my_desks');
+        desks.addEventListener('click', function (evt) {
+            evt.preventDefault();
+            FetchModule.fetchRequest({url:serverLocate + '/api/board/user/' + CurrentUser.Data.id,
+                method: 'get'})
+                .then((res) => {
+                    return res.ok ? res : Promise.reject(res);
+                })
+                .then((response) => {
+                        return response.json();
+                    },
+                )
+                .then((result) => {
+                    if (result.status === 200) {
+                        //alert(result.body);
+                        //createInfo('Новая доска создана');
+                    } else {
+                        setInfo('Что-то пошло не так с обработкой запроса');
+                    }
+                })
+                .catch(function(error) {
+                    setInfo('Что-то пошло не так с отправкой запроса');
+                });
+        });
+    } else {
+        const profile = UserTemplate( { image :  serverLocate + '/' + User.avatarPath,
+            login : User.login } );
+        const root = document.getElementById('content');
+        root.innerHTML = profile;
+        const profileLogin = document.getElementById("profileLogin");
+        profileLogin.innerText = User.login;
     }
+    //console.log("AVATAR:", CurrentUser.Data.avatarPath);
 
-
-
-    const changeProfileLink = document.getElementById('change_profile_link');
-    changeProfileLink.addEventListener('click', (evt) => {
-        evt.preventDefault();
-        createProfileSettings();
-    });
-
-    const pin = document.getElementById('submit_pin');
-    pin.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        const chooseWindow = ChooseCreate({ image : logoImage });
-        const root = document.getElementById('modal');
-        root.innerHTML = chooseWindow;
-        addChooseListeners();
-    });
-
-    const exit = document.getElementById('submit_exit');
-    exit.addEventListener('click', function (evt) {
-        evt.preventDefault();
-
-        FetchModule.fetchRequest({url:serverLocate + '/api/auth', method: 'delete', body: null})
-            .then((res) => {
-                return res.ok ? res : Promise.reject(res);
-            })
-            .then((response) => {
-                    return response.json();
-                },
-            )
-            .then((result) => {
-                if (result.status === 200) {
-                    createDesk();
-                } else {
-                    setInfo('Что-то пошло не так с обработкой запроса');
-                }
-            })
-            .catch(function(error) {
-                setInfo('Что-то пошло не так с отправкой запроса');
-            });
-    });
-
-    const pins = document.getElementById('my_pins');
-    pins.addEventListener('click', function (evt) {
-        evt.preventDefault();
-
-    });
-
-    const desks = document.getElementById('my_desks');
-    desks.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        FetchModule.fetchRequest({url:serverLocate + '/api/board/user/' + CurrentUser.Data.id,
-            method: 'get'})
-            .then((res) => {
-                return res.ok ? res : Promise.reject(res);
-            })
-            .then((response) => {
-                    return response.json();
-                },
-            )
-            .then((result) => {
-                if (result.status === 200) {
-                    //alert(result.body);
-                    //createInfo('Новая доска создана');
-                } else {
-                    setInfo('Что-то пошло не так с обработкой запроса');
-                }
-            })
-            .catch(function(error) {
-                setInfo('Что-то пошло не так с отправкой запроса');
-            });
-    });
 }
 
 export const addChooseListeners = () => {
