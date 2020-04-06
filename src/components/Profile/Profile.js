@@ -18,8 +18,11 @@ import './profile.css';
 import {changeLocation} from "../../utils/changeLocation";
 
 export function createProfile(user_id = CurrentUser.Data.id) {
+
+    console.log("changeLocation('/profile','Profile');");
     changeLocation("/profile", "Profile");
-    console.log("AVATAR:", CurrentUser.Data.avatarPath);
+
+    //console.log("AVATAR:", CurrentUser.Data.avatarPath);
     const profile = ProfileTemplate( { image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
         login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about,
         changeProfileLinkImage: "settingsLinkPic.png", settings: SettingsImage, plus: PlusImage,

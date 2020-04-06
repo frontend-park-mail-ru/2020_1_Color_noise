@@ -87,6 +87,9 @@ const routes = {
 var isSubLink = true;
 function goFollows() {
 
+    console.log("changeLocation(\"/follows\",\"follows\");");
+    changeLocation("/follows","follows");
+
     const followsOrMainLink = document.getElementById('followsOrMainLink');
     const firstColumn = document.getElementById('column1');
 
@@ -125,6 +128,7 @@ function goDesks() {
 
 export function goChats() {
     //alert("Раздел в разработке");
+    console.log("changeLocation(\"/chats\",\"Chats\");");
     changeLocation("/chats","Chats");
     const chats = ChatsTemplate();
     const content = document.getElementById('content');
@@ -133,6 +137,7 @@ export function goChats() {
 
 export function goNotif() {
     //alert("Раздел в разработке");
+    console.log("changeLocation(\"/notif\",\"notif\");");
     changeLocation("/notif","notif");
     const notif = NotifTemplate();
     const content = document.getElementById('content');
@@ -274,6 +279,7 @@ export function createReg() {
 
 function goProfile() {
 
+    console.log("changeLocation('/profile','Profile');");
     changeLocation('/profile','Profile');
 
     FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'get', body:null })

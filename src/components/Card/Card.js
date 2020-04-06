@@ -29,7 +29,7 @@ export const addCard = (pin, idColumn) => {
         evt.target.about = pin.description;
         evt.target.user_id = pin.user_id;
         evt.target.board_id = pin.board_id;
-        evt.target.image = pin.image;
+        evt.target.src = pin.src;
 
         createPinPage(evt.target);
         unSetScroll();

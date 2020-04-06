@@ -306,7 +306,7 @@ function setAddPinComment(PinId) {
  */
 export function createPinPage(target) {
     changeLocation("/pin/" + target.id.toString(), "Pin Page");
-    const pin = PinTemplate({image:target.image, PinId: target.id, pinName: target.name,
+    const pin = PinTemplate({image:target.src, PinId: target.id, pinName: target.name,
     pinMeta:target.about});
     const content = document.getElementById('content');
     content.innerHTML = pin;
@@ -327,4 +327,44 @@ export function createPinPage(target) {
 function showAddPinMsg(msg, elementId) {
     const addCommentMsg = document.getElementById(elementId);
     addCommentMsg.innerText = msg;
+}
+
+
+/**
+ * createPinPageFromRequest
+ * далает запрос для получаения инфомрации о пине и вызывает функцию отрисовки
+ * @param {string} pinId - pin id
+ * @return {void}
+ */
+export function createPinPageFromRequest(pinId) {
+
+    FetchModule.fetchRequest({url:serverLocate + '/api/pin/' + pinId, method:'get'})
+        .then((response) => {
+            return response.ok ? response : Promise.reject(response);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((jsonAns) => {
+
+            console.log("createPinPageFromRequest ANS:", jsonAns);
+
+            if (jsonAns.status !== 200) {
+                throw Error("status is no 200")
+            }
+            const target = jsonAns.body;
+            target.about = target.description; // rename late
+            createPinPage(target);
+
+
+        })
+
+        .catch((error) => {
+            console.log("Ошибка createPinPageFromRequest():" + error.toString());
+        });
+
+
+
+
+
 }
