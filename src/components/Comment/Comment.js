@@ -5,6 +5,7 @@ import CommentTemplate from "./comment.pug";
 import '../Comment/comment.css'
 
 import {default as CurrentComments} from './CurrentComments.js';
+import { createProfile  } from '../Profile/Profile.js'
 
 
 
@@ -49,7 +50,6 @@ export function showComment(comment) {
             return responseJson.status !== 404 ? responseJson.body : responseJson.body //Promise.reject(responseJson);
         })
         .then((commentAuthorInfo) => {
-
             const OnePinComments =  document.getElementById("OnePinComments");
 
             const oneComment = document.createElement('div');
@@ -60,14 +60,13 @@ export function showComment(comment) {
             OnePinComments.append(oneComment);
 
             // используем класс а не id тк у одного пользователя может быть много комментов
-            const avatarImg = document.getElementsByClassName(AvatarClass);
-            for (let i = 0; i < avatarImg.length; i++) {
-                avatarImg[i].addEventListener('click', (evt) => {
-
+            const avatarImg = oneComment.getElementsByClassName(AvatarClass);
+                avatarImg[0].addEventListener('click', (evt) => {
+                    alert(comment.user_id);
                     // avatar click code
-                    console.log("avatar click  user:", commentAuthorInfo.login, "   user ID:", comment.user_id)
-                })
-            }
+                    createProfile(comment.user_id);
+                    //console.log("avatar click  user:", commentAuthorInfo.login, "   user ID:", comment.user_id)
+                });
 
         })
 
