@@ -25,13 +25,17 @@ export const addCard = (pin, idColumn) => {
     const addedCard = document.getElementById(pin.id);
 
     addedCard.addEventListener('click', (evt) => {
-        evt.target.name = pin.name;
-        evt.target.about = pin.description;
-        evt.target.user_id = pin.user_id;
-        evt.target.board_id = pin.board_id;
-        evt.target.src = pin.image;
+        const data = [];
+        data.id = pin.id;
+        data.name = pin.name;
+        data.about = pin.description;
 
-        createPinPage(evt.target);
+        data.user_id = pin.user_id;
+        data.board_id = pin.board_id;
+        data.src = pin.image;
+        data.user_id = pin.user_id;
+
+        createPinPage(data);
         unSetScroll();
     });
 };
