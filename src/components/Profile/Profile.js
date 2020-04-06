@@ -216,7 +216,7 @@ const addPinListeners = () => {
             FetchModule.fetchRequest({url:serverLocate + '/api/pin', method: 'post', body: {
                     name : name.value,
                     description : description.value,
-                    board_id: 1, //todo add BOARD ID
+                    board_id: 14, //todo add BOARD ID
                     image : my_pin.src
                 }})
                 .then((res) => {
