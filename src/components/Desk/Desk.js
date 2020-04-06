@@ -220,7 +220,7 @@ function getInfoForShowing(pinIdArr) {
 
     pinIdArr.forEach((item) => {
 
-        FetchModule.fetchRequest({url:serverLocate + "/api/pin/" + item, method:'get'})
+        FetchModule.fetchRequest({url:serverLocate + "/api/pin/" + item.id, method:'get'})
             .then((res) => {
                 return res.ok ? res : Promise.reject(res);
             })
@@ -280,14 +280,11 @@ function setSearch() {
                     setInfoDesk("Ничего не найдено");
                 } else {
 
-                    if (isDeBug) {
-                        getInfoForShowing(fakePinIdArr);
-                    } else {
                         if (result.body.length === 0) {
                             setInfoDesk("Ничего не найдено");
                         }
                         getInfoForShowing(result.body);
-                    }
+
                 }
             })
             .catch( (error) => {
