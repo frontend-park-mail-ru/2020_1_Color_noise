@@ -123,15 +123,17 @@ function goDesks() {
     //alert("Раздел в разработке");
 }
 
-function goChats() {
+export function goChats() {
     //alert("Раздел в разработке");
+    changeLocation("/chats","Chats");
     const chats = ChatsTemplate();
     const content = document.getElementById('content');
     content.innerHTML = chats;
 }
 
-function goNotif() {
+export function goNotif() {
     //alert("Раздел в разработке");
+    changeLocation("/notif","notif");
     const notif = NotifTemplate();
     const content = document.getElementById('content');
     content.innerHTML = notif;
@@ -148,6 +150,7 @@ function setError() {
 }
 
 function createAutorization() {
+    changeLocation("/autorization","autorization");
     const choose = AutorizationTemplate({ image: logoImage });
     const root = document.getElementById('modal');
     root.innerHTML = choose;
@@ -211,7 +214,7 @@ export function createLogin() {
     });
 }
 
-function createReg() {
+export function createReg() {
     const reg_modal = RegTemplate({ image: logoImage });
     const root = document.getElementById('modal');
     root.innerHTML = reg_modal;
@@ -270,6 +273,8 @@ function createReg() {
 
 
 function goProfile() {
+
+    changeLocation('/profile','Profile');
 
     FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'get', body:null })
         .then((res) => {

@@ -7,9 +7,11 @@ import {createMainPage} from  './views/createMainPage.js'
 import {default as CurrentUser} from './utils/userDataSingl.js';
 import { Requests } from './components/Network/Requests.js'
 
-import { createLogin } from './components/Menu/Menu.js'
+import { createLogin, goNotif, goChats, createReg } from './components/Menu/Menu.js'
 import {createProfile} from "./components/Profile/Profile.js";
 import {createProfileSettings} from "./components/ProfileSettings/ProfileSettings.js";
+import {changeLocation} from "./utils/changeLocation.js";
+
 
 /**
  *  router
@@ -35,30 +37,45 @@ function showPage() {
         case '/registration': {
             if ( CurrentUser.Data.login !== 'null') {
                 Requests.getUserProfile(createMainPage);
+            } else {
+                Requests.getUserProfile(createMainPage);
+                createReg()
             }
-                break;
-            // @todo create reg here
-            break;
+            return
         }
-        case '/login': {
-            if ( CurrentUser.Data.login === 'null') {
-                createLogin();
-                return;
-            }
+        case '/autorization': {
             Requests.getUserProfile(createMainPage);
+            if ( CurrentUser.Data.login === 'null') {
+                createLogin(); // createAutorization()
+            }
             return;
         }
         case '/profile': {
-            Requests.getUserProfile(createProfile);
+            Requests.getUserProfile(createMainPage);
+            createProfile();
             break;
         }
         case '/profileSettings': {
             Requests.getUserProfile(createProfileSettings);
             break;
         }
+        case '/chats': {
+            Requests.getUserProfile(createMainPage);
+            goChats();
+            break;
+        }
+        case '/notif': {
+            Requests.getUserProfile(createMainPage);
+            goNotif();
+            break;
+        }
 
         default: {
+
             Requests.getUserProfile(createMainPage);
+            // убрать везде getUserProfile(createMainPage); и запрос после
+            // перед showPage построим меню и потом уже контент
+
         }
         // @todo add new pages
     }
@@ -67,3 +84,8 @@ function showPage() {
 showPage();
 
 // "/pin/" + target.id   страница пина
+// changeLocation("/follows","follows"); // mb goFollows()
+// changeLocation("/main","main"); createDesk
+
+
+//changeLocation('/profile','Profile'); goProfile()
