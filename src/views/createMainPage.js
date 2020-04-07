@@ -8,10 +8,11 @@ import {changeLocation} from "../utils/changeLocation.js"
  *
  * @return {void}
  */
+
+/*
 export function createMainPage() {
     changeLocation("/main", "Main");
-    createContent();
-    createMenu();
     createDesk("mainRandom");
 
 }
+*/
