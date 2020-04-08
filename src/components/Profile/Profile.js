@@ -25,7 +25,7 @@ function openPins(id){
     alert(id);
 }
 
-function openDesk(id_desk, id_user){
+function openDesk(id_user, id_desk){
     alert(id_desk + " " + id_user);
 }
 
