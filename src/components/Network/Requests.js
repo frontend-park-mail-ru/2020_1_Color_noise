@@ -2,6 +2,7 @@ import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import {createMainPage} from  '../../views/createMainPage.js'
 import {FetchModule} from './Network.js'
 import { serverLocate } from '../../utils/constants.js'
+import { default as Router} from "../../utils/router.js"
 
 /**
  *  Use logic FetchModule and work with promises
@@ -14,7 +15,7 @@ export class Requests {
      * @param {function} createFunction - create some SPA page
      * @return {void}
      */
-    static getUserProfile(createFunction) {
+    static getUserProfile() {
         FetchModule.fetchRequest( {url: serverLocate + '/api/user', method: 'get'})
             .then((res) => res.ok ? res : Promise.reject(res))
             .then( (response) =>
@@ -32,13 +33,21 @@ export class Requests {
                 CurrentUser.Data.token = document.cookie["csrf_token"]
 
                 console.log("MY CurrentUser.Data.token:", CurrentUser.Data.token);
+                let url = window.location.pathname;
 
-                if (createFunction != null)
-                    createFunction();
+                // чтоб перенаправляло после регистрации
+                // (CurrentUser.Data.login !== "null") -> чтобы неаторизованных оставляло на регистрации или авторизации
+                if ( CurrentUser.Data.login !== "null"  && (url === "/registration" || url === "/authorization") ) {
+                    url = "/main";
+                }
+
+
+                Router.go(url, "");
+
+
             })
             .catch((error) => {
-                createMainPage(); // @todo добавить какой-то параметр в createMainPage чтоб понимать
-                // рисовать станицу для авторизованного или нет
+                console.log("getUserProfile ERROR:", error.toString());
             });
     }
 }

@@ -37,7 +37,9 @@ export const addCard = (pin, idColumn) => {
         data.src =  pin.image;
         data.user_id = pin.user_id;
 
+        console.log("клик на пин (ниже тут unSetScroll())")
         unSetScroll();
+        console.log("го роут")
         Router.go("/pin/" + pin.id.toString(), pin.name);
         // createPinPage(data);
 

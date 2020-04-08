@@ -120,7 +120,7 @@ export function createNotif(notifiArr) {
     for (let i = 0; i < notifiArr.length; i++) {
 
         const oneNifitic = document.createElement('div');
-        oneNifitic.innerText = notifiArr[i].text;
+        oneNifitic.innerText = notifiArr[i].message;
         oneNifitic.className = "one_nitif";
         nitifSection.append(oneNifitic);
     }
@@ -151,8 +151,9 @@ export function createAutorization() {
 
 export function createLogin() {
     Router.go('/login','Login');
-
 }
+
+/* move to view/createRegistration.js
 
 export function createReg() {
     const reg_modal = RegTemplate({ image: logoImage });
@@ -191,8 +192,8 @@ export function createReg() {
                 )
                 .then((result) => {
                     if (result.status === 200) {
-                        Requests.getUserProfile(null); // get user data after signUp
-                        root.innerHTML = "";
+                        Requests.getUserProfile(); // get user data after signUp
+
                     }
                 })
                 .catch(function(error) {
@@ -208,7 +209,7 @@ export function createReg() {
         }
     });
 }
-
+*/
 
 
 

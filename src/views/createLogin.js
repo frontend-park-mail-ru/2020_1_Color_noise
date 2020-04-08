@@ -1,10 +1,5 @@
-import { createDesk } from "../components/Desk/Desk.js";
 import {default as CurrentUser} from '../utils/userDataSingl.js';
-import { createLogin } from "../components/Menu/Menu.js"
-import {createMainPage} from "./createMainPage.js";
-import AutorizationTemplate from "../components/Autorization/choose.pug";
 import logoImage from "../images/logo.svg";
-import {createNotif, createReg} from "../components/Menu/Menu";
 import { default as Router} from "../utils/router.js"
 import LoginTemplate from "../components/Autorization/login.pug";
 import {validators} from "../components/Validation/Validation.js";
@@ -56,8 +51,7 @@ export function createLoginView() {
                     )
                     .then((result) => {
                         if (result.status === 200) {
-                            Requests.getUserProfile(null); // get user data after login
-                            root.innerHTML = "";
+                            Requests.getUserProfile(); // get user data after login
                         } else {
                             throw "bad login or password";
                         }

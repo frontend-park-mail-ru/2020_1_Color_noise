@@ -6,7 +6,7 @@ import { goNotif, createMenu } from '../components/Menu/Menu.js'
 import {createContent} from "../components/Content/Content.js";
 import {CreateChatView} from "../views/createChat.js"
 import {createProfileView} from "../views/createProfile.js";
-import {createSubDeskView, createDeskView} from "../views/createDesk.js";
+import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk.js";
 import {createNotificationsView} from "../views/createNotifications.js"
 import {createPinPageFromRequest} from "../components/Pin/Pin.js"
 import {authorizationOrRegistrationView} from "../views/createAuthorizationOrRegistration.js"
@@ -31,15 +31,26 @@ class Router {
             "/profileSettings": createProfileSettings,
             "/chats": CreateChatView,
             "/notifications":  createNotificationsView,
+
+            // пути ниже буду проверяться в методе go(), если не будет совпадения с путями, обозначенными выше
+            // проверяются в (func === undefined)
+            //"/board/id": createBoardDeskView,
+            // "/userPins": createUserPinsDeskView,
             // pin/pinID - будет проверяться, если ничего не подойдет
         };
 
         window.addEventListener("popstate", event => {
-            // Grab the history state id
-            let path = event.state.path; //  event.state is null
+
+            event.preventDefault();
+            let path = event.state.path;
+
+            //alert("popstate EVENT: path:" + path.toString());
+            //history.back();
+            history.back();
+
             this.go(event.state.path, event.state.title);
-            // Show clicked id in console (just for fun)
-            console.log("path = ", path);
+
+
 
         });
 
@@ -48,6 +59,7 @@ class Router {
 
 
     go(path, title, state=null) {
+        //console.log("GO path:" + path)
         if (state == null)
             state = {};
 
@@ -58,13 +70,15 @@ class Router {
             title,  // заголовок состояния
             path  // URL новой записи (same origin)
         );
-        console.log("path:",path);
+        //alert("Go : path:" + path);
+
         createContent(); // структура
         createMenu();
         const func = this.routs[path];
 
         if (func === undefined) {
 
+            // createPinPageFromRequest (pin/{pinID})
             if (path.includes("/pin/")) { // если находится на странице пина
                 const pinId = path.substring("/pin/".length, path.length);
                 const isInt = isInteger(pinId);
@@ -75,12 +89,59 @@ class Router {
                 }
                 // если url корректный, то запросим инфу о пине и отобразим его
                 createPinPageFromRequest(pinId);
+            } else
+
+
+                //createUserPinsDeskView
+            if (path.includes("/userPins/")) { // если находится на странице пинов одного пользователя
+                const userId = path.substring("/userPins/".length, path.length);
+                const isInt = isInteger(userId);
+                if (!isInt) {
+                    console.log("error get userID from url");
+                    createDeskView();
+                    return;
+                }
+                console.log("createUserPinsDeskView userid:",userId );
+                // если url корректный, то отобразим пины пользователя
+                const state = {};
+                state.userId = userId;
+                createUserPinsDeskView(state);
+
+            } else
+
+
+            //createBoardDeskView
+            if (path.includes("/board/")) { // если находится на странице пинов одного пользователя
+                const boardId = path.substring("/board/".length, path.length);
+                const isInt = isInteger(boardId);
+                if (!isInt) {
+                    console.log("error get boardID from url");
+                    createDeskView();
+                    return;
+                }
+                console.log("createBoardDeskView boardid:",boardId );
+                // если url корректный, то отобразим пины пользователя
+                const state = {};
+                state.deskId = boardId;
+                createBoardDeskView(state);
+                return;
+            } else {
+
+                // не страница пина - по дефолту главная
+                alert("будет отображена главная по умолчанию");
+                createDeskView();
+
             }
-            // не страница пина - по дефолту главная
-            createDeskView();
+
+
+
+
+
+
+
 
         } else {
-            console.log("ROUTE FUNC:",func)
+            //console.log("ROUTE FUNC:",func)
             func(state);
         }
 
@@ -88,9 +149,8 @@ class Router {
 
 
     start() {
-        Requests.getUserProfile(null);
-        const url = window.location.pathname;
-        this.go(url)
+        // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
+        Requests.getUserProfile();
     }
 
 

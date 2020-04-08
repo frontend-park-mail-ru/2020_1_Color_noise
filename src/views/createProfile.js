@@ -3,10 +3,12 @@ import {createProfile} from "../components/Profile/Profile.js";
 import {createMenu, setError, createAutorization} from "../components/Menu/Menu.js";
 import {FetchModule} from "../components/Network/Network";
 import {serverLocate} from "../utils/constants";
-import {unSetScroll} from "../components/Desk/Desk";
+import {unSetScroll} from "../components/Desk/Desk.js";
 import {default as Router} from "../utils/router";
 
 export function createProfileView(state) {
+
+    unSetScroll();
 
     FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'get', body:null })
         .then((res) => {
