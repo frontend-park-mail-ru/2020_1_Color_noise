@@ -358,6 +358,7 @@ export function createPinPageFromRequest(pinId) {
 
             if (jsonAns.status === 401) {
                 alert("Авторизуйтесь в профиле чтобы посмотреть пин");
+                Router.go("/main", "Main");
                 return;
             }
 

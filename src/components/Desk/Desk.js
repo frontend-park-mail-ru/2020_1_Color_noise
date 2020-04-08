@@ -117,7 +117,7 @@ export function getBoardPins() {
         .then((result) => {
             console.log("Board PINS:", result);
 
-            if (result.body.pins.length === 0) {
+            if (result.body.pins === undefined) {
                 setInfoDesk("Нет пинов на этой доске");
                 return;
             }
