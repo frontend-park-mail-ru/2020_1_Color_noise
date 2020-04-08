@@ -46,12 +46,11 @@ function createDesks(id) {
         )
         .then((result) => {
             if (result.status === 200) {
-
                 result.body.forEach((item) => {
-                    if (item.last_pin.Image === "") {
-                        item.last_pin.Image = "9b053bbb8ae501c6a9704deab9e2a9d5.svg";
+                    if (item.last_pin.image === undefined) {
+                        item.last_pin.image = "9b053bbb8ae501c6a9704deab9e2a9d5.svg";
                     }
-                    let desk = DeskTemplate({ img: serverLocate + "/" + item.last_pin.Image, text : item.description, id : item.id });
+                    let desk = DeskTemplate({ img: serverLocate + "/" + item.last_pin.image, text : item.description, id : item.id });
 
                     let div = document.createElement('div');
 
