@@ -12,7 +12,6 @@ import {default as CurrentDesk} from './CurrentDesk.js';
  *  @return {void}
  */
 export function getMainPins() {
-
     FetchModule.fetchRequest({ url: serverLocate + '/api/list?start=' + ( CurrentDesk.State.numberOfPins + 1 )
             + '&limit=10', method:'get', body:null})
         .then((res) => {

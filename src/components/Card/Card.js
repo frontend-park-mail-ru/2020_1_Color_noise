@@ -14,7 +14,9 @@ import { default as Router} from "../../utils/router.js"
  * @return {void}
  */
 export const addCard = (pin, idColumn) => {
-    const card = CardTemplate( { image: serverLocate + '/'+ pin.image, pinId: pin.id });
+
+    const card = CardTemplate( { image: serverLocate + "/" + pin.image, pinId: pin.id });
+
     const root = document.getElementById(idColumn);
 
     let div = document.createElement('div');
@@ -32,7 +34,7 @@ export const addCard = (pin, idColumn) => {
 
         data.user_id = pin.user_id;
         data.board_id = pin.board_id;
-        data.src = pin.image;
+        data.src =  pin.image;
         data.user_id = pin.user_id;
 
         unSetScroll();

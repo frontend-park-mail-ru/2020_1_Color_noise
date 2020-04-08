@@ -62,7 +62,6 @@ export function showComment(comment) {
             // используем класс а не id тк у одного пользователя может быть много комментов
             const avatarImg = oneComment.getElementsByClassName(AvatarClass);
                 avatarImg[0].addEventListener('click', (evt) => {
-                    alert(comment.user_id);
                     FetchModule.fetchRequest({url:serverLocate + '/api/user/'+ comment.user_id, method:'get'})
                         .then((response) => {
                             return response.ok ? response : Promise.reject(response);

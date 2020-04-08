@@ -22,7 +22,7 @@ function addPinOnBoard(target, boardId) {
         url: serverLocate + '/api/pin', method: 'post', body: {
             name: target.name,
             description: target.about,
-            board_id: boardId,
+            board_id: Number(boardId),
             image: target.image // send src NOT REAL IMG
             // @todo зачем отправлять изображение, если оно уже есть на сервере
             // изображение весит примерно 90% запроса
@@ -306,8 +306,10 @@ function setAddPinComment(PinId) {
  */
 export function createPinPage(target) {
 
+
     document.title = "Pin " + target.name;
     const pin = PinTemplate({image:  serverLocate + "/" + target.image, PinId: target.id, pinName: target.name,
+
     pinMeta:target.about});
     const content = document.getElementById('content');
     content.innerHTML = pin;

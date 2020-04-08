@@ -1,6 +1,7 @@
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import ProfileTemplate from "../Profile/profile.pug";
 import UserTemplate from "../Profile/user.pug";
+import DeskTemplate from "../Profile/desk.pug";
 import {serverLocate} from "../../utils/constants";
 import { createProfileSettings } from '../ProfileSettings/ProfileSettings.js'
 import {FetchModule} from "../Network/Network";
@@ -16,7 +17,65 @@ import PlusImage from "../../images/002-plus.svg";
 import LogoutImage from "../../images/003-logout.svg";
 import {createDesk} from "../Desk/Desk";
 import './profile.css';
+
 import { default as Router} from "../../utils/router.js"
+
+import {changeLocation} from "../../utils/changeLocation";
+import {addCard} from "../Card/Card";
+
+
+function openPins(id){
+    alert(id);
+}
+
+function openDesk(id_user, id_desk){
+    alert(id_desk + " " + id_user);
+}
+
+function createDesks(id) {
+    const desks = document.getElementById("desks");
+    desks.innerHTML = "";
+    FetchModule.fetchRequest({url:serverLocate + '/api/board/user/' + id,
+        method: 'get'})
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+                return response.json();
+            },
+        )
+        .then((result) => {
+            if (result.status === 200) {
+
+                result.body.forEach((item) => {
+                    if (item.last_pin.Image === "") {
+                        item.last_pin.Image = "9b053bbb8ae501c6a9704deab9e2a9d5.svg";
+                    }
+                    let desk = DeskTemplate({ img: serverLocate + "/" + item.last_pin.Image, text : item.description, id : item.id });
+
+                    let div = document.createElement('div');
+
+                    div.innerHTML = desk;
+                    let back = div.getElementsByClassName("item_back")[0];
+                    back.setAttribute("id_desk", item.id);
+                    back.setAttribute("id", id);
+                    div.setAttribute("class", "desk2");
+                    div.addEventListener('click', function (evt) {
+                         openDesk(evt.target.getAttribute("id"), evt.target.getAttribute("id_desk"));
+                    });
+                    desks.append(div);
+                });
+            } else {
+                setInfo('Что-то пошло не так с обработкой запроса');
+            }
+        })
+        .catch(function(error) {
+            setInfo('Что-то пошло не так с отправкой запроса');
+        });
+}
+
+
+
 
 export function createProfile(user_id = CurrentUser.Data.id, User = null) {
 
@@ -52,7 +111,7 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
             const chooseWindow = ChooseCreate({ image : logoImage });
             const root = document.getElementById('modal');
             root.innerHTML = chooseWindow;
-            addChooseListeners();
+            addChooseListeners(true);
         });
 
         const exit = document.getElementById('submit_exit');
@@ -82,14 +141,24 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
         const pins = document.getElementById('my_pins');
         pins.addEventListener('click', function (evt) {
             evt.preventDefault();
-
+            openPins(user_id);
         });
-
-        const desks = document.getElementById('my_desks');
-        desks.addEventListener('click', function (evt) {
+        createDesks(user_id);
+        // const desks = document.getElementById('my_desks');
+        // desks.addEventListener('click', function (evt) {
+        //     createDesks(user_id);
+        // });
+    } else {
+        const profile = UserTemplate( { image :  serverLocate + '/' + User.avatarPath,
+            login : User.login } );
+        const root = document.getElementById('content');
+        root.innerHTML = profile;
+        const profileLogin = document.getElementById("profileLogin");
+        profileLogin.innerText = User.login;
+        const btn_follow = document.getElementById( "follow_btn");
+        btn_follow.addEventListener('click', function (evt) {
             evt.preventDefault();
-            FetchModule.fetchRequest({url:serverLocate + '/api/board/user/' + CurrentUser.Data.id,
-                method: 'get'})
+            FetchModule.fetchRequest({url:serverLocate + '/api/user/following/' + user_id, method: 'post'})
                 .then((res) => {
                     return res.ok ? res : Promise.reject(res);
                 })
@@ -98,9 +167,8 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
                     },
                 )
                 .then((result) => {
-                    if (result.status === 200) {
-                        //alert(result.body);
-                        //createInfo('Новая доска создана');
+                    if (result.status === 201) {
+                        createInfo('Вы подписаны');
                     } else {
                         setInfo('Что-то пошло не так с обработкой запроса');
                     }
@@ -109,19 +177,18 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
                     setInfo('Что-то пошло не так с отправкой запроса');
                 });
         });
-    } else {
-        const profile = UserTemplate( { image :  serverLocate + '/' + User.avatarPath,
-            login : User.login } );
-        const root = document.getElementById('content');
-        root.innerHTML = profile;
-        const profileLogin = document.getElementById("profileLogin");
-        profileLogin.innerText = User.login;
+        const pins = document.getElementById('my_pins');
+        pins.addEventListener('click', function (evt) {
+            evt.preventDefault();
+            openPins(user_id);
+        });
+        createDesks(user_id);
     }
     //console.log("AVATAR:", CurrentUser.Data.avatarPath);
 
 }
 
-export const addChooseListeners = () => {
+export const addChooseListeners = (profile_b = false) => {
     const pin = document.getElementById('submit_pin_choose');
     pin.addEventListener('click', function (evt) {
         evt.preventDefault();
@@ -130,6 +197,38 @@ export const addChooseListeners = () => {
         const pinWindow = PinTemplate({ image : PinImage });
         const root = document.getElementById('content');
         root.innerHTML = pinWindow;
+
+
+        FetchModule.fetchRequest({url:serverLocate + '/api/board/user/' + CurrentUser.Data.id + "?limit=1000",
+            method: 'get'})
+            .then((res) => {
+                return res.ok ? res : Promise.reject(res);
+            })
+            .then((response) => {
+                    return response.json();
+                },
+            )
+            .then((result) => {
+                if (result.status === 200) {
+                    const desk_select = document.getElementById('desk_select');
+                    //var option = document.createElement("option");
+                    //option.text = "Стандартная доска";
+                    //desk_select.add(option);
+
+                    result.body.forEach((item) => {
+                        let option = document.createElement("option");
+                        option.text = item.description;
+                        option.setAttribute("id", item.id);
+                        desk_select.add(option);
+                    });
+                } else {
+                    setInfo('Что-то пошло не так с обработкой запроса');
+                }
+            })
+            .catch(function(error) {
+                setInfo('Что-то пошло не так с отправкой запроса');
+            });
+
         addPinListeners();
     });
 
@@ -139,11 +238,11 @@ export const addChooseListeners = () => {
         const modal = document.getElementById('modal');
         const deskWindow = CreateDeskTemplate({ image : logoImage });
         modal.innerHTML = deskWindow;
-        addDeskListeners();
+        addDeskListeners(profile_b);
     });
 }
 
-const addDeskListeners = () => {
+const addDeskListeners = (profile_b = false) => {
     const create = document.getElementById('submit_desk_create');
     create.addEventListener('click', function (evt) {
         evt.preventDefault();
@@ -164,6 +263,10 @@ const addDeskListeners = () => {
             .then((result) => {
                 if (result.status === 201) {
                     createInfo('Новая доска создана');
+                    if (profile_b === true) {
+                        createDesks(CurrentUser.Data.id);
+                    }
+
                 } else {
                     setInfo('Что-то пошло не так с обработкой запроса');
                 }
@@ -226,10 +329,13 @@ const addPinListeners = () => {
         if (my_pin.src !== serverLocate + '/a4817adc02e2f8d902d0002b6f793b82.jpg' && name.value.length > 0
             && description.value.length > 0) {
 
+            const e = document.getElementById("desk_select");
+            const desk_id = e.options[e.selectedIndex].id;
+
             FetchModule.fetchRequest({url:serverLocate + '/api/pin', method: 'post', body: {
                     name : name.value,
                     description : description.value,
-                    board_id: 14, //todo add BOARD ID
+                    board_id: Number(desk_id), //todo add BOARD ID
                     image : my_pin.src
                 }})
                 .then((res) => {
