@@ -32,7 +32,7 @@ function openDesk(id_desk, id_user){
 function createDesks(id) {
     const desks = document.getElementById("desks");
     desks.innerHTML = "";
-    FetchModule.fetchRequest({url:serverLocate + '/api/board/user/' + CurrentUser.Data.id,
+    FetchModule.fetchRequest({url:serverLocate + '/api/board/user/' + id,
         method: 'get'})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
@@ -172,6 +172,12 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
                     setInfo('Что-то пошло не так с отправкой запроса');
                 });
         });
+        const pins = document.getElementById('my_pins');
+        pins.addEventListener('click', function (evt) {
+            evt.preventDefault();
+            openPins(user_id);
+        });
+        createDesks(user_id);
     }
     //console.log("AVATAR:", CurrentUser.Data.avatarPath);
 
