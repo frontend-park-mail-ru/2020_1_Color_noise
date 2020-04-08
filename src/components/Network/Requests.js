@@ -12,7 +12,6 @@ export class Requests {
     /**
      *  set userData and call createFunction after
      *
-     * @param {function} createFunction - create some SPA page
      * @return {void}
      */
     static getUserProfile() {
@@ -21,8 +20,15 @@ export class Requests {
             .then( (response) =>
                 response.json(),
             )
-            .then((response) => response.status === 200 ? response : Promise.reject(response) )
             .then( (result) => {
+
+                if (result.status === 401) {
+                    Router.go("/main", "Main");
+                    //Router.go("/authorizationOrRegistration", "AuthorizationOrRegistration");
+                    return;
+                }
+
+
                 CurrentUser.Data.id = result.body.id;
                 CurrentUser.Data.login = result.body.login;
                 CurrentUser.Data.email = result.body.email;
@@ -41,13 +47,12 @@ export class Requests {
                     url = "/main";
                 }
 
-
                 Router.go(url, "");
 
 
             })
             .catch((error) => {
-                console.log("getUserProfile ERROR:", error.toString());
+                console.log("getUserProfile ERROR:", error);
             });
     }
 }

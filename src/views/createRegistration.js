@@ -24,7 +24,7 @@ export function createRegistration() {
         const loginLink = document.getElementById("loginLink");
         loginLink.addEventListener('click', (evt) => {
                 evt.preventDefault();
-                Router.go('/login','Login');
+                Router.go('/authorization','Authorization');
             }
         );
 
@@ -54,7 +54,7 @@ export function createRegistration() {
                     .then((result) => {
                         if (result.status === 200) {
                             Requests.getUserProfile(); // get user data after signUp
-
+                            Router.go("/main","Main");
                         }
                     })
                     .catch(function(error) {
