@@ -8,6 +8,7 @@ import { createPinComments } from '../Comment/Comment.js'
 import { default as Router} from "../../utils/router.js"
 import {default as CurrentComments} from "../Comment/CurrentComments.js";
 import { showComment } from '../Comment/Comment'
+import {unSetScroll} from "../Desk/Desk";
 
 /**
  * addPinOnBoard
@@ -341,6 +342,9 @@ function showAddPinMsg(msg, elementId) {
  */
 export function createPinPageFromRequest(pinId) {
 
+    console.log("requst data for pin;");
+    unSetScroll();
+
     FetchModule.fetchRequest({url:serverLocate + '/api/pin/' + pinId, method:'get'})
         .then((response) => {
             return response.ok ? response : Promise.reject(response);
@@ -357,6 +361,7 @@ export function createPinPageFromRequest(pinId) {
             }
             const target = jsonAns.body;
             target.about = target.description; // rename late
+            console.log("Получил данные для пина строю страницу")
             createPinPage(target);
 
         })

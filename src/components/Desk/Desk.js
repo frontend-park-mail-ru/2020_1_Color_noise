@@ -47,7 +47,7 @@ export function getSubPins() {
             return response.json();
         })
         .then((result) => {
-            console.log("PINS:", result);
+            console.log("SUB PINS:", result);
             if (result.body.length === 0) {
                 setInfoDesk("Нет ничего нового в ваших подписках");
                 return;
@@ -59,6 +59,80 @@ export function getSubPins() {
             setInfoDesk("Что-то пошло не так с подписками");
         });
 }
+
+export function getUserPins() {
+
+    //  Все пины пользователя
+    /*
+    Получить массив пинов пользователя: /api/pin/user/{user_id}?start=value1&limit=value2 - (start - с какого количества,
+     limit - сколько грузить (можно не добавлять, по умолчанию 10)) - get
+    ARRAY:     id name description user_id board_id image
+     */
+
+    const userId = CurrentDesk.State.userId;
+    const username = CurrentDesk.State.username;
+
+    FetchModule.fetchRequest({ url: serverLocate + '/api/pin/user/' + userId.toString() + '?start=' + ( CurrentDesk.State.numberOfPins + 1 )
+            + '&limit=20', method:'get',})
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            console.log("USER PINS:", result);
+            if (result.body.length === 0) {
+                setInfoDesk("Нет пинов у данного пользователя");
+                return;
+            }
+            //document.title += username;
+            console.log("GOOD REQUEST ");
+            showPins(result.body)
+        })
+        .catch(function(error) {
+            console.log("ERR_UserPins", error);
+            setInfoDesk("Что-то пошло не так с пинами пользователя");
+        });
+
+}
+
+export function getBoardPins() {
+
+    const boardId = CurrentDesk.State.boardId;
+
+    //  доска пользователя
+    // Получить доску: /api/board/{board_id} - get       просто доска
+
+    // name description pins[ids] user_id
+
+    // тут в теле приходят  pins[] они не ограничены диапазоном
+    FetchModule.fetchRequest({ url: serverLocate + '/api/board/' + boardId.toString(), method:'get',})
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            console.log("Board PINS:", result);
+
+            if (result.body.pins.length === 0) {
+                setInfoDesk("Нет пинов на этой доске");
+                return;
+            }
+            //document.title += result.body.name;
+
+            showPins(result.body.pins)
+
+        })
+        .catch(function(error) {
+            console.log("ERR_Board Pins", error);
+            setInfoDesk("Что-то пошло не так с пинами доски");
+        });
+
+}
+
 
 /**
  *  showPins
@@ -128,10 +202,11 @@ function scroll() {
         let window_height = window.innerHeight;      // высота внутренней области окна документа
         let y             = yOffset + window_height;
         // если пользователь достиг конца
-        if(y >= contentHeight) {
+        if(y >= contentHeight - 500) {
+            console.log("вызов по скролу");
             CurrentDesk.getSomePinsFunc();
             window.removeEventListener("scroll", scroll);
-            setTimeout(() => { window.addEventListener("scroll", scroll)}, 1000);
+            setTimeout(() => { window.addEventListener("scroll", scroll)}, 200);
         }
 }
 
@@ -141,8 +216,9 @@ function scroll() {
  *
  * @return {void}
  */
+
 export function setScroll(getSomePinsFuncInPut) {
-    //console.log("set:", getSomePinsFuncInPut);
+    console.log("set SCROLLL:", getSomePinsFuncInPut);
     CurrentDesk.getSomePinsFunc = getSomePinsFuncInPut;
     window.addEventListener("scroll", scroll)
 }
@@ -154,6 +230,7 @@ export function setScroll(getSomePinsFuncInPut) {
  * @return {void}
  */
 export function unSetScroll() {
+    console.log("remove scrol");
     //console.log("unset:", getSomePinsFuncInPut);
     window.removeEventListener("scroll", scroll)
 }

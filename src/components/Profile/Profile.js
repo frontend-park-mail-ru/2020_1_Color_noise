@@ -24,13 +24,24 @@ import {changeLocation} from "../../utils/changeLocation";
 import {addCard} from "../Card/Card";
 
 
-function openPins(id){
-    alert(id);
+function openPins(id) { // add value name
+
+    //alert("1 openPins user id:", id.toString());
+    const state = {}
+    state.userId = id;
+
+    state.username = "Alex" // replace ALEX to name value
+
+    Router.go("/userPins/" + id.toString(), "userPins", state)
 }
 
-function openDesk(id_user, id_desk){
-    alert(id_desk + " " + id_user);
+function openDesk(id_user, id_desk) {
+    //alert("openDesk desk id:", id_desk);
+    const state = {}
+    state.deskId = id_desk;
+    Router.go("/board/" + id_desk.toString(), "Board", state);
 }
+
 
 function createDesks(id) {
     const desks = document.getElementById("desks");
@@ -79,8 +90,6 @@ function createDesks(id) {
 
 export function createProfile(user_id = CurrentUser.Data.id, User = null) {
 
-
-
     if (user_id === CurrentUser.Data.id) {
         const profile = ProfileTemplate( { image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
             login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about,
@@ -96,8 +105,6 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
         if (CurrentUser.Data.about !== undefined) {
             profileAbout.innerText = CurrentUser.Data.about;
         }
-
-
 
         const changeProfileLink = document.getElementById('change_profile_link');
         changeProfileLink.addEventListener('click', (evt) => {
