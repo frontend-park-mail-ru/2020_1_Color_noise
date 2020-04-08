@@ -135,7 +135,10 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
                 )
                 .then((result) => {
                     if (result.status === 200) {
-                        createDesk();
+
+                        CurrentUser.Data.login = "null"; // must mark !!!
+                        Router.go("/main","Main");
+
                     } else {
                         setInfo('Что-то пошло не так с обработкой запроса');
                     }

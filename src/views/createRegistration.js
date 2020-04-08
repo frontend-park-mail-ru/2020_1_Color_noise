@@ -1,7 +1,4 @@
-import { createDesk } from "../components/Desk/Desk.js";
-import { createReg } from "../components/Menu/Menu.js";
 import {default as CurrentUser} from '../utils/userDataSingl.js';
-import LoginTemplate from "../components/Autorization/login.pug";
 import logoImage from "../images/logo.svg";
 import {validators} from "../components/Validation/Validation";
 import {FetchModule} from "../components/Network/Network";
@@ -9,7 +6,6 @@ import {serverLocate} from "../utils/constants";
 import {Requests} from "../components/Network/Requests";
 import {setInfo} from "../components/ProfileSettings/ProfileSettings";
 import RegTemplate from '../components/Autorization/reg.pug';
-import {createLogin} from "../components/Menu/Menu.js";
 import {default as Router} from "../utils/router.js";
 import {createDeskView} from "./createDesk.js"
 
@@ -20,6 +16,7 @@ export function createRegistration() {
     if ( CurrentUser.Data.login === 'null') {
 
         console.log("createRegistrationVIEW: CurrentUser.Data.login === 'null':", CurrentUser.Data.login === 'null')
+
         const reg_modal = RegTemplate({ image: logoImage });
         const root = document.getElementById('modal');
         root.innerHTML = reg_modal;
@@ -27,7 +24,7 @@ export function createRegistration() {
         const loginLink = document.getElementById("loginLink");
         loginLink.addEventListener('click', (evt) => {
                 evt.preventDefault();
-                Router.go("/authorization", "Authorization");
+                Router.go('/login','Login');
             }
         );
 
@@ -56,8 +53,8 @@ export function createRegistration() {
                     )
                     .then((result) => {
                         if (result.status === 200) {
-                            Requests.getUserProfile(null); // get user data after signUp
-                            root.innerHTML = "";
+                            Requests.getUserProfile(); // get user data after signUp
+
                         }
                     })
                     .catch(function(error) {
@@ -74,15 +71,6 @@ export function createRegistration() {
         });
 
 
-
-
-
-
-
-
-
-
-
-
+        
     }
 }

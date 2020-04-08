@@ -356,13 +356,19 @@ export function createPinPageFromRequest(pinId) {
 
             console.log("createPinPageFromRequest ANS:", jsonAns);
 
+            if (jsonAns.status === 401) {
+                alert("Авторизуйтесь в профиле чтобы посмотреть пин");
+                return;
+            }
+
             if (jsonAns.status !== 200) {
-                throw Error("status is no 200")
+                throw Error("status is no 200 or 401")
             }
             const target = jsonAns.body;
             target.about = target.description; // rename late
             //console.log("Получил данные для пина строю страницу")
-            createPinPage(target);
+            createPinPage(target); // нужно ли тут менять на роутер? (ради архитектуры - все через роутер)
+            // если поменять на роутер получим лишнюю перерисовку и запросы при правильной работе
 
         })
 

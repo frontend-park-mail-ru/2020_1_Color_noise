@@ -33,9 +33,16 @@ export class Requests {
                 CurrentUser.Data.token = document.cookie["csrf_token"]
 
                 console.log("MY CurrentUser.Data.token:", CurrentUser.Data.token);
+                let url = window.location.pathname;
 
-                const url = window.location.pathname;
-                Router.go(url, "")
+                // чтоб перенаправляло после регистрации
+                // (CurrentUser.Data.login !== "null") -> чтобы неаторизованных оставляло на регистрации или авторизации
+                if ( CurrentUser.Data.login !== "null"  && (url === "/registration" || url === "/authorization") ) {
+                    url = "/main";
+                }
+
+
+                Router.go(url, "");
 
 
             })
