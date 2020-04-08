@@ -1,3 +1,5 @@
+import {default as CurrentUser} from "../../utils/userDataSingl";
+
 /**
  *  network logic
  */
@@ -14,6 +16,7 @@ export class FetchModule {
 							body = null,
 							headers = {
 								'Content-type': 'application/json; charset=UTF-8',
+								'X-CSRF-Token': CurrentUser.Data.token,
 							},
 						} = {}) {
 		const jsonData = JSON.stringify(body); // @todo add err check
