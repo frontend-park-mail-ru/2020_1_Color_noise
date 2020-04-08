@@ -29,7 +29,10 @@ export class Requests {
                 CurrentUser.Data.avatarPath = result.body.avatar;
                 CurrentUser.Data.subscribers = result.body.subscribers;
                 CurrentUser.Data.subscriptions = result.body.subscriptions;
-                // @todo add set CurrentUser.Data.token
+                CurrentUser.Data.token = document.cookie["csrf_token"]
+
+                console.log("MY CurrentUser.Data.token:", CurrentUser.Data.token);
+
                 if (createFunction != null)
                     createFunction();
             })
