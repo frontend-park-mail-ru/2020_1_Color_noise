@@ -41,7 +41,6 @@ const fakePinIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
  *  @return {void}
  */
 export function getMainPins() {
-
     FetchModule.fetchRequest({ url: serverLocate + '/api/list?start=' + ( CurrentDesk.State.numberOfPins + 1 )
             + '&limit=10', method:'get', body:null})
         .then((res) => {
