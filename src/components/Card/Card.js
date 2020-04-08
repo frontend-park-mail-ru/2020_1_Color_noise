@@ -2,8 +2,8 @@ import './card.css';
 import CardTemplate from './card.pug';
 import { createPinPage } from '../Pin/Pin.js'
 import { unSetScroll } from '../Desk/Desk.js'
-import {serverLocate} from "../../utils/constants";
-
+import {serverLocate} from "../../utils/constants.js";
+import { default as Router} from "../../utils/router.js"
 /**
  * addCard
  *  Добавляет картинку в указанную колонку
@@ -14,7 +14,7 @@ import {serverLocate} from "../../utils/constants";
  * @return {void}
  */
 export const addCard = (pin, idColumn) => {
-    const card = CardTemplate( { image: pin.image, pinId: pin.id });
+    const card = CardTemplate( { image: serverLocate + '/'+ pin.image, pinId: pin.id });
     const root = document.getElementById(idColumn);
 
     let div = document.createElement('div');
@@ -35,7 +35,9 @@ export const addCard = (pin, idColumn) => {
         data.src = pin.image;
         data.user_id = pin.user_id;
 
-        createPinPage(data);
         unSetScroll();
+        Router.go("/pin/" + pin.id.toString(), pin.name);
+        // createPinPage(data);
+
     });
 };

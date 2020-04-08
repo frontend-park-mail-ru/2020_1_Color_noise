@@ -1,11 +1,15 @@
 import  { createRegistration } from '../views/createRegistration.js'
-import { createLoginV } from "../views/createLogin.js"
+import { createLoginView } from "../views/createLogin.js"
 import { Requests } from '../components/Network/Requests.js'
 import {createProfileSettings} from "../components/ProfileSettings/ProfileSettings.js";
-import { goNotif, goChats, createMenu } from '../components/Menu/Menu.js'
+import { goNotif, createMenu } from '../components/Menu/Menu.js'
 import {createContent} from "../components/Content/Content.js";
-import {createDesk} from "../components/Desk/Desk";
-import {createProfile} from "../components/Profile/Profile.js";
+import {CreateChatView} from "../views/createChat.js"
+import {createProfileView} from "../views/createProfile.js";
+import {createSubDeskView, createDeskView} from "../views/createDesk.js";
+import {createNotificationsView} from "../views/createNotifications.js"
+import {createPinPageFromRequest} from "../components/Pin/Pin.js"
+import {authorizationOrRegistrationView} from "../views/createAuthorizationOrRegistration.js"
 
 // for check url
 function isInteger(value) {
@@ -13,40 +17,42 @@ function isInteger(value) {
 }
 
 
-
-
-export class Router {
+class Router {
 
     constructor() {
         this.routs = {
-            "/": createDesk,
-            "/main": createDesk,
+            "/": createDeskView,
+            "/subscriptions": createSubDeskView,
+            "/main": createDeskView,
             "/registration": createRegistration,
-            "/autorization": createLoginV, // authorization
-            "/profile": createProfile,
+            "/authorization": createLoginView,
+            "/profile": createProfileView,
+            "/authorizationOrRegistration":authorizationOrRegistrationView,
             "/profileSettings": createProfileSettings,
-            "/chats": goChats,
-            "/notif":  goNotif,
+            "/chats": CreateChatView,
+            "/notifications":  createNotificationsView,
+            // pin/pinID - будет проверяться, если ничего не подойдет
         };
 
         window.addEventListener("popstate", event => {
             // Grab the history state id
             let path = event.state.path; //  event.state is null
-
+            this.go(event.state.path, event.state.title);
             // Show clicked id in console (just for fun)
             console.log("path = ", path);
 
         });
 
 
-
-
     }
 
 
-    go(path, title) {
-        let state = {};
+    go(path, title, state=null) {
+        if (state == null)
+            state = {};
+
         state.path = path;
+        state.title = title;
         window.history.pushState(
             state,         // объект состояния
             title,  // заголовок состояния
@@ -64,20 +70,20 @@ export class Router {
                 const isInt = isInteger(pinId);
                 if (!isInt) {
                     console.log("error get pinID from url");
-                    createDesk();
+                    createDeskView();
                     return;
                 }
                 // если url корректный, то запросим инфу о пине и отобразим его
                 createPinPageFromRequest(pinId);
             }
             // не страница пина - по дефолту главная
-            createDesk();
-
+            createDeskView();
 
         } else {
-            func();
+            console.log("ROUTE FUNC:",func)
+            func(state);
         }
-        console.log(func.toString())
+
     }
 
 
@@ -97,4 +103,4 @@ export class Router {
 
     }
 
-}
+} export default  new Router();

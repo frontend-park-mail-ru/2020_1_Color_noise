@@ -5,6 +5,8 @@
  * @param {string} title - title
  * @return {void}
  */
+
+/*
 export function changeLocation(curLoc, title) {
     try {
         history.pushState(null, null, curLoc);
@@ -15,3 +17,4 @@ export function changeLocation(curLoc, title) {
     }
     location.hash = '#' + curLoc;
 }
+*/
