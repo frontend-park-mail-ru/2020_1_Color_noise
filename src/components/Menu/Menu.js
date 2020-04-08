@@ -120,7 +120,7 @@ export function createNotif(notifiArr) {
     for (let i = 0; i < notifiArr.length; i++) {
 
         const oneNifitic = document.createElement('div');
-        oneNifitic.innerText = notifiArr[i].text;
+        oneNifitic.innerText = notifiArr[i].message;
         oneNifitic.className = "one_nitif";
         nitifSection.append(oneNifitic);
     }

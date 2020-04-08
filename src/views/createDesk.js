@@ -36,7 +36,7 @@ export function createDeskView() {
     CurrentDesk.State.numberOfPins = 0;
 
     getMainPins();
-   // setScroll(getMainPins);
+    setScroll(getMainPins);
 
     setSearch();
 

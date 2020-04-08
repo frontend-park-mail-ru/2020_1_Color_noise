@@ -59,8 +59,7 @@ class Router {
 
 
     go(path, title, state=null) {
-        console.log("GO path:" + path)
-
+        //console.log("GO path:" + path)
         if (state == null)
             state = {};
 
@@ -90,10 +89,10 @@ class Router {
                 }
                 // если url корректный, то запросим инфу о пине и отобразим его
                 createPinPageFromRequest(pinId);
-            }
+            } else
 
 
-            //createUserPinsDeskView
+                //createUserPinsDeskView
             if (path.includes("/userPins/")) { // если находится на странице пинов одного пользователя
                 const userId = path.substring("/userPins/".length, path.length);
                 const isInt = isInteger(userId);
@@ -107,8 +106,8 @@ class Router {
                 const state = {};
                 state.userId = userId;
                 createUserPinsDeskView(state);
-                return;
-            }
+
+            } else
 
 
             //createBoardDeskView
@@ -126,6 +125,12 @@ class Router {
                 state.deskId = boardId;
                 createBoardDeskView(state);
                 return;
+            } else {
+
+                // не страница пина - по дефолту главная
+                alert("будет отображена главная по умолчанию");
+                createDeskView();
+
             }
 
 
@@ -134,12 +139,9 @@ class Router {
 
 
 
-            // не страница пина - по дефолту главная
-
-            createDeskView();
 
         } else {
-            console.log("ROUTE FUNC:",func)
+            //console.log("ROUTE FUNC:",func)
             func(state);
         }
 

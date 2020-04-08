@@ -342,7 +342,7 @@ function showAddPinMsg(msg, elementId) {
  */
 export function createPinPageFromRequest(pinId) {
 
-    console.log("requst data for pin;");
+    //console.log("requst data for pin;");
     unSetScroll();
 
     FetchModule.fetchRequest({url:serverLocate + '/api/pin/' + pinId, method:'get'})
@@ -361,7 +361,7 @@ export function createPinPageFromRequest(pinId) {
             }
             const target = jsonAns.body;
             target.about = target.description; // rename late
-            console.log("Получил данные для пина строю страницу")
+            //console.log("Получил данные для пина строю страницу")
             createPinPage(target);
 
         })

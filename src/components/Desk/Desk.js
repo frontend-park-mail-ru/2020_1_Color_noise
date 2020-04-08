@@ -203,7 +203,7 @@ function scroll() {
         let y             = yOffset + window_height;
         // если пользователь достиг конца
         if(y >= contentHeight - 500) {
-            console.log("вызов по скролу");
+            //console.log("вызов по скролу");
             CurrentDesk.getSomePinsFunc();
             window.removeEventListener("scroll", scroll);
             setTimeout(() => { window.addEventListener("scroll", scroll)}, 200);
@@ -218,7 +218,7 @@ function scroll() {
  */
 
 export function setScroll(getSomePinsFuncInPut) {
-    console.log("set SCROLLL:", getSomePinsFuncInPut);
+    //console.log("set SCROLLL:", getSomePinsFuncInPut);
     CurrentDesk.getSomePinsFunc = getSomePinsFuncInPut;
     window.addEventListener("scroll", scroll)
 }
@@ -230,7 +230,7 @@ export function setScroll(getSomePinsFuncInPut) {
  * @return {void}
  */
 export function unSetScroll() {
-    console.log("remove scrol");
+    //console.log("remove scrol");
     //console.log("unset:", getSomePinsFuncInPut);
     window.removeEventListener("scroll", scroll)
 }
