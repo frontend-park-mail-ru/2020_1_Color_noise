@@ -5,12 +5,12 @@ import { FetchModule } from  '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import { createProfile } from '../Profile/Profile.js'
-import { changeLocation } from "../../utils/changeLocation";
+import { default as Router} from "../../utils/router.js"
 import Back from "../../images/004-back.svg";
 
 
 export const createProfileSettings = () => {
-    changeLocation("/profileSettings", "Profile Settings");
+    Router.register("/profileSettings", "Profile Settings");
     const profile = ProfileTemplate( { back : Back, image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
         login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about } );
     const root = document.getElementById('content');

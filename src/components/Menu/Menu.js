@@ -15,15 +15,15 @@ import RegTemplate from '../Autorization/reg.pug';
 import ChatsTemplate from '../Profile/chats.pug';
 import NotifTemplate from '../Profile/notifications.pug';
 
-import { changeLocation } from '../../utils/changeLocation.js'
+
 import { FetchModule } from '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { Requests } from '../Network/Requests.js'
 
-import { getSubPins, getMainPins, setScroll, unSetScroll, clearColumns, createDesk } from '../Desk/Desk.js'
+import { getSubPins, getMainPins, setScroll, unSetScroll, clearColumns } from '../Desk/Desk.js'
 import {default as CurrentDesk} from "../Desk/CurrentDesk";
 import ChooseCreate from "../ChooseCreate/choose.pug";
-import CommentTemplate from "../Comment/comment.pug";
+import { default as Router} from "../../utils/router.js"
 
 const application = document.getElementById('root');
 
@@ -85,65 +85,42 @@ const routes = {
  *  change menu item innerText after
  * @return {void}
  */
-var isSubLink = true;
+let isSubLink = true;
 function goFollows() {
 
-    console.log("changeLocation(\"/follows\",\"follows\");");
-    changeLocation("/follows","follows");
-
-    const followsOrMainLink = document.getElementById('followsOrMainLink');
-    const firstColumn = document.getElementById('column1');
+    //const firstColumn = document.getElementById('column1');
+    if ((document.title) === ("Subscriptions"))
+        isSubLink =false;
 
     if (isSubLink) {
-        if (firstColumn === null)
-            createDesk("follows");
-
-        unSetScroll();
-        CurrentDesk.State.numberOfPins = 0;
-        CurrentDesk.getSomePinsFunc = getMainPins;
-        clearColumns();
-        getSubPins();
-        setScroll(getSubPins);
+        Router.go("/subscriptions", "subscriptions");
         isSubLink = false;
-        followsOrMainLink.innerText = 'Главная';
 
     } else {
-        if (firstColumn === null)
-            createDesk("mainRandom");
-
-        unSetScroll();
-        CurrentDesk.State.numberOfPins = 0;
-        CurrentDesk.getSomePinsFunc = getSubPins;
-        clearColumns();
-        getMainPins();
-        setScroll(getMainPins);
+        Router.go("/main", "Main");
         isSubLink = true;
-        followsOrMainLink.innerText = 'Подписки';
     }
 }
 
 
 function goDesks() {
-    //alert("Раздел в разработке");
+    //alert("Раздел в разработке"); // ADD Router.go( url, title) надо добавить View в папку Vied и в роутерт this.routs
 }
 
 export function goChats() {
-    //alert("Раздел в разработке");
-    console.log("changeLocation(\"/chats\",\"Chats\");");
-    changeLocation("/chats","Chats");
-    const chats = ChatsTemplate();
-    const content = document.getElementById('content');
-    content.innerHTML = chats;
+
+    Router.go("/chats","Chats");
+
 }
 
-function createNotif(notifiArr) {
+export function createNotif(notifiArr) {
 
     const nitifSection =  document.getElementById("nitifSection");
 
     for (let i = 0; i < notifiArr.length; i++) {
 
         const oneNifitic = document.createElement('div');
-        oneNifitic.innerText = notifiArr[i].text; // как будет называться поле!?!??!
+        oneNifitic.innerText = notifiArr[i].text;
         oneNifitic.className = "one_nitif";
         nitifSection.append(oneNifitic);
     }
@@ -153,124 +130,28 @@ function createNotif(notifiArr) {
 
 
 export function goNotif() {
-    //alert("Раздел в разработке");
-    console.log("changeLocation(\"/notif\",\"notif\");");
-    changeLocation("/notif","notif");
-    const notif = NotifTemplate();
-    const content = document.getElementById('content');
-    content.innerHTML = notif;
 
-    ///api/notifications - get
-    FetchModule.fetchRequest({url: serverLocate + '/api/notifications?start=1&limit=50', method: 'get', })
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-                return response.json();
-            },
-        )
-        .then((result) => {
-
-
-
-            if (result.status === 200) {
-
-                console.log("BODY:", result.body);
-
-                createNotif(result.body);
-
-
-            } else {
-                throw "bad notifi status code ";
-            }
-        })
-        .catch(function(error) {
-            console.log('bad notifi:', error.toString());
-        });
-
-
-
-
-
-
-
-
+    Router.go("/notifications","Notifications");
 
 }
 
-function setError() {
+export function setError() {
     const content = document.getElementById('content');
     content.innerHTML = "";
-
     const err = document.createElement('h1');
     err.textContent = 'Что-то пошло не так :(';
-
     content.appendChild(err);
 }
 
-function createAutorization() {
-    changeLocation("/autorization","autorization");
-    const choose = AutorizationTemplate({ image: logoImage });
-    const root = document.getElementById('modal');
-    root.innerHTML = choose;
+export function createAutorization() {
 
-    const login = document.getElementById('submit_login_choose');
-    login.addEventListener('click', function (evt) {
-        createLogin();
-    });
+    Router.go("/authorizationOrRegistration", "AuthorizationOrRegistration");
 
-    const reg = document.getElementById('submit_reg_choose');
-    reg.addEventListener('click', function (evt) {
-        createReg();
-    });
 }
 
 export function createLogin() {
-    changeLocation('/login','Login');
-    const login_modal = LoginTemplate({ image: logoImage });
-    const root = document.getElementById('modal');
-    root.innerHTML = login_modal;
+    Router.go('/login','Login');
 
-    const registrationLink = document.getElementById("registrationLink");
-    registrationLink.addEventListener('click', (evt) => {
-        evt.preventDefault();
-        createReg();
-    }
-    );
-
-    const login = document.getElementById('submit_login');
-    login.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        const username_form = document.getElementById('flogin').value;
-        const password_form = document.getElementById('fpass').value;
-        if (validators.username(username_form) && validators.password(password_form)) {
-
-            FetchModule.fetchRequest({url: serverLocate + '/api/auth', method: 'post', body:{
-                    login: username_form,
-                    password: password_form
-                }})
-                .then((res) => {
-                    return res.ok ? res : Promise.reject(res);
-                })
-                .then((response) => {
-                        return response.json();
-                    },
-                )
-                .then((result) => {
-                    if (result.status === 200) {
-                        Requests.getUserProfile(null); // get user data after login
-                        root.innerHTML = "";
-                    } else {
-                        throw "bad login or password";
-                    }
-                })
-                .catch(function(error) {
-                    setInfo('Пароль или логин не верны'); // @todo switch for error
-                });
-        } else {
-            setInfo('Данные в форме некорректны');
-        }
-    });
 }
 
 export function createReg() {
@@ -281,7 +162,7 @@ export function createReg() {
     const loginLink = document.getElementById("loginLink");
     loginLink.addEventListener('click', (evt) => {
             evt.preventDefault();
-            createLogin();
+        Router.go('/login','Login');
         }
     );
 
@@ -333,29 +214,7 @@ export function createReg() {
 
 function goProfile() {
 
-    console.log("changeLocation('/profile','Profile');");
-    changeLocation('/profile','Profile');
-
-    FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'get', body:null })
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-                return response.json();
-            }
-        )
-        .then((result) => {
-            unSetScroll();
-            if (result.status === 200) {
-                createProfile();
-            }
-            else {
-                createAutorization();
-            }
-        })
-        .catch(function(error) {
-            setError();
-        });
+    Router.go('/profile','Profile');
 
 }
 
@@ -365,7 +224,7 @@ application.addEventListener('click', function (evt) {
     if (target instanceof HTMLAnchorElement) {
         evt.preventDefault();
         // add undefined check (need for <a> change login to registration form
-        var section = routes[target.dataset.section];
+        let section = routes[target.dataset.section];
         if (section !== undefined)
             section();
     }

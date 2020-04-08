@@ -5,7 +5,7 @@ import { serverLocate } from '../../utils/constants.js'
 import { default as CurrentUser } from '../../utils/userDataSingl.js';
 import { validateCreateBoard, validateAddPinComment } from '../Validation/Validation.js'
 import { createPinComments } from '../Comment/Comment.js'
-import { changeLocation } from "../../utils/changeLocation.js";
+import { default as Router} from "../../utils/router.js"
 import {default as CurrentComments} from "../Comment/CurrentComments.js";
 import { showComment } from '../Comment/Comment'
 
@@ -305,9 +305,11 @@ function setAddPinComment(PinId) {
  * @return {void}
  */
 export function createPinPage(target) {
-    changeLocation("/pin/" + target.id.toString(), "Pin Page");
 
-    const pin = PinTemplate({image: serverLocate + "/" + target.src, PinId: target.id, pinName: target.name,
+
+    document.title = "Pin " + target.name;
+    const pin = PinTemplate({image:  serverLocate + "/" + target.image, PinId: target.id, pinName: target.name,
+
     pinMeta:target.about});
     const content = document.getElementById('content');
     content.innerHTML = pin;
@@ -357,15 +359,11 @@ export function createPinPageFromRequest(pinId) {
             target.about = target.description; // rename late
             createPinPage(target);
 
-
         })
 
         .catch((error) => {
             console.log("Ошибка createPinPageFromRequest():" + error.toString());
         });
-
-
-
 
 
 }

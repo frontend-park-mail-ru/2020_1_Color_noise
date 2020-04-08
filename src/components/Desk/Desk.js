@@ -1,39 +1,10 @@
 import {addCard} from '../Card/Card';
-import DeskTemplate from './desk.pug';
 import './desk.css';
 
 import {FetchModule} from '../Network/Network.js'
 import {serverLocate} from '../../utils/constants.js'
 import {default as CurrentDesk} from './CurrentDesk.js';
-import findIcon from "../../images/find.svg"
-import {changeLocation} from "../../utils/changeLocation.js";
 
-
-const isDeBug = false;
-/*
-   use fake Pins and fake sub pins(one img)
-   locate: public/fakeImages/[name of pin]
-   if you check work, u need create "fakeImages" dir in "public"
-   and add img with arr names
-   WARNING! fakePins Arrays not have limits check!
- */
-// [{id: 1, src:'1.jpeg'} ];
-/*
-const fakePinsArr = [{id: 1, src:'1.jpeg'}, {id: 2, src:'2.jpg'}, {id: 3, src:'3.jpeg'}, {id: 4, src:'4.jpeg'},
-    {id: 5, src:'5.jpg'}, {id: 6, src:'6.jpg'}, {id: 7, src:'7.jpg'}, {id: 8, src:'8.jpeg'}, {id: 9, src:'9.jpg'},
-    {id: 10, src:'10.jpg'}, {id: 11, src:'11.jpeg'}, {id: 12, src:'12.jpg'}, {id: 13, src:'13.jpeg'},
-    {id: 14, src:'14.jpg'}, {id: 15, src:'15.jpg'}, {id: 16, src:'16.jpg'}, {id: 17, src:'17.jpg'},
-    {id: 21, src:'21.jpeg'}, {id: 22, src:'22.jpg'}, {id: 23, src:'23.jpg'}, {id: 24, src:'24.jpg'},
-    {id: 25, src:'25.jpg'}, {id: 26, src:'26.jpeg'}, {id: 28, src:'28.jpeg'}, {id: 29, src:'29.jpg'}];
-
-const fakePinsArrSub = [{id: 1, src:'1.jpeg'},{id: 2, src:'1.jpeg'},{id: 3, src:'1.jpeg'},{id: 4, src:'1.jpeg'},
-    {id: 5, src:'1.jpeg'},{id: 6, src:'1.jpeg'},{id: 7, src:'1.jpeg'},{id: 8, src:'1.jpeg'}, {id: 9, src:'1.jpeg'},
-    {id: 10, src:'1.jpeg'},{id: 11, src:'1.jpeg'},{id: 12, src:'1.jpeg'}, {id: 13, src:'1.jpeg'},{id: 14, src:'1.jpeg'},
-    {id: 15, src:'1.jpeg'},{id: 16, src:'1.jpeg'},{id: 17, src:'1.jpeg'},{id: 18, src:'1.jpeg'}, {id: 19, src:'1.jpeg'},
-    {id: 20, src:'1.jpeg'},{id: 21, src:'1.jpeg'},{id: 22, src:'1.jpeg'}];
-
-const fakePinIdArr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-*/
 
 /**
  *  getMainPins
@@ -56,10 +27,7 @@ export function getMainPins() {
 
         .catch(function(error) {
             console.log('ERR_MAIN_DESK',error);
-            if (isDeBug) {
-                showPins(fakePinsArr);
-                return;
-            }
+
             setInfoDesk("Что-то пошло не так с главной");
         });
 }
@@ -80,14 +48,14 @@ export function getSubPins() {
         })
         .then((result) => {
             console.log("PINS:", result);
+            if (result.body.length === 0) {
+                setInfoDesk("Нет ничего нового в ваших подписках");
+                return;
+            }
             showPins(result.body)
         })
         .catch(function(error) {
             console.log("ERR_SUB", error);
-            if (isDeBug) {
-                showPins(fakePinsArrSub);
-                return;
-            }
             setInfoDesk("Что-то пошло не так с подписками");
         });
 }
@@ -234,11 +202,9 @@ function getInfoForShowing(pinIdArr) {
                     throw Error("search pin get info request not 200");
                 } else {
 
-                    if (isDeBug) {
-                        showOnePin({id: 5, src:'5.jpg'});
-                    } else {
-                        showOnePin(result.body);
-                    }
+
+                showOnePin(result.body);
+
 
                 }
 
@@ -257,7 +223,7 @@ function getInfoForShowing(pinIdArr) {
  * set action for search
  * @return {void}
  */
-function setSearch() {
+export function setSearch() {
 
     const searchImg = document.getElementById("search_main_img");
     const searchInput = document.getElementById("search_main_input");
@@ -290,23 +256,14 @@ function setSearch() {
             })
             .catch( (error) => {
                 console.log("ERR_SEARCH_PIN:", error);
-                if (isDeBug) {
-                    getInfoForShowing(fakePinIdArr);
-                    return;
-                }
                 setInfoDesk("Что-то пошло не так с поиском пинов");
             });
 
     })
 }
 
-
 /**
- * createDesk
- * create main desk (random content)
- * @param {string} deskContent follows or mainRandom
- * @return {void}
- */
+
 export const createDesk = (deskContent = "mainRandom") => {
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : findIcon});
@@ -323,6 +280,8 @@ export const createDesk = (deskContent = "mainRandom") => {
     setSearch();
 
 };
+*/
+
 
 /**
  * setInfoDesk

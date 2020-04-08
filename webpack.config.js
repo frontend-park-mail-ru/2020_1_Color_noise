@@ -16,6 +16,24 @@ module.exports = {
   resolveLoader: {
     modules: [path.join(__dirname, 'node_modules')]
   },
+  devServer: {
+    before: (app, server) => {
+      // Support for cases when page loaded on other pathname than /.
+      // Without it we got 404 when trying to open paths like /topics.
+      app.get("*", (req, res, next) => {
+        console.log(req, res);
+        if (req.url.endsWith("main.js")) {
+          req.url = "/main.js";
+        } else {
+          if (!req.url.endsWith(".svg")) {
+            req.url = "/";
+          }
+        }
+        next("route");
+      });
+    }
+  },
+
   module: {
     rules: [
       {
@@ -53,5 +71,8 @@ module.exports = {
       template: path.join(__dirname, '/src/views/index.html'),
       filename: 'index.html'
     })
-  ]
+  ],
+
+
+
 }
