@@ -7,9 +7,8 @@ import {default as CurrentDesk} from "../components/Desk/CurrentDesk";
 
 export function createDeskView() {
 
-    console.log("createDeskView()");
-
-
+    //console.log("createDeskView()");
+    
     const followsOrMainLink = document.getElementById('followsOrMainLink');
     followsOrMainLink.innerText = 'Подписки';
     document.title = "Main";

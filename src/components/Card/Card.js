@@ -26,7 +26,7 @@ export const addCard = (pin, idColumn) => {
 
     const addedCard = document.getElementById(pin.id);
 
-    addedCard.addEventListener('click', (evt) => {
+    const pinClickFunc = (evt) => {
         const data = [];
         data.id = pin.id;
         data.name = pin.name;
@@ -37,11 +37,15 @@ export const addCard = (pin, idColumn) => {
         data.src =  pin.image;
         data.user_id = pin.user_id;
 
-        console.log("клик на пин (ниже тут unSetScroll())")
+        //console.log("клик на пин (ниже тут unSetScroll())")
         unSetScroll();
-        console.log("го роут")
+        //console.log("го роут")
         Router.go("/pin/" + pin.id.toString(), pin.name);
         // createPinPage(data);
 
-    });
+    };
+
+    addedCard.removeEventListener('click', pinClickFunc);
+
+    addedCard.addEventListener('click', pinClickFunc);
 };
