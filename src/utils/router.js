@@ -39,6 +39,9 @@ class Router {
             // pin/pinID - будет проверяться, если ничего не подойдет
         };
 
+
+        /*
+
         window.addEventListener("popstate", event => {
 
             event.preventDefault();
@@ -53,23 +56,42 @@ class Router {
 
 
         });
+        */
+        
+
+        window.addEventListener('popstate', evt => {
+
+
+            let path = evt.state.path;
+            //alert("назад или вперед: path:" + path);
+
+            this.go(path, evt.state.title, evt.state, false);
+
+
+        });
+
+
+
 
 
     }
 
 
-    go(path, title, state=null) {
-        //console.log("GO path:" + path)
-        if (state == null)
-            state = {};
+    go(path, title, state=null, needPush) {
 
-        state.path = path;
-        state.title = title;
-        window.history.pushState(
-            state,         // объект состояния
-            title,  // заголовок состояния
-            path  // URL новой записи (same origin)
-        );
+
+        if (needPush === undefined || needPush === true) {
+            //console.log("GO path:" + path)
+            if (state == null)
+                state = {};
+            state.path = path;
+            state.title = title;
+            window.history.pushState(
+                state,         // объект состояния
+                title,  // заголовок состояния
+                path  // URL новой записи (same origin)
+            );
+        }
         //alert("Go : path:" + path);
 
         createContent(); // структура

@@ -143,6 +143,7 @@ export function getBoardPins() {
  * @return {void}
  */
 function showPins(pinsArr) {
+
     CurrentDesk.State.numberOfPins += pinsArr.length;
     let columnArr = [];
     for (let i=1; i < 5; i++) {

@@ -106,7 +106,7 @@ export function showComment(comment) {
 // @todo remove FAKE comments and fix scroll
 function commentsRequest() {
 
-    console.log("START:", (CurrentComments.State.numberOfComments + 1));
+    //console.log("START:", (CurrentComments.State.numberOfComments + 1));
 
     //if (CurrentComments.State.isGetAll)
     //   return;
