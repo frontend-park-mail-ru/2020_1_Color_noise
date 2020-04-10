@@ -39,7 +39,6 @@ function addPinOnBoard(target, boardId) {
 
             if (jsonAns.status !== 200)
                 throw Error("not 200: /api/pin" + CurrentUser.Data.id);
-
             // можно отобразить доску куда он добавился
             // но мне кажется лучше просто вернуть пользователя к пину
 
@@ -47,7 +46,7 @@ function addPinOnBoard(target, boardId) {
 
         .catch((error) => {
             console.log('Что-то пошло не так с добавлением пина на доску:', error);
-            showAddPinMsg('Что-то пошло не так с добавлением пина на доску', "savePinMsg");
+            showAddPinMsg('Сохранение будет доступно в следующей версии', "savePinMsg");
         });
 
 }
