@@ -10,7 +10,9 @@ import Back from "../../images/004-back.svg";
 
 
 export const createProfileSettings = () => {
-    Router.register("/profileSettings", "Profile Settings");
+
+    // Router.go("/profileSettings", "Profile Settings"); // если раскоменить и запустить то убьет браузер при нажатии =)
+
     const profile = ProfileTemplate( { back : Back, image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
         login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about } );
     const root = document.getElementById('content');

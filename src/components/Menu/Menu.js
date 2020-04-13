@@ -28,7 +28,7 @@ import { default as Router} from "../../utils/router.js"
 const application = document.getElementById('root');
 
 const buildMenu = () => {
-    const menu = MenuTemplate({ plus : PlusImage });
+    const menu = MenuTemplate({ plus : serverLocate +"/"+PlusImage });
     const root = document.getElementById('menu');
     root.innerHTML = menu;
     const plus_btn = document.getElementById('plus_btn');

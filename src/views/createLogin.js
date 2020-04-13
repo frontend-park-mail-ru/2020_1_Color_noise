@@ -52,6 +52,7 @@ export function createLoginView() {
                     .then((result) => {
                         if (result.status === 200) {
                             Requests.getUserProfile(); // get user data after login
+                            Router.go("/main","Main");
                         } else {
                             throw "bad login or password";
                         }
