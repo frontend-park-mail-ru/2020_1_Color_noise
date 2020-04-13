@@ -21,6 +21,12 @@
 	border-radius: 18px;
 }
 
+#main_page_info {
+	margin-top: 20px;
+	font-size: 20px;
+	text-align: center;
+}
+
 .find_pin img {
 	margin-top: 7px;
 	float: left;

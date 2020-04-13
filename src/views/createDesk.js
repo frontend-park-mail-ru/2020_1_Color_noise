@@ -3,6 +3,8 @@ import findIcon from "../images/find.svg";
 import {getMainPins, getSubPins, setScroll, setSearch, getUserPins, getBoardPins} from "../components/Desk/Desk.js";
 import {clearColumns, unSetScroll} from "../components/Desk/Desk";
 import {default as CurrentDesk} from "../components/Desk/CurrentDesk";
+import {serverLocate} from "../utils/constants";
+import PlusImage from "../images/002-plus.svg";
 
 
 export function createDeskView() {
@@ -14,7 +16,7 @@ export function createDeskView() {
     followsOrMainLink.innerText = 'Подписки';
     document.title = "Main";
     const root = document.getElementById('content');
-    root.innerHTML = DeskTemplate({image : findIcon});
+    root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
 
     /*
     getMainPins();

@@ -13,7 +13,7 @@ import {default as CurrentDesk} from './CurrentDesk.js';
  */
 export function getMainPins() {
     FetchModule.fetchRequest({ url: serverLocate + '/api/list?start=' + ( CurrentDesk.State.numberOfPins + 1 )
-            + '&limit=10', method:'get', body:null})
+            + '&limit=15', method:'get', body:null})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -39,7 +39,7 @@ export function getMainPins() {
  */
 export function getSubPins() {
     FetchModule.fetchRequest({ url: serverLocate + '/api/list/sub?start=' + ( CurrentDesk.State.numberOfPins + 1 )
-            + '&limit=10', method:'get',})
+            + '&limit=15', method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -309,7 +309,7 @@ export function setSearch() {
 
         const searchValue = searchInput.value.trim();
         const searchObj = "pin";
-        const start = 0;
+        const start = 1;
         const limit = 50;
         FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
                 searchValue + "&start=" + start + "&limit=" + limit, method:'get'})
