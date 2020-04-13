@@ -64,8 +64,28 @@ module.exports = {
         exclude: /node_modules/,
         use: 'file-loader'
       },
+
+      //babel js
+      {
+        test: /\.m?js$/,
+        use: {
+          loader: "babel-loader"
+        }
+      },
+
+      // static
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ["file-loader"]
+      },
+
+
+
     ]
   },
+
+
+
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '/src/views/index.html'),

@@ -9,9 +9,8 @@ import PlusImage from "../images/002-plus.svg";
 
 export function createDeskView() {
 
-    console.log("createDeskView()");
-
-
+    //console.log("createDeskView()");
+    
     const followsOrMainLink = document.getElementById('followsOrMainLink');
     followsOrMainLink.innerText = 'Подписки';
     document.title = "Main";
