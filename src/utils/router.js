@@ -3,22 +3,15 @@ import { createLoginView } from "../views/createLogin.js"
 import { Requests } from '../components/Network/Requests.js'
 import {createProfileSettings} from "../components/ProfileSettings/ProfileSettings.js";
 import { goNotif, createMenu } from '../components/Menu/Menu.js'
-import {createContent} from "../components/Content/Content.js";
-import {CreateChatView} from "../views/createChat.js"
-import {createProfileView} from "../views/createProfile.js";
-import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk.js";
-import {createNotificationsView} from "../views/createNotifications.js"
-import {createPinPageFromRequest} from "../components/Pin/Pin.js"
-import {authorizationOrRegistrationView} from "../views/createAuthorizationOrRegistration.js"
-
-// for check url
-function isInteger(value) {
-    return /^\d+$/.test(value);
-}
-
+import { createContent } from "../components/Content/Content.js";
+import { CreateChatView } from "../views/createChat.js"
+import { createProfileView } from "../views/createProfile.js";
+import { createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView } from "../views/createDesk.js";
+import { createNotificationsView } from "../views/createNotifications.js"
+import { createPinPageFromRequest } from "../components/Pin/Pin.js"
+import { authorizationOrRegistrationView } from "../views/createAuthorizationOrRegistration.js"
 
 class Router {
-
     constructor() {
         this.routs = {
             "/": createDeskView,
@@ -39,56 +32,27 @@ class Router {
             // pin/pinID - будет проверяться, если ничего не подойдет
         };
 
-
-        /*
-
-        window.addEventListener("popstate", event => {
-
-            event.preventDefault();
-            let path = event.state.path;
-
-            //alert("popstate EVENT: path:" + path.toString());
-            //history.back();
-            history.back();
-
-            this.go(event.state.path, event.state.title);
-
-
-
-        });
-        */
-        
-
         window.addEventListener('popstate', evt => {
-
-
-            let path = evt.state.path;
-            //alert("назад или вперед: path:" + path);
-
-            this.go(path, evt.state.title, evt.state, false);
-
-
+            //Если зашли первый раз только на страницу и браузер сохранил уже ее себе в стек
+           if (evt.state === null) {
+                 this.go('/', null, evt.state, false);
+            } else {
+                let path = evt.state.path;
+                this.go(path, evt.state.title, evt.state, false);
+            }
         });
-
-
-
-
-
     }
 
-
     go(path, title, state=null, needPush) {
-
-
         if (needPush === undefined || needPush === true) {
-            //console.log("GO path:" + path)
+            console.log("GO path:" + path);
             if (state == null)
                 state = {};
             state.path = path;
             state.title = title;
             window.history.pushState(
                 state,         // объект состояния
-                title,  // заголовок состояния
+                state.title,  // заголовок состояния
                 path  // URL новой записи (same origin)
             );
         }
@@ -99,11 +63,10 @@ class Router {
         const func = this.routs[path];
 
         if (func === undefined) {
-
             // createPinPageFromRequest (pin/{pinID})
             if (path.includes("/pin/")) { // если находится на странице пина
                 const pinId = path.substring("/pin/".length, path.length);
-                const isInt = isInteger(pinId);
+                const isInt = Number.isInteger(Number(pinId));
                 if (!isInt) {
                     console.log("error get pinID from url");
                     createDeskView();
@@ -112,12 +75,10 @@ class Router {
                 // если url корректный, то запросим инфу о пине и отобразим его
                 createPinPageFromRequest(pinId);
             } else
-
-
                 //createUserPinsDeskView
             if (path.includes("/userPins/")) { // если находится на странице пинов одного пользователя
                 const userId = path.substring("/userPins/".length, path.length);
-                const isInt = isInteger(userId);
+                const isInt = Number.isInteger(Number(pinId));
                 if (!isInt) {
                     console.log("error get userID from url");
                     createDeskView();
@@ -130,8 +91,6 @@ class Router {
                 createUserPinsDeskView(state);
 
             } else
-
-
             //createBoardDeskView
             if (path.includes("/board/")) { // если находится на странице пинов одного пользователя
                 const boardId = path.substring("/board/".length, path.length);
@@ -148,41 +107,19 @@ class Router {
                 createBoardDeskView(state);
                 return;
             } else {
-
                 // не страница пина - по дефолту главная
                 alert("будет отображена главная по умолчанию");
                 createDeskView();
-
             }
-
-
-
-
-
-
-
-
         } else {
             //console.log("ROUTE FUNC:",func)
+
             func(state);
         }
-
     }
-
 
     start() {
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
-        Requests.getUserProfile();
+        Requests.getUserProfile(false);
     }
-
-
-
-    back() {
-
-    }
-
-    forward() {
-
-    }
-
 } export default  new Router();

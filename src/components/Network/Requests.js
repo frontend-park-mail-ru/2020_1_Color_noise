@@ -1,5 +1,4 @@
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
-import {createMainPage} from  '../../views/createMainPage.js'
 import {FetchModule} from './Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { default as Router} from "../../utils/router.js"
@@ -14,21 +13,18 @@ export class Requests {
      *
      * @return {void}
      */
-    static getUserProfile() {
-        FetchModule.fetchRequest( {url: serverLocate + '/api/user', method: 'get'})
+    static getUserProfile(needPush = true) {
+        FetchModule.fetchRequest({url: serverLocate + '/api/user', method: 'get'})
             .then((res) => res.ok ? res : Promise.reject(res))
             .then( (response) =>
                 response.json(),
             )
-            .then( (result) => {
-
+            .then((result) => {
                 if (result.status === 401) {
-                    Router.go("/main", "Main");
+                    Router.go("/main", "Main", null, needPush);
                     //Router.go("/authorizationOrRegistration", "AuthorizationOrRegistration");
                     return;
                 }
-
-
                 CurrentUser.Data.id = result.body.id;
                 CurrentUser.Data.login = result.body.login;
                 CurrentUser.Data.email = result.body.email;
@@ -36,20 +32,18 @@ export class Requests {
                 CurrentUser.Data.avatarPath = result.body.avatar;
                 CurrentUser.Data.subscribers = result.body.subscribers;
                 CurrentUser.Data.subscriptions = result.body.subscriptions;
-                CurrentUser.Data.token = document.cookie["csrf_token"]
+                CurrentUser.Data.token = document.cookie["csrf_token"];
 
                 console.log("MY CurrentUser.Data.token:", CurrentUser.Data.token);
                 let url = window.location.pathname;
 
                 // чтоб перенаправляло после регистрации
                 // (CurrentUser.Data.login !== "null") -> чтобы неаторизованных оставляло на регистрации или авторизации
-                if ( CurrentUser.Data.login !== "null"  && (url === "/registration" || url === "/authorization") ) {
+                if (CurrentUser.Data.login !== "null"  && (url === "/registration" || url === "/authorization") ) {
                     url = "/main";
                 }
 
-                Router.go(url, "");
-
-
+                Router.go(url, "", null, needPush);
             })
             .catch((error) => {
                 console.log("getUserProfile ERROR:", error);

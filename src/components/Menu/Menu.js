@@ -114,7 +114,6 @@ export function goChats() {
 }
 
 export function createNotif(notifiArr) {
-
     const nitifSection =  document.getElementById("nitifSection");
 
     for (let i = 0; i < notifiArr.length; i++) {
@@ -124,8 +123,6 @@ export function createNotif(notifiArr) {
         oneNifitic.className = "one_nitif";
         nitifSection.append(oneNifitic);
     }
-
-
 }
 
 

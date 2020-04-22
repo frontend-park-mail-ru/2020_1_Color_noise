@@ -1,7 +1,8 @@
 .menu {
 	margin-left: auto;
 	margin-right: auto;
-	width: 1000px;
+	width: 100%;
+	max-width: 1000px;
 	text-align: center;
 }
 .menu-center {
@@ -38,7 +39,7 @@
 
 .line_menu {
 	top: 85px;
-	max-width: 1280px;
+	max-width: 100%;
 	position: absolute;
 	border-bottom: 2px solid rgba(120, 117, 117, 0.44);
 	right: 0;

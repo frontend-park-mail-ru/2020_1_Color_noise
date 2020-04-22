@@ -14,4 +14,4 @@ class UserDataCur {
     }
 }
 
-export default  new UserDataCur();
+export default new UserDataCur();

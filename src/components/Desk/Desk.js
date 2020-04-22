@@ -145,21 +145,10 @@ export function getBoardPins() {
 function showPins(pinsArr) {
 
     CurrentDesk.State.numberOfPins += pinsArr.length;
-    let columnArr = [];
-    for (let i=1; i < 5; i++) {
-        columnArr[i-1] = document.getElementById('column' + i.toString());
-    }
-    const sortColumnArr = () => {
-        columnArr.sort((a, b) => {
-            if (a.clientHeight === b.clientHeight) {
-                return a.clientHeight > b.clientHeight ? 1 : a.clientHeight < b.clientHeight ? -1 : 0;
-            }
-            return a.clientHeight > b.clientHeight ? 1 : -1;
-        });
-    };
+    let columnArr = document.getElementById('columns');
+
     pinsArr.forEach((item) => {
-        sortColumnArr();
-        addCard(item, columnArr[0].id ); // @todo fakeImages only on deBug mod !!!
+        addCard(item, columnArr.id); // @todo fakeImages only on deBug mod !!!
     });
 }
 
@@ -173,20 +162,9 @@ function showPins(pinsArr) {
  */
 function showOnePin(onePin) {
     CurrentDesk.State.numberOfPins += 1;
-    let columnArr = [];
-    for (let i=1; i < 5; i++) {
-        columnArr[i-1] = document.getElementById('column' + i.toString());
-    }
-    const sortColumnArr = () => {
-        columnArr.sort((a, b) => {
-            if (a.clientHeight === b.clientHeight) {
-                return a.clientHeight > b.clientHeight ? 1 : a.clientHeight < b.clientHeight ? -1 : 0;
-            }
-            return a.clientHeight > b.clientHeight ? 1 : -1;
-        });
-    };
-    sortColumnArr();
-    addCard(onePin, columnArr[0].id );
+    let columnArr = document.getElementById('columns');
+
+    addCard(onePin, columnArr.id );
 }
 
 /**
@@ -243,9 +221,7 @@ export function unSetScroll() {
  * @return {void}
  */
 export function clearColumns() {
-    for (let i = 1; i < 5; i++) {
-       document.getElementById('column' + i.toString()).innerHTML = '';
-    }
+       document.getElementById('columns').innerHTML = '';
 }
 
 

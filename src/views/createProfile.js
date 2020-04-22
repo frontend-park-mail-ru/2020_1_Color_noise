@@ -7,10 +7,8 @@ import {unSetScroll} from "../components/Desk/Desk.js";
 import {default as Router} from "../utils/router";
 
 export function createProfileView(state) {
-
     unSetScroll();
-
-    FetchModule.fetchRequest({url:serverLocate + '/api/user', method: 'get', body:null })
+    FetchModule.fetchRequest({ url:serverLocate + '/api/user', method: 'get', body: null })
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -24,12 +22,11 @@ export function createProfileView(state) {
                 createProfile(state.id, state);
             }
             else {
-
                 createAutorization();
             }
         })
         .catch(function(error) {
-            console.log("CRETE PROFILE ERR:", error.toString())
+            console.log("CRETE PROFILE ERR:", error.toString());
             setError();
         });
 

@@ -9,6 +9,10 @@
     "lint": "eslint -c .eslintrc.js src/",
     "lint-fix": "eslint -c .eslintrc.js --fix src/"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frontend-park-mail-ru/2020_1_Color_noise/tree/develop"
+  },
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.0.0",

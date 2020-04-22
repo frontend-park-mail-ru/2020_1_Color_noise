@@ -1,5 +1,5 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -9,12 +9,6 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'public'),
     filename: '[name].js'
-  },
-  resolve: {
-    extensions: ['*', '.js', '.styl', '.pub']
-  },
-  resolveLoader: {
-    modules: [path.join(__dirname, 'node_modules')]
   },
   devServer: {
     before: (app, server) => {
@@ -61,8 +55,19 @@ module.exports = {
       },
       // static
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: ["file-loader"]
+        test: /\.(png|svg|jpe?g|gif)$/i,
+        loader: 'file-loader',
+        options: {
+          name(resourcePath, resourceQuery) {
+            // `resourcePath` - `/absolute/path/to/file.js`
+            // `resourceQuery` - `?foo=bar`
+            //if (process.env.NODE_ENV === 'development') {
+              return '[path][name].[ext]';
+            //}
+            //[contenthash].[ext]
+            //return '[contenthash].[ext]';
+          },
+        },
       },
     ]
   },
@@ -70,6 +75,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '/src/views/index.html'),
       filename: 'index.html'
-    })
-  ],
-}
+    }),
+  ]
+};

@@ -8,7 +8,7 @@ import { createPinComments } from '../Comment/Comment.js'
 import { default as Router} from "../../utils/router.js"
 import {default as CurrentComments} from "../Comment/CurrentComments.js";
 import { showComment } from '../Comment/Comment'
-import {unSetScroll} from "../Desk/Desk";
+import { unSetScroll } from "../Desk/Desk";
 
 /**
  * addPinOnBoard
