@@ -87,7 +87,6 @@ function createDesks(id) {
 
 
 export function createProfile(user_id = CurrentUser.Data.id, User = null) {
-    alert(user_id);
     if (user_id === CurrentUser.Data.id) {
         const profile = ProfileTemplate( { image :  serverLocate + '/' + CurrentUser.Data.avatarPath,
             login : CurrentUser.Data.login, email: CurrentUser.Data.email, about: CurrentUser.Data.about,

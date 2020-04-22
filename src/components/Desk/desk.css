@@ -6,7 +6,7 @@
 }
 
 #columns {
-	max-width: 90%;
+	max-width: 100%;
 	margin: auto;
 }
 
@@ -25,14 +25,9 @@
 	}
 }
 
-@media only screen and (max-width: 580px) {
+@media (max-device-width: 400px) and (orientation: portrait) {
 	.card {
-		width: 80%;
-	}
-}
-@media only screen and (max-device-width: 400px) {
-	.card {
-		width: 80%;
+		width: 40%;
 	}
 }
 
@@ -63,7 +58,7 @@
 /*}*/
 
 div#columns .card  .container img {
-	border-radius: 16 * width;
+	border-radius: 8% / 4%;
 	box-shadow: 0 0 50px 0 rgba(0,0,0,0.20);
 	transition: all .2s ease-out;
 
@@ -82,9 +77,6 @@ div#columns .card  .container img {
 .card img:hover {
     transform: scale(1.05);
 }
-
-
-
 
 .find_pin {
 	width: 90%;
