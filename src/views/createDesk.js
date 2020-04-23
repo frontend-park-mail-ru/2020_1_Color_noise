@@ -10,9 +10,6 @@ import PlusImage from "../images/002-plus.svg";
 export function createDeskView() {
 
     //console.log("createDeskView()");
-    
-    const followsOrMainLink = document.getElementById('followsOrMainLink');
-    followsOrMainLink.innerText = 'Подписки';
     document.title = "Main";
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});

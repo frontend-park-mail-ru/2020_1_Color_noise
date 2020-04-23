@@ -54,7 +54,6 @@ module.exports = {
           loader: 'babel-loader'
         }
       },
-
       {
         test: /\.pug$/,
         use: [

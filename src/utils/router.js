@@ -58,8 +58,7 @@ class Router {
         }
         //alert("Go : path:" + path);
 
-        createContent(); // структура
-        createMenu();
+
         const func = this.routs[path];
 
         if (func === undefined) {
@@ -78,7 +77,7 @@ class Router {
                 //createUserPinsDeskView
             if (path.includes("/userPins/")) { // если находится на странице пинов одного пользователя
                 const userId = path.substring("/userPins/".length, path.length);
-                const isInt = Number.isInteger(Number(pinId));
+                const isInt = Number.isInteger(Number(userId));
                 if (!isInt) {
                     console.log("error get userID from url");
                     createDeskView();
@@ -94,7 +93,7 @@ class Router {
             //createBoardDeskView
             if (path.includes("/board/")) { // если находится на странице пинов одного пользователя
                 const boardId = path.substring("/board/".length, path.length);
-                const isInt = isInteger(boardId);
+                const isInt = Number.isInteger(Number(boardId));
                 if (!isInt) {
                     console.log("error get boardID from url");
                     createDeskView();
@@ -120,6 +119,8 @@ class Router {
 
     start() {
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
+        createContent(); // структура
+        createMenu();
         Requests.getUserProfile(false);
     }
 } export default  new Router();

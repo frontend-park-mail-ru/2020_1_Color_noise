@@ -1,10 +1,9 @@
-import { createDesk } from '../components/Desk/Desk.js';
-import {createProfile} from "../components/Profile/Profile.js";
-import {createMenu, setError, createAutorization} from "../components/Menu/Menu.js";
-import {FetchModule} from "../components/Network/Network";
-import {serverLocate} from "../utils/constants";
-import {unSetScroll} from "../components/Desk/Desk.js";
-import {default as Router} from "../utils/router";
+import { setError, createAutorization } from "../components/Menu/Menu.js";
+import { FetchModule } from "../components/Network/Network";
+import { createProfile } from "../components/Profile/Profile";
+import { serverLocate } from "../utils/constants";
+import { unSetScroll } from "../components/Desk/Desk.js";
+import Router from "../utils/router";
 
 export function createProfileView(state) {
     unSetScroll();
@@ -17,7 +16,6 @@ export function createProfileView(state) {
             }
         )
         .then((result) => {
-            unSetScroll();
             if (result.status === 200) {
                 createProfile(state.id, state);
             }
@@ -29,6 +27,4 @@ export function createProfileView(state) {
             console.log("CRETE PROFILE ERR:", error.toString());
             setError();
         });
-
-
 }

@@ -1,8 +1,16 @@
 div.menu
-    div.menu-center
-        ul#elements
-
-div.line_menu
-div.plus_btn
-    div.btn
-        img(src=plus id="plus_btn")
+    div.logo
+        a(href="/" id= "logoLink")
+            img(src=logoImage alt="logo" width="190px")
+    div.find
+        div.findPin
+    div.icons
+        a(href="/chats" id= "chatsLink")
+            img(src=chatsImage alt="chats" width="25px")
+        a(href="/notifications" id= "notifLink")
+            img(src=notifImage alt="notifications" width="25px")
+        a(href="/profile" id= "profileLink")
+            img(src=profileImage alt="profile" width="25px")
+    div.add
+        a(id= "pinCreateModal")
+            button="+ Добавить Пин"

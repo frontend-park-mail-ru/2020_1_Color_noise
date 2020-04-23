@@ -17,8 +17,6 @@ export function createLoginView() {
 
 
     if ( CurrentUser.Data.login === 'null') {
-
-
         const login_modal = LoginTemplate({ image: logoImage });
         const root = document.getElementById('modal');
         root.innerHTML = login_modal;

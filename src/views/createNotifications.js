@@ -1,7 +1,18 @@
 import NotifTemplate from "../components/Profile/notifications.pug";
 import {FetchModule} from "../components/Network/Network.js";
 import {serverLocate} from "../utils/constants.js";
-import {createNotif} from "../components/Menu/Menu.js"
+
+function createNotif(notifiArr) {
+    const nitifSection =  document.getElementById("nitifSection");
+
+    for (let i = 0; i < notifiArr.length; i++) {
+
+        const oneNifitic = document.createElement('div');
+        oneNifitic.innerText = notifiArr[i].message;
+        oneNifitic.className = "one_nitif";
+        nitifSection.append(oneNifitic);
+    }
+}
 
 export function createNotificationsView() {
     const notif = NotifTemplate();
