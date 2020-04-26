@@ -9,20 +9,7 @@ import { createProfile  } from '../Profile/Profile.js'
 import { default as Router} from "../../utils/router.js"
 
 
-/*
- Можно отобразить фальшивые комментарии для проверки работоспособности
- до завершения работ по API Go сервера
 
-const fakeComments = [{id:1, pin_id:1, user_id:666, comment:" nice pic, bro  nice pic, bro  nice pic," +
-        " bro  nice pic, bro  nice pic, bro  nice pic, bro  nice pic, bro  nice pic, bro  nice pic, bro ", created_at:'time???'},
-    {id:2, pin_id:1, user_id:3, comment:" bad bad bad  bad bad bad  bad bad bad  bad bad bad ", created_at:'time???'},
-    {id:3, pin_id:1, user_id:2, comment:"some comment text... some comment text... some comment text... some" +
-            " comment text... some comment text... some comment text... some comment text... some comment text... ", created_at:'time???'}];
-
-const maxFakeRequestNumber = 1;
-let fakeRequestNumber = 0;
-const fakeCommentAuthorInfo = {login:"Alex Sirmais", avatar:"fakeImages/28.jpeg", about:"some alex info", subscribers:10, subscriptions:10};
- */
 
 
 /**

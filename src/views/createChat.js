@@ -1,36 +1,7 @@
-import ChatsTemplate from "../components/Profile/chats.pug";
+import ChatsTemplate from "../components/Chat/chats.pug";
 import {unSetScroll} from "../components/Desk/Desk.js";
-
-
-
-function getSomething() {
-
-
-    var socket = new WebSocket("ws://localhost:8000/echo");
-
-    socket.onopen = function () {
-        console.log("Status: Connected\n");
-    };
-
-
-    socket.onmessage = function (e) {
-        console.log("Server: " + e.data + "\n");
-    };
-
-
-    function send(msg) {
-        console.log("send webSocket:", msg)
-        socket.send(msg);
-    }
-
-
-    const btn = document.getElementById("sendBtn")
-    btn.addEventListener('click', (evt)=> {
-        send(" msg from front")
-    })
-
-    
-}
+import '../components/Chat/chat.css'
+import  {getUsersForChat, createWebSocket} from "../components/Chat/chat"
 
 
 export function CreateChatView() {
@@ -41,12 +12,7 @@ export function CreateChatView() {
     content.innerHTML = chats;
 
 
-
-
-    getSomething();
-
-
-
-
+    getUsersForChat();
+    createWebSocket();
 
 }
