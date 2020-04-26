@@ -32,6 +32,26 @@ export function getUsersForChat() {
         });
 
     createStartDialogScreen();
+    // Получение сообщений: api/chat/user/id?start=value1&limit=value2 - get
+    FetchModule.fetchRequest({url: serverLocate + "api/chat/user/id?start=0&limit=100", method: 'get'})
+        .then((response) => {
+            return response.ok ? response : Promise.reject(response);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((jsonAns) => {
+
+            if (jsonAns.status !== 200)
+                throw Error("not 200: api/chat/user/id?start=0&limit=10");
+
+            chatStorage.addMessagesToStorage(jsonAns.body)
+
+        })
+
+        .catch((error) => {
+            console.log('Что-то пошло не так с получением сообщений:', error);
+        });
 
 }
 
@@ -101,7 +121,6 @@ export function createDialog(user) {
     })
 
 
-
     // активируем кнопку отправки
     const sendMessageBtn = document.getElementById("chat_send_message_btn")
     sendMessageBtn.addEventListener("click", (evt)=>{
@@ -112,37 +131,9 @@ export function createDialog(user) {
     })
 
 
-    // этот код в промисе, когда поулчаем сообщеия (без фейк сообщений)
-    const fakeMessage = [{user_id: 1, created_at:" 11:12", author:"alex", message:"hello, friend" },
-        {user_id: 2, created_at:" 11:13", author:"Dima", message:"hi" },
-        {user_id: 2, created_at:" 11:14", author:"Dima", message:"как дела" },
-        {user_id: 1, created_at:" 11:17", author:"alex", message:"норм" },
-        {user_id: 1, created_at:" 11:21", author:"alex",  message:"у тебя как" }]
-
-
-
-    // Получение сообщений: api/chat/user/id?start=value1&limit=value2 - get
-    FetchModule.fetchRequest({url: serverLocate + "api/chat/user/id?start=0&limit=100", method: 'get'})
-        .then((response) => {
-            return response.ok ? response : Promise.reject(response);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((jsonAns) => {
-
-            if (jsonAns.status !== 200)
-                throw Error("not 200: api/chat/user/id?start=0&limit=10");
-
-            showMessages(jsonAns.body);
-
-
-        })
-
-
-        .catch((error) => {
-            console.log('Что-то пошло не так с получением сообщений:', error);
-        });
+    // показываем сообщения из хранилища
+    const messages = chatStorage.getMessagesFromStorage(user.id)
+    showMessages(messages)
 
 }
 
@@ -160,7 +151,7 @@ function showMessages(messageArr) {
 
     messageArr.forEach( (element)=> {
 
-        if (!chatStorage.containsId(element.user_send.id)) {
+        if (!chatStorage.containsId(element.user_send.id) && element.user_send.id !== CurrentUser.Data.id) {
             chatStorage.addUser(element.user_send);
             addNewContact(element.user_send);
         }
@@ -203,6 +194,7 @@ export function addNewContact(newUser) {
 
     userBlock.addEventListener('click', (evt) => {
         createDialog(newUser)
+        chatStorage.Data.idSelectedUser = newUser.id
     })
 
     chatUserList.appendChild(userBlock)
@@ -238,29 +230,44 @@ function addNewMessage(newMessageData) {
        message
        */
 
-
-    // ДОБАВИТЬ СЮДА ПРОВЕРКУ НА НОВЫЙ КОНТАКТ СПРАВА
-   // очередной сингл тон с контактами и открытым контактом
-
-    //ниже при добавлении проверять что рисуем в нужный контакт сообщение
-
+    if (chatStorage.Data.idSelectedUser === newMessageData.user_send.id ||
+        chatStorage.Data.idSelectedUser === newMessageData.user_rec.id ||
+        CurrentUser.Data.id === newMessageData.user_send.id ||
+        CurrentUser.Data.id === newMessageData.user_rec.id) {
 
 
-    const chatHistory = document.getElementById("chat_history")
+        let addArr = []
+        addArr.push(newMessageData)
+        chatStorage.addMessagesToStorage(addArr)
 
-    let textClass = "chat_message chat_float-right  chat_my_message";
-    let messageClass = "message_data chat_align-right"
-    if (newMessageData.user_send.id !== CurrentUser.Data.id) {
-        textClass = "chat_message chat_align-left  chat_other_message";
-        messageClass = "message_data chat_align-left"
+
+        const chatHistory = document.getElementById("chat_history")
+
+        let textClass = "chat_message chat_float-right  chat_my_message";
+        let messageClass = "message_data chat_align-right"
+        if (newMessageData.user_send.id !== CurrentUser.Data.id) {
+            textClass = "chat_message chat_align-left  chat_other_message";
+            messageClass = "message_data chat_align-left"
+        }
+
+        const messageHTML = chatMessageTemplate({
+            dateTime: newMessageData.created_at, author: user_send.login,
+            messageText: newMessageData.message, textClass: textClass, messageClass: messageClass
+        })
+
+        let message = document.createElement('div');
+        message.innerHTML = messageHTML
+        chatHistory.appendChild(message)
+
+    } else { // соообщение не для текущего чата
+
+        let addArr = []
+        addArr.push(newMessageData)
+        chatStorage.addMessagesToStorage(addArr)
+
     }
 
-    const messageHTML = chatMessageTemplate({dateTime:newMessageData.created_at, author: user_send.login,
-        messageText:newMessageData.message, textClass:textClass, messageClass:messageClass})
 
-    let message = document.createElement('div');
-    message.innerHTML = messageHTML
-    chatHistory.appendChild(message)
 
 }
 
