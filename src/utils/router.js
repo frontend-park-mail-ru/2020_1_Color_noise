@@ -106,8 +106,9 @@ class Router {
                 createBoardDeskView(state);
                 return;
             } else {
+
                 // не страница пина - по дефолту главная
-                alert("будет отображена главная по умолчанию");
+                console.log("!!!!будет отображена главная по умолчанию");
                 createDeskView();
             }
         } else {
