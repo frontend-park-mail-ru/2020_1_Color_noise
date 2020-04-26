@@ -68,6 +68,7 @@ div#columns .card  .container img {
 	text-align: center;
 	height: 45px;
 	border-radius: 18px;
+
 }
 
 #main_page_info {
@@ -84,4 +85,42 @@ div#columns .card  .container img {
 
 .find_pin input[type=text] {
 	font-size: 15px;
+	display: inline;
+	max-width: 600px;
+	float: left;
+	margin-left: 5px;
+}
+
+
+
+.find_user {
+	max-width: 500px;
+	margin: 0 auto 30px;
+
+	border-radius: 30px;
+	border-color: black;
+	border-style: double;
+	border-width: 1px;
+}
+
+.find_pin select {
+	margin-top: 7px;
+	float: left;
+	margin-left: 10px;
+}
+
+
+.find_user_avatar {
+	display: inline;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	border-radius: 50%;
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+}
+
+.find_user_user_info {
+	display: inline;
 }

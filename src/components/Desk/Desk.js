@@ -1,10 +1,11 @@
 import {addCard} from '../Card/Card';
 import './desk.css';
-
+import findUserTemplate from "./findUser.pug"
 import {FetchModule} from '../Network/Network.js'
 import {serverLocate} from '../../utils/constants.js'
 import {default as CurrentDesk} from './CurrentDesk.js';
 
+import Router from "../../utils/router.js"
 
 /**
  *  getMainPins
@@ -221,7 +222,16 @@ export function unSetScroll() {
  * @return {void}
  */
 export function clearColumns() {
-       document.getElementById('columns').innerHTML = '';
+       let columns = document.getElementById('columns');
+       if (columns !== null) {
+           columns.innerHTML = ''
+       } else {
+           const mainDesk = document.getElementById("mainDesk")
+           mainDesk.innerHTML = ""
+           const columnsDiv = document.createElement("div");
+           columnsDiv.id = "columns"
+           mainDesk.appendChild(columnsDiv)
+       }
 }
 
 
@@ -238,6 +248,11 @@ function getInfoForShowing(pinIdArr) {
     //CurrentDesk.State.getSomePinsFunc = скрол по поиску
     clearColumns();
     unSetScroll();
+
+    if (pinIdArr.length !==0) {
+        setInfoDesk("")
+    }
+
 
     pinIdArr.forEach((item) => {
 
@@ -284,9 +299,21 @@ export function setSearch() {
 
     searchImg.addEventListener('click', (evt) => {
 
+
+        let isUserSearch = false
+        const selectSearch = document.getElementById("select_search")
+        if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
+            isUserSearch = true
+        }
+
         const searchValue = searchInput.value.trim();
-        const searchObj = "pin";
-        const start = 1;
+        let searchObj = "pin";
+
+        if (isUserSearch){
+            searchObj = "user"
+        }
+
+        const start = 0;
         const limit = 50;
         FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
                 searchValue + "&start=" + start + "&limit=" + limit, method:'get'})
@@ -304,7 +331,13 @@ export function setSearch() {
                         if (result.body.length === 0) {
                             setInfoDesk("Ничего не найдено");
                         }
-                        getInfoForShowing(result.body);
+                        if (isUserSearch) {
+                            console.log("show users:", result.body)
+                            showUserSearch(result.body)
+                        } else {
+                            getInfoForShowing(result.body);
+                        }
+
 
                 }
             })
@@ -315,6 +348,60 @@ export function setSearch() {
 
     })
 }
+
+
+
+
+
+
+
+
+function showUserSearch(UserArr) {
+
+    const mainDesk = document.getElementById("mainDesk")
+
+    if (UserArr.length !== 0) {
+
+        mainDesk.innerHTML = ""
+        setInfoDesk("") // убираем "ничего не найдено"
+
+        UserArr.forEach((element) => {
+
+            const userAvatarId = "avatarID:" + element.id
+
+            const findUserHtml = findUserTemplate({
+                avatarSrc: serverLocate + "/" + element.avatar, login: element.login,
+                subscriptions: element.subscriptions, subscribers: element.subscribers, avatarID: userAvatarId
+            })
+
+
+            const findUserElement = document.createElement("div");
+            findUserElement.innerHTML = findUserHtml
+
+            mainDesk.appendChild(findUserElement)
+
+            const addedAvatar = document.getElementById(userAvatarId)
+            addedAvatar.addEventListener("click", (evt) => {
+                element.avatarPath = element.avatar
+                Router.go("/profile", "Profile", element)
+            })
+
+        })
+    }
+
+
+    /*
+    id	17
+login	"Slava"
+avatar	"D9upSSzWZUT1T9Gsc6H7SkhZX5FJh6.jpg"
+subscriptions	0
+subscribers	0
+     */
+
+    // unSCROLL
+
+}
+
 
 /**
 
