@@ -187,8 +187,13 @@ function showMessages(messageArr) {
 
 
 
-function addNewContact(newUser) {
-    console.log("сообщения от пользователя что не в контактах:", newUser.login)
+export function addNewContact(newUser) {
+    console.log("сообщения от пользователя что не в контактах или новый:", newUser.login)
+
+    if (!chatStorage.containsId(newUser.id)) { // даная проверка нужна есди мы добавляем юзера в контакты при нажатии "написать"
+        chatStorage.addUser(newUser);
+    }
+
     const chatUserList = document.getElementById("chat_user_list")
     const user = oneUserTemplate({ avatarScr:newUser.avatar,
         AuthorName:newUser.login, onlineStatus:""});

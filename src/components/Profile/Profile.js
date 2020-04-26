@@ -184,6 +184,12 @@ export function createProfile(user_id = CurrentUser.Data.id, User = null) {
                     setInfo('Что-то пошло не так с отправкой запроса');
                 });
         });
+
+        const sendMessage = document.getElementById("message_btn")
+        sendMessage.addEventListener("click", (evt)=>{
+            Router.go("/chats", "Chat", User)
+        })
+
         const pins = document.getElementById('my_pins');
         pins.addEventListener('click', function (evt) {
             evt.preventDefault();
