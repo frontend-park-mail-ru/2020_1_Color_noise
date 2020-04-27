@@ -53,7 +53,9 @@ function showContacts(UserContactsArr) {
             chatStorage.addUser(element);
         }
 
-        const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ element.avatarPath,
+        console.log("showContacts: element avatar:", serverLocate +"/"+ element.avatar)
+
+        const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ element.avatar,
             AuthorName:element.login, onlineStatus:""});
 
         let userBlock = document.createElement('div');
@@ -169,7 +171,11 @@ function showMessages(messageArr) {
 
     messageArr.forEach( (element)=> {
 
+
+        console.log("chatStorage.containsId(element.user_send.id):", chatStorage.containsId(element.user_send.id))
+
         if (!chatStorage.containsId(element.user_send.id) && element.user_send.id !== CurrentUser.Data.id) {
+            console.log("ADD NEW CONTACT:", element.user_send.login)
             chatStorage.addUser(element.user_send);
             addNewContact(element.user_send);
         }
@@ -261,7 +267,7 @@ function addNewMessage(newMessageData) {
        */
 
     if (chatStorage.Data.idSelectedUser === newMessageData.user_send.id ||
-        //chatStorage.Data.idSelectedUser === newMessageData.user_rec.id ||
+        chatStorage.Data.idSelectedUser === newMessageData.user_rec.id ||
         CurrentUser.Data.id === newMessageData.user_send.id ||
         CurrentUser.Data.id === newMessageData.user_rec.id) {
 
