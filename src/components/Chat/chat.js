@@ -221,12 +221,13 @@ export function createWebSocket() {
 
 
     console.log("try to connect webSocket")
-    WebSocketSingl.webSocketSingl = new WebSocket(serverLocateWebSocket + "/ws");
+    WebSocketSingl.webSocketSingl = new WebSocket(serverLocateWebSocket + "/api/chat/ws");
     WebSocketSingl.isConnected = true
 
 
 
     WebSocketSingl.webSocketSingl.onopen =  () => {
+        //WebSocketSingl.webSocketSingl.send(document.cookie);
         console.log("Status: Connected\n");
     };
 
