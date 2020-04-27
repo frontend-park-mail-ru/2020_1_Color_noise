@@ -64,6 +64,12 @@ class chatStorage {
 
 
     getMessagesFromStorage(SenderId){
+
+        if (this.MessageData[SenderId] === undefined) {
+            console.log("getMessagesFromStorage: еще нет сообщений с этим пользователем")
+            return
+        }
+
         let result = []
         this.MessageData[SenderId].forEach((element)=> {
             result.push(element)

@@ -23,13 +23,17 @@ export function getUsersForChat() {
             if (jsonAns.status !== 200)
                 throw Error("not 200: api/chat/users?start=0&limit=100");
 
-            showContacts(jsonAns.body)
+            if (jsonAns.body.length !== 0) {
+                showContacts(jsonAns.body)
+            }
+
 
         })
 
         .catch((error) => {
             console.log('Что-то пошло не так с получением контактов в чате:', error);
         });
+
 
     createStartDialogScreen();
 
@@ -47,7 +51,11 @@ export function getUsersForChat() {
             if (jsonAns.status !== 200)
                 throw Error("not 200: api/chat/user/id?start=0&limit=10");
 
-            chatStorage.addMessagesToStorage(jsonAns.body)
+            if (jsonAns.body.length !== 0) {
+                console.log("MESSAGES:", jsonAns.body)
+                chatStorage.addMessagesToStorage(jsonAns.body)
+            }
+
 
         })
 
@@ -61,13 +69,6 @@ export function getUsersForChat() {
 
 function showContacts(UserContactsArr) {
 
-    /*
-    const fakeUsers = [{id:1, avatar:"https://cs5.pikabu.ru/post_img/2014/09/20/9/1411223409_443499651.jpg", login:"alex", onlineStatus:"online"},
-        {id:2, avatar:"https://cs5.pikabu.ru/post_img/2014/09/20/9/1411223409_443499651.jpg", login:"Dima", onlineStatus:"online"},
-        {id:3, avatar:"https://cs5.pikabu.ru/post_img/2014/09/20/9/1411223409_443499651.jpg", login:"Any", onlineStatus:"OFFline"},
-        {id:4, avatar:"https://cs5.pikabu.ru/post_img/2014/09/20/9/1411223409_443499651.jpg", login:"Stas", onlineStatus:"online"} ]
-    UserContactsArr = fakeUsers
-    */
 
     const chatUserList = document.getElementById("chat_user_list")
     UserContactsArr.forEach((element) => {
@@ -76,7 +77,7 @@ function showContacts(UserContactsArr) {
             chatStorage.addUser(element);
         }
 
-        const user = oneUserTemplate({ avatarScr:element.avatar,
+        const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ element.avatarPath,
             AuthorName:element.login, onlineStatus:""});
 
         let userBlock = document.createElement('div');
@@ -105,19 +106,21 @@ function createStartDialogScreen() {
 
 export function createDialog(user) {
 
+    console.log("user:", user)
+
     // фетч запрос на сообщения установка шапки чата
     const chatChatSection = document.getElementById("chat_chat_section")
-    const headerHtml = chatTemplate({avatarSrc:user.avatar,
-        nameWith:user.name})
+    const headerHtml = chatTemplate({avatarSrc: serverLocate + "/" + user.avatarPath,
+        nameWith:user.login})
     chatChatSection.innerHTML = headerHtml
 
 
     // при клике на изображения собеседника в шапке чата мы переходим в его профиль
-    const headerImageLink =  document.getElementById("IdUserWithChat" + user.name)
+    const headerImageLink =  document.getElementById("IdUserWithChat" + user.login)
     headerImageLink.addEventListener("click", (evt) => {
         const User = [];
         User.avatarPath = user.avatar; // тут проверить какие поля будут у юзера после того как все заработает !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        User.login = user.name;
+        User.login = user.login;
         User.id = user.id;
 
         Router.go("/profile", "Profile", User)
@@ -136,7 +139,12 @@ export function createDialog(user) {
 
     // показываем сообщения из хранилища
     const messages = chatStorage.getMessagesFromStorage(user.id)
-    showMessages(messages)
+    if (messages !== undefined ) {
+        showMessages(messages)
+    } else {
+        console.log("createDialog: нет сообщений с этим пользователем:", user.login)
+    }
+
 
 }
 
@@ -189,7 +197,7 @@ export function addNewContact(newUser) {
     }
 
     const chatUserList = document.getElementById("chat_user_list")
-    const user = oneUserTemplate({ avatarScr:newUser.avatar,
+    const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ newUser.avatarPath,
         AuthorName:newUser.login, onlineStatus:""});
 
     let userBlock = document.createElement('div');
@@ -206,7 +214,15 @@ export function addNewContact(newUser) {
 
 export function createWebSocket() {
 
-    WebSocketSingl.webSocketSingl =  new WebSocket(serverLocateWebSocket + "/ws");
+    if (WebSocketSingl.isConnected) {
+        console.log("Не надо второй раз соединяться с сокетом")
+        return
+    }
+
+
+    console.log("try to connect webSocket")
+    WebSocketSingl.webSocketSingl = new WebSocket(serverLocateWebSocket + "/ws");
+    WebSocketSingl.isConnected = true
 
 
 

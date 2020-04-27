@@ -5,6 +5,7 @@ class webSocketSingl {
     constructor(){
         console.log("конструктор");
         this.webSocketSingl = null;
+        this.isConnected = false
     }
 }
 

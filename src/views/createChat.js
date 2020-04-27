@@ -14,9 +14,10 @@ export function CreateChatView(user = null) {
     getUsersForChat();
     createWebSocket();
 
-
     // если пришли сюда от нажатия "написать" на странице профиля
-    if (user !== null) {
+    if (user !== null && user.login !== undefined) {
+        // проверка user.login !== undefined из-за того что state
+        // сюда проходит из роутера
         addNewContact(user)
     }
 
