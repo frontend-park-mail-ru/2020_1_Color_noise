@@ -11,7 +11,7 @@ import {default as chatStorage } from "./currentChat.js"
 
 export function getUsersForChat() {
 
-    FetchModule.fetchRequest({url: serverLocate + "api/chat/users?start=0&limit=100", method:"get"})
+    FetchModule.fetchRequest({url: serverLocate + "/api/chat/users?start=0&limit=100", method:"get"})
         .then((response) => {
             return response.ok ? response : Promise.reject(response);
         })
@@ -32,8 +32,10 @@ export function getUsersForChat() {
         });
 
     createStartDialogScreen();
+
     // Получение сообщений: api/chat/user/id?start=value1&limit=value2 - get
-    FetchModule.fetchRequest({url: serverLocate + "api/chat/user/id?start=0&limit=100", method: 'get'})
+    //  api/chat/user/id?start=value1&limit=value2 - get
+    FetchModule.fetchRequest({url: serverLocate + "/api/chat/messages/" + CurrentUser.Data.id + "?start=0&limit=100", method: 'get'})
         .then((response) => {
             return response.ok ? response : Promise.reject(response);
         })
@@ -59,12 +61,13 @@ export function getUsersForChat() {
 
 function showContacts(UserContactsArr) {
 
+    /*
     const fakeUsers = [{id:1, avatar:"https://cs5.pikabu.ru/post_img/2014/09/20/9/1411223409_443499651.jpg", login:"alex", onlineStatus:"online"},
         {id:2, avatar:"https://cs5.pikabu.ru/post_img/2014/09/20/9/1411223409_443499651.jpg", login:"Dima", onlineStatus:"online"},
         {id:3, avatar:"https://cs5.pikabu.ru/post_img/2014/09/20/9/1411223409_443499651.jpg", login:"Any", onlineStatus:"OFFline"},
         {id:4, avatar:"https://cs5.pikabu.ru/post_img/2014/09/20/9/1411223409_443499651.jpg", login:"Stas", onlineStatus:"online"} ]
     UserContactsArr = fakeUsers
-
+    */
 
     const chatUserList = document.getElementById("chat_user_list")
     UserContactsArr.forEach((element) => {
@@ -105,7 +108,7 @@ export function createDialog(user) {
     // фетч запрос на сообщения установка шапки чата
     const chatChatSection = document.getElementById("chat_chat_section")
     const headerHtml = chatTemplate({avatarSrc:user.avatar,
-        nameWith:user.name, messagesCount:666})
+        nameWith:user.name})
     chatChatSection.innerHTML = headerHtml
 
 
@@ -203,7 +206,10 @@ export function addNewContact(newUser) {
 
 export function createWebSocket() {
 
-    WebSocketSingl.webSocketSingl =  new WebSocket(serverLocateWebSocket + "/api/chat");
+    WebSocketSingl.webSocketSingl =  new WebSocket(serverLocateWebSocket + "/ws");
+
+    
+
     WebSocketSingl.webSocketSingl.onopen =  () => {
         console.log("Status: Connected\n");
     };
