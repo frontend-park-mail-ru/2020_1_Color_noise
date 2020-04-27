@@ -2,9 +2,9 @@ import  { createRegistration } from '../views/createRegistration.js'
 import { createLoginView } from "../views/createLogin.js"
 import { Requests } from '../components/Network/Requests.js'
 import {createProfileSettings} from "../components/ProfileSettings/ProfileSettings.js";
-import { goNotif, createMenu } from '../components/Menu/Menu.js'
+import { createMenu } from '../components/Menu/Menu.js'
 import { createContent } from "../components/Content/Content.js";
-import { CreateChatView } from "../views/createChat.js"
+import { createChatView } from "../views/createChat.js"
 import { createProfileView } from "../views/createProfile.js";
 import { createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView } from "../views/createDesk.js";
 import { createNotificationsView } from "../views/createNotifications.js"
@@ -22,7 +22,7 @@ class Router {
             "/profile": createProfileView,
             "/authorizationOrRegistration":authorizationOrRegistrationView,
             "/profileSettings": createProfileSettings,
-            "/chats": CreateChatView,
+            "/chats": createChatView,
             "/notifications":  createNotificationsView,
 
             // пути ниже буду проверяться в методе go(), если не будет совпадения с путями, обозначенными выше
@@ -99,7 +99,7 @@ class Router {
                     createDeskView();
                     return;
                 }
-                console.log("createBoardDeskView boardid:",boardId );
+                console.log("createBoardDeskView boardid:", boardId);
                 // если url корректный, то отобразим пины пользователя
                 const state = {};
                 state.deskId = boardId;
@@ -107,7 +107,7 @@ class Router {
                 return;
             } else {
                 // не страница пина - по дефолту главная
-                alert("будет отображена главная по умолчанию");
+                alert("будет отображена главная по умолчанию " + path);
                 createDeskView();
             }
         } else {
@@ -120,7 +120,14 @@ class Router {
     start() {
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
         createContent(); // структура
-        createMenu();
-        Requests.getUserProfile(false);
+        Requests.getUserProfile(false).then((result) => {
+            createMenu(result);
+        });
+        // if (Requests.getUserProfile(false)) {
+        //
+        //     createMenu(true);
+        // } else {
+        //     createMenu(false);
+        // }
     }
 } export default  new Router();

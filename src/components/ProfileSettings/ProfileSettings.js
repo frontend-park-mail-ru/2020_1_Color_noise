@@ -1,11 +1,9 @@
 import ProfileTemplate from './profileSetting.pug';
 import { validators } from '../Validation/Validation';
-import './profileSettings.css';
 import { FetchModule } from  '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import { createProfile } from '../Profile/Profile.js'
-import { default as Router} from "../../utils/router.js"
 import Back from "../../images/004-back.svg";
 
 

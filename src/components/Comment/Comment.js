@@ -110,7 +110,7 @@ function commentsRequest() {
 
     //if (CurrentComments.State.isGetAll)
     //   return;
-    let num = (CurrentComments.State.numberOfComments + 1).toString();
+    let num = (CurrentComments.State.numberOfComments).toString();
 
     FetchModule.fetchRequest({url: serverLocate + '/api/comment/pin/' + CurrentComments.State.pinId
             + '?start=' + num +'&limit=50', method: 'get'})

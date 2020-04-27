@@ -1,0 +1,14 @@
+div.modal
+    div.background(id="backModal")
+    div.window
+        img(src=logoImage alt="Zinterest" width="140px")
+        div.title Авторизация
+        div.mini_title(id="infoMessage")
+        div.line
+            input#loginUser(type="text" placeholder="Логин")
+        div.line
+            input#passUser(type="password" placeholder="Пароль")
+        a(id="sendLogin")
+            input(type="submit" class="red_btn" value="Войти")
+        a(id="textRegModal")
+            div.mini_text Еще не зарегистрировались в Zinterest?<br> Регистрация
