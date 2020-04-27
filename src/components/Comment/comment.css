@@ -1,0 +1,44 @@
+
+.pinInfo_pin_comment_section {
+    margin-top: 10px;
+    background:  var(--pin-bg-color);
+    font-size: 20px;
+    margin-bottom: 15px;
+    max-height: 16em;
+    overflow-y:scroll;
+}
+
+.one_comment {
+    margin: 8px 10px;
+
+    border-color: #c8c8c8;
+    border-style: solid;
+    border-width: 0.01em;
+    padding: 0.5em;
+    border-radius: 20px;
+}
+
+.comment_author_avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 24px;
+    object-fit: cover;
+}
+
+
+.comment_author_login {
+    display: inline;
+    text-align: left;
+    margin-left: 10px;
+    vertical-align: top;
+    font-size: 18px;
+
+}
+
+
+.comment_text {
+    margin-left: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 16px;
+}

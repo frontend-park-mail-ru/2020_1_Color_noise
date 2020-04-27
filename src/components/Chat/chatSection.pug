@@ -1,0 +1,13 @@
+div(class="chat_header chat_clearfix")
+    div(class="chat-about")
+        img(class="chat_img" src=avatarSrc alt="avatar" id="IdUserWithChat" + nameWith )
+        div(class="chat_with") #{nameWith}
+        div(class="chat_num_messages")
+    i(class="fa chat_fa_star")
+
+div(class="chat_history")
+    ul(class="chat_ul" id="chat_history")
+
+div(class="chat_message")
+    textarea(class="chat_textarea" name="message-to-send" id="message_to_send" placeholder ="Type your message" rows="3" cols="1")
+    button(class="chat_button" id="chat_send_message_btn") Отправить

@@ -1,0 +1,58 @@
+.line {
+	background: #FCFBFB;
+	border: 2px solid #C9C9C9;
+	border-radius: 12px;
+	height: 40px;
+	width: 320px;
+	margin: 10px auto 10px auto;
+}
+
+/*.line input {*/
+input {
+	border: none;
+	background: none;
+	margin-top: 10px;
+	width: 95%;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+input:focus {
+	outline: none;
+}
+
+.line_area {
+	background: #FCFBFB;
+	border: 2px solid #C9C9C9;
+	border-radius: 12px;
+	width: 320px;
+	margin: 10px auto 10px auto;
+}
+
+.line_area textarea {
+	background: none;
+	border: none;
+	outline: none;
+	resize: none;
+	font-size: 13px;
+	font-weight: bold;
+	width: 95%;
+}
+
+.red_btn {
+	font-weight: bold;
+	color: #fff;
+	font-size: 14px;
+	height: 40px;
+	width: 320px;
+	background: #F01313;
+	border: none;
+	border-radius: 12px;
+	cursor: pointer;
+	display: block;
+	margin: 10px auto 10px auto;
+}
+
+.red_btn:hover {
+	background: #B50B0B;
+}

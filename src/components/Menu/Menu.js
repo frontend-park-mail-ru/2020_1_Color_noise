@@ -1,211 +1,117 @@
-import logoImage from '../../images/logo.svg';
 import MenuTemplate from './menu.pug';
-import { createProfile } from '../Profile/Profile';
-import { setInfo } from '../Profile/Profile';
-import { validators } from '../Validation/Validation';
-import { ajax } from '../Network/Network';
-import './menu.css';
+import MenuLoginTemplate from './menuLogin.pug';
+import MenuAlienTemplate from './menuAlien.pug';
 
-import '../Autorization/authorization.css';
-import AutorizationTemplate from '../Autorization/choose.pug';
-import LoginTemplate from '../Autorization/login.pug';
-import RegTemplate from '../Autorization/reg.pug';
+import logoImage from '../../images/logo.svg';
+import chatsImage from '../../images/chatsIcon.svg';
+import notifImage from '../../images/notifIcon.svg';
+import profileImage from '../../images/profileIcon.svg';
+import plusImage from '../../images/plusIcon.svg';
 
-const application = document.getElementById('root');
+import { showLoginModal, showRegModal, showChooseModal, createInfoModal } from "../Modal/modal"
+import Router from "../../utils/router"
+import { Requests } from '../Network/Requests'
 
-const buildMenu = () => {
-    const menu = MenuTemplate();
-    const root = document.getElementById('menu');
-    root.innerHTML = menu;
-}
+export const createMenu = (login = false) => {
+    const template = MenuTemplate({ logoImage : logoImage });
 
-const menuItems = {
-    follows: 'Подписки',
-    desks: 'Доски',
-    logo: '',
-    chats: 'Чаты',
-    profile: 'Профиль'
-};
+    const menu = document.getElementById('menu');
+    menu.innerHTML = template;
 
-const addElements = () => {
-    const root = document.getElementById('elements');
+    if (login) {
+        addLogin();
+    } else {
+        addReg();
+    }
 
-    root.innerHTML = '';
-    Object.keys(menuItems).forEach(function (key) {
-        const menuItem = document.createElement('a');
-        menuItem.textContent = menuItems[key];
-        menuItem.href = `/${key}`;
-        menuItem.dataset.section = key;
-
-        root.appendChild(menuItem);
-    });
-}
-
-export const createMenu = () => {
-    buildMenu();
-    addElements();
-}
-
-const routes = {
-    follows: goFollows,
-    desks: goDesks,
-    logo: null,
-    chats: goChats,
-    profile: goProfile
+    const loginPart = document.getElementById('loginPart');
+    loginPart.addEventListener('login', addLogin2);
+    loginPart.addEventListener('reg', addReg);
 };
 
 
-function goFollows() {
-    //alert("Раздел в разработке");
+// will be deleted
+const addLogin2 = () => {
+    if (Requests.getUserProfile(false)) {
+        addLogin();
+    } else {
+        createInfoModal('Login auth error');
+    }
+};
+
+const addLogin = () => {
+    const menuLoginTemplate = MenuLoginTemplate({
+        chatsImage : chatsImage,  notifImage : notifImage,
+        profileImage : profileImage, plusImage : plusImage });
+
+    const loginPart = document.getElementById('loginPart');
+    loginPart.innerHTML = menuLoginTemplate;
+
+    const logoLink  = document.getElementById('logoLink');
+    logoLink.addEventListener('click', goMain);
+
+    const chatsLink  = document.getElementById('chatsLink');
+    chatsLink.addEventListener('click', goChats);
+
+    const notifLink  = document.getElementById('notifLink');
+    notifLink.addEventListener('click', goNotif);
+
+    const profileLink  = document.getElementById('profileLink');
+    profileLink.addEventListener('click', goProfile);
+
+    const addNewModal  = document.getElementById('addNewModal');
+    addNewModal.addEventListener('click', showChooseModal);
+};
+
+const addReg = () => {
+    const menuAlienTemplate = MenuAlienTemplate();
+
+    const loginPart = document.getElementById('loginPart');
+    loginPart.innerHTML = menuAlienTemplate;
+
+    const loginModal  = document.getElementById('loginModal');
+    loginModal.addEventListener('click', showLoginModal);
+
+    const regModal  = document.getElementById('regModal');
+    regModal.addEventListener('click', showRegModal);
 }
 
-function goDesks() {
-    //alert("Раздел в разработке");
-}
+const goMain = (evt) => {
+    evt.preventDefault();
+    Router.go("/","Main");
+};
 
-function goChats() {
-    //alert("Раздел в разработке");
-}
+const goChats = (evt) => {
+    evt.preventDefault();
+    Router.go("/chats","Chats");
+};
 
-function setError() {
+const goNotif = (evt) => {
+    evt.preventDefault();
+    Router.go("/notifications","Notifications");
+};
+
+const goProfile = (evt) => {
+    evt.preventDefault();
+    Router.go('/profile','Profile');
+};
+
+
+// to utils
+export const setError = () => {
     const content = document.getElementById('content');
     content.innerHTML = "";
-
     const err = document.createElement('h1');
     err.textContent = 'Что-то пошло не так :(';
-
     content.appendChild(err);
-}
+};
 
-function createAutorization() {
-    const choose = AutorizationTemplate({ image: logoImage });
-    const root = document.getElementById('modal');
-    root.innerHTML = choose;
+export const createAutorization = () => {
+    //evt.preventDefault();
+    Router.go("/authorizationOrRegistration", "AuthorizationOrRegistration");
+};
 
-    const login = document.getElementById('submit_login_choose');
-    login.addEventListener('click', function (evt) {
-        createLogin();
-    });
-
-    const reg = document.getElementById('submit_reg_choose');
-    reg.addEventListener('click', function (evt) {
-        createReg();
-    });
-}
-
-function createLogin() {
-    const login_modal = LoginTemplate({ image: logoImage });
-    const root = document.getElementById('modal');
-    root.innerHTML = login_modal;
-
-    const login = document.getElementById('submit_login');
-    login.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        const username_form = document.getElementById('flogin').value;
-        const password_form = document.getElementById('fpass').value;
-        if (validators.username(username_form) && validators.password(password_form)) {
-            //TODO: promise network-module
-            ajax(
-                'POST',
-                'http://95.163.212.121/login',
-                {
-                    login: username_form,
-                    password: password_form
-                },
-                function (status, response) {
-                    if (status === 200) {
-                        const data = JSON.parse(response);
-                        if (data.status == 200) {
-                            root.innerHTML = "";
-                        } else {
-                            setInfo('Пароль или логин не верны');
-                        }
-                    } else {
-                        setInfo('Что-то пошло не так');
-                    }
-                }
-            )
-        } else {
-            setInfo('Данные в форме некорректны');
-        }
-    });
-}
-
-function createReg() {
-    const reg_modal = RegTemplate({ image: logoImage });
-    const root = document.getElementById('modal');
-    root.innerHTML = reg_modal;
-
-    const reg = document.getElementById('submit_reg');
-    reg.addEventListener('click', function (evt) {
-        evt.preventDefault();
-        const email_form = document.getElementById('femail').value;
-        const username_form = document.getElementById('flogin').value;
-        const password_form = document.getElementById('fpass').value;
-        const email_valid = validators.email(email_form);
-        const login_valid = validators.username(username_form);
-        const password_valid = validators.password(password_form)
-
-        if (email_valid && login_valid && password_valid) {
-            // TODO: promise network-module
-            ajax(
-                'POST',
-                'http://95.163.212.121/signup',
-                {
-                    login: username_form,
-                    email: email_form,
-                    password: password_form
-                },
-                function (status, response) {
-                    if (status === 200) {
-                        const data = JSON.parse(response);
-                        if (data.status == 200) {
-                            root.innerHTML = "";
-                        } else {
-                            setInfo('Что-то пошло не так');
-                        }
-                    } else {
-                        setInfo('Что-то пошло не так');
-                    }
-                }
-            )
-        } else if (!email_valid) {
-            setInfo('Введите корректный email');
-        }  else if (!login_valid) {
-            setInfo('Логин должен быть более,<br>чем из трех символов: a-z, A-Z, 0-9, _');
-        }  else if (!password_valid) {
-            setInfo('Пароль должен быть из шести символов и более символов');
-        }
-    });
-}
-
-function goProfile() {
-    // TODO: promise network-module
-    ajax(
-        'GET',
-        'http://95.163.212.121/profile',
-        null,
-        function (status, response) {
-            if (status === 200) {
-                const data = JSON.parse(response);
-                if (data.status == 200) {
-                    createProfile(data.body.login, data.body.email,
-                        data.body.about, data.body.avatar, data.body.id);
-                } else {
-                    createAutorization();
-                }
-            } else {
-                setError();
-            }
-        }
-    );
-}
-
-application.addEventListener('click', function (evt) {
-    const { target } = evt;
-
-    if (target instanceof HTMLAnchorElement) {
-        evt.preventDefault();
-        routes[target.dataset.section]();
-    }
-});
+const createLogin = (evt) => {
+    evt.preventDefault();
+    Router.go('/login','Login');
+};

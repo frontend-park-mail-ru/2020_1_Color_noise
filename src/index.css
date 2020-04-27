@@ -1,0 +1,12 @@
+@import './styles/index.css';
+
+@import './components/Menu/menu.css';
+@import './components/Modal/modal.css';
+@import './components/Modal/components.css';
+
+@import './components/Card/card.css';
+@import './components/Comment/comment.css';
+@import './components/Desk/desk.css';
+@import './components/Pin/pin.css';
+@import './components/Profile/profile.css';
+@import './components/ProfileSettings/profileSettings.css';

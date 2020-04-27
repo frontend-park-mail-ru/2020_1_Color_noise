@@ -1,6 +1,14 @@
 .authorization img {
 	margin: 20px;
 }
+
+
+
+.authorization .great_title {
+	margin: 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
 .authorization .mini_title {
 	margin: 10px;
 	font-size: 15px;
@@ -21,6 +29,12 @@
 	width: 300px;
 }
 
+.authorization .title_text {
+	margin: 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
 .authorization {
 	background: #FFFFFF;
 	border-radius: 10px;
@@ -34,6 +48,7 @@
 	top: 10%;
 	left: 50%;
 	margin-left: -250px;
+	padding: 20px;
 }
 .background {
 	background: rgba(0,0,0,0.3);

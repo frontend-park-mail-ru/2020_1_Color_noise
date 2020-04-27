@@ -1,46 +1,97 @@
 .menu {
 	margin-left: auto;
 	margin-right: auto;
-	width: 1000px;
+	width: 100%;
 	text-align: center;
-}
-.menu-center {
-	display: inline-block;
-}
-.menu-center ul a {
-	border-bottom: 2px solid rgba(219, 58, 77, 0);
-	text-decoration: none;
-	color: #1A1A1A;
-	transition: .2s ease-in-out;
-}
-.menu-center ul a:hover {
-	border-bottom: 2px solid rgba(219, 58, 77, 1);
-}
-.menu-center ul {
-	vertical-align: middle;
+	display: table;
+	margin-bottom: 10px;
 }
 
-.menu-center ul a {
-	font-size: 17px;
-	padding-bottom: 5px;
-	margin-top: 35px;
-	margin-left: 35px;
-	margin-right: 35px;
-	display : inline-block;
+.menu img {
+	margin: 10px;
+}
+
+.menu .logo {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: left;
+}
+
+.menu .find {
+	display: table-cell;
+	vertical-align: middle;
+	width: 100%;
 	text-align: center;
+	min-width: 120px;
 }
-.menu-center ul a:first-child {
-	margin-top: 35px;
-	margin-left: 20px;
-	display : inline-block;
-	text-align: center;
+
+.menu .find .findPin {
+	min-width: 100px;
+	background: #f2f3f2;
+	border: #8A8A8A thin;
+	height: 40px;
+	border-radius: 5px;
 }
-.line_menu {
-	top: 85px;
-	width: 1280px;
-	position: absolute;
-	border-bottom: 2px solid rgba(120, 117, 117, 0.44);
-	right: 0;
-	margin: 0 auto;
-	left: 0;
+
+.menu .thirdpart {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: right;
 }
+
+.menu .thirdpart .icons {
+	 min-width: 160px;
+ }
+
+.menu .thirdpart .buttons {
+	min-width: 270px;
+}
+
+.menu .thirdpart .buttons button {
+	background: linear-gradient(90deg, rgba(214,39,5,1) 0%, rgba(207,35,8,1) 50%);
+	border-radius: 10px;
+	border: none;
+	color: white;
+	font-size: 13px;
+	cursor: pointer;
+	width: 120px;
+	height: 30px;
+	margin: 10px;
+}
+
+.menu .thirdpart .buttons button:last-child {
+	margin-left: 0px;
+}
+
+.menu .thirdpart .buttons button:hover {
+	background: #B50B0B;
+}
+
+@media (max-device-width: 400px) and (orientation: portrait) {
+	.menu .logo {
+		display: inline-block;
+	}
+
+	.menu .find {
+		display: inline-block;
+		width: 80%;
+	}
+
+	.menu .thirdpart {
+		display: inline-block;
+	}
+
+	.menu .logo img {
+		width: 400px;
+	}
+
+	.menu .find .findPin {
+		height: 80px;
+	}
+
+	.menu .thirdpart .icons img {
+		width: 80px;
+		height: 80px;
+	 }
+}
+

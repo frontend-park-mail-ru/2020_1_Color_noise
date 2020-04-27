@@ -1,5 +1,5 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -10,12 +10,24 @@ module.exports = {
     path: path.join(__dirname, 'public'),
     filename: '[name].js'
   },
-  resolve: {
-    extensions: ['*', '.js', '.styl', '.pub']
+  devServer: {
+    before: (app, server) => {
+      // Support for cases when page loaded on other pathname than /.
+      // Without it we got 404 when trying to open paths like /topics.
+      app.get("*", (req, res, next) => {
+        console.log(req, res);
+        if (req.url.endsWith("main.js")) {
+          req.url = "/main.js";
+        } else {
+          if (!req.url.endsWith(".svg")) {
+            req.url = "/";
+          }
+        }
+        next("route");
+      });
+    }
   },
-  resolveLoader: {
-    modules: [path.join(__dirname, 'node_modules')]
-  },
+
   module: {
     rules: [
       {
@@ -36,15 +48,28 @@ module.exports = {
         ]
       },
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader'
+        }
+      },
+      {
         test: /\.pug$/,
         use: [
           'pug-loader'
         ]
       },
+      // static
       {
-        test: /\.(jpg|jpeg|gif|png|svg)$/,
-        exclude: /node_modules/,
-        use: 'file-loader'
+        test: /\.(png|ico|svg|jpe?g|gif)$/i,
+        loader: 'file-loader',
+        options: {
+          name(resourcePath, resourceQuery) {
+              return '/images/' + '[name].[ext]';
+            //[contenthash].[ext]
+          },
+        },
       },
     ]
   },
@@ -52,6 +77,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '/src/views/index.html'),
       filename: 'index.html'
-    })
+    }),
   ]
-}
+};
