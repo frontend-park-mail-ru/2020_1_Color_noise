@@ -208,7 +208,7 @@ export function createWebSocket() {
 
     WebSocketSingl.webSocketSingl =  new WebSocket(serverLocateWebSocket + "/ws");
 
-    
+
 
     WebSocketSingl.webSocketSingl.onopen =  () => {
         console.log("Status: Connected\n");
