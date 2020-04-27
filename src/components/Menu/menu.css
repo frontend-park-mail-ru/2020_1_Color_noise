@@ -33,30 +33,38 @@
 	border-radius: 5px;
 }
 
-.menu .icons {
-	display: table-cell;
-	vertical-align: middle;
-	text-align: right;
-	min-width: 120px;
-}
-
-.menu .add {
+.menu .thirdpart {
 	display: table-cell;
 	vertical-align: middle;
 	text-align: right;
 }
 
-.menu .add button {
+.menu .thirdpart .icons {
+	 min-width: 160px;
+ }
+
+.menu .thirdpart .buttons {
+	min-width: 270px;
+}
+
+.menu .thirdpart .buttons button {
 	background: linear-gradient(90deg, rgba(214,39,5,1) 0%, rgba(207,35,8,1) 50%);
 	border-radius: 10px;
 	border: none;
 	color: white;
-	text-decoration: none;
 	font-size: 13px;
 	cursor: pointer;
-	padding: 10px 10px 10px 10px;
-	width: 220px;
-	margin-right: 10px;
+	width: 120px;
+	height: 30px;
+	margin: 10px;
+}
+
+.menu .thirdpart .buttons button:last-child {
+	margin-left: 0px;
+}
+
+.menu .thirdpart .buttons button:hover {
+	background: #B50B0B;
 }
 
 @media (max-device-width: 400px) and (orientation: portrait) {
@@ -69,11 +77,7 @@
 		width: 80%;
 	}
 
-	.menu .icons {
-		display: inline-block;
-	}
-
-	.menu .add {
+	.menu .thirdpart {
 		display: inline-block;
 	}
 
@@ -85,14 +89,9 @@
 		height: 80px;
 	}
 
-	.menu .icons img {
+	.menu .thirdpart .icons img {
 		width: 80px;
 		height: 80px;
 	 }
-
-	.menu .add button {
-		font-size: 30px;
-		width: 320px;
-	}
 }
 

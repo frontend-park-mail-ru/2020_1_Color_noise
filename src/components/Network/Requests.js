@@ -11,19 +11,19 @@ export class Requests {
     /**
      *  set userData and call createFunction after
      *
-     * @return {void}
+     * @return {boolean}
      */
     static getUserProfile(needPush = true) {
-        FetchModule.fetchRequest({url: serverLocate + '/api/user', method: 'get'})
+        return FetchModule.fetchRequest({url: serverLocate + '/api/user', method: 'get'})
             .then((res) => res.ok ? res : Promise.reject(res))
             .then( (response) =>
                 response.json(),
             )
             .then((result) => {
                 if (result.status === 401) {
-                    Router.go("/main", "Main", null, needPush);
+                    Router.go("/", "Zinterest", null, needPush);
                     //Router.go("/authorizationOrRegistration", "AuthorizationOrRegistration");
-                    return;
+                    throw new Error("No auth");
                 }
                 CurrentUser.Data.id = result.body.id;
                 CurrentUser.Data.login = result.body.login;
@@ -39,14 +39,15 @@ export class Requests {
 
                 // чтоб перенаправляло после регистрации
                 // (CurrentUser.Data.login !== "null") -> чтобы неаторизованных оставляло на регистрации или авторизации
-                if (CurrentUser.Data.login !== "null"  && (url === "/registration" || url === "/authorization") ) {
-                    url = "/main";
-                }
+                // if (CurrentUser.Data.login !== "null"  && (url === "/registration" || url === "/authorization") ) {
+                //     url = "/";
+                // }
 
                 Router.go(url, "", null, needPush);
-            })
-            .catch((error) => {
+                return true;
+            }).catch((error) => {
                 console.log("getUserProfile ERROR:", error);
+                return false;
             });
     }
 }

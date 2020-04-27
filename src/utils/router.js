@@ -2,7 +2,7 @@ import  { createRegistration } from '../views/createRegistration.js'
 import { createLoginView } from "../views/createLogin.js"
 import { Requests } from '../components/Network/Requests.js'
 import {createProfileSettings} from "../components/ProfileSettings/ProfileSettings.js";
-import { goNotif, createMenu } from '../components/Menu/Menu.js'
+import { createMenu } from '../components/Menu/Menu.js'
 import { createContent } from "../components/Content/Content.js";
 import { CreateChatView } from "../views/createChat.js"
 import { createProfileView } from "../views/createProfile.js";
@@ -99,7 +99,7 @@ class Router {
                     createDeskView();
                     return;
                 }
-                console.log("createBoardDeskView boardid:",boardId );
+                console.log("createBoardDeskView boardid:", boardId);
                 // если url корректный, то отобразим пины пользователя
                 const state = {};
                 state.deskId = boardId;
@@ -108,7 +108,7 @@ class Router {
             } else {
 
                 // не страница пина - по дефолту главная
-                console.log("!!!!будет отображена главная по умолчанию");
+                alert("будет отображена главная по умолчанию " + path);
                 createDeskView();
             }
         } else {
@@ -121,7 +121,14 @@ class Router {
     start() {
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
         createContent(); // структура
-        createMenu();
-        Requests.getUserProfile(false);
+        Requests.getUserProfile(false).then((result) => {
+            createMenu(result);
+        });
+        // if (Requests.getUserProfile(false)) {
+        //
+        //     createMenu(true);
+        // } else {
+        //     createMenu(false);
+        // }
     }
 } export default  new Router();

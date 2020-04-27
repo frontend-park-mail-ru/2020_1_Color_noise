@@ -1,5 +1,4 @@
 import PinTemplate from "./pin.pug";
-import "./pin.css"
 import { FetchModule  } from '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { default as CurrentUser } from '../../utils/userDataSingl.js';
@@ -18,7 +17,6 @@ import { unSetScroll } from "../Desk/Desk";
  * @return {void}
  */
 function addPinOnBoard(target, boardId) {
-
     FetchModule.fetchRequest({
         url: serverLocate + '/api/pin', method: 'post', body: {
             name: target.name,

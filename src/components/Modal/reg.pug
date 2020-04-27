@@ -1,0 +1,16 @@
+div.modal
+    div.background(id="backModal")
+    div.window
+        img(src=logoImage alt="Zinterest" width="140px")
+        div.title Регистрация
+        div.mini_title(id="infoMessage")
+        div.line
+            input#emailUser(type="text" placeholder="Почта")
+        div.line
+            input#loginUser(type="text" placeholder="Логин")
+        div.line
+            input#passUser(type="password" placeholder="Пароль")
+        a(id="sendReg")
+            input(type="submit" class="red_btn" value="Регистрация")
+        a(id="textLoginModal")
+            div.mini_text Уже есть аккаунт в Zinterest?<br> Войти

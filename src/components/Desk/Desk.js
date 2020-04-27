@@ -13,7 +13,7 @@ import Router from "../../utils/router.js"
  *  @return {void}
  */
 export function getMainPins() {
-    FetchModule.fetchRequest({ url: serverLocate + '/api/list?start=' + ( CurrentDesk.State.numberOfPins + 1 )
+    FetchModule.fetchRequest({ url: serverLocate + '/api/list?start=' + ( CurrentDesk.State.numberOfPins )
             + '&limit=15', method:'get', body:null})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
@@ -39,7 +39,7 @@ export function getMainPins() {
  *  @return {void}
  */
 export function getSubPins() {
-    FetchModule.fetchRequest({ url: serverLocate + '/api/list/sub?start=' + ( CurrentDesk.State.numberOfPins + 1 )
+    FetchModule.fetchRequest({ url: serverLocate + '/api/list/sub?start=' + ( CurrentDesk.State.numberOfPins )
             + '&limit=15', method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
@@ -73,7 +73,7 @@ export function getUserPins() {
     const userId = CurrentDesk.State.userId;
     const username = CurrentDesk.State.username;
 
-    FetchModule.fetchRequest({ url: serverLocate + '/api/pin/user/' + userId.toString() + '?start=' + ( CurrentDesk.State.numberOfPins + 1 )
+    FetchModule.fetchRequest({ url: serverLocate + '/api/pin/user/' + userId.toString() + '?start=' + ( CurrentDesk.State.numberOfPins )
             + '&limit=20', method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
