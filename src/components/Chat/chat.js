@@ -55,6 +55,8 @@ function showContacts(UserContactsArr) {
 
         console.log("showContacts: element avatar:", serverLocate +"/"+ element.avatar)
 
+
+
         const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ element.avatar,
             AuthorName:element.login, onlineStatus:""});
 
@@ -84,11 +86,23 @@ function createStartDialogScreen() {
 
 export function createDialog(user) {
 
+    chatStorage.Data.idSelectedUser = user.id
+
     console.log("user:", user)
+
+    /*
+
+     */
+
+    var avatarFile = user.avatarPath
+    if (avatarFile === undefined) {
+        avatarFile = user.avatar
+    }
+
 
     // фетч запрос на сообщения установка шапки чата
     const chatChatSection = document.getElementById("chat_chat_section")
-    const headerHtml = chatTemplate({avatarSrc: serverLocate + "/" + user.avatarPath,
+    const headerHtml = chatTemplate({avatarSrc: serverLocate + "/" + avatarFile,
         nameWith:user.login})
     chatChatSection.innerHTML = headerHtml
 
@@ -266,6 +280,8 @@ function addNewMessage(newMessageData) {
        message
        */
 
+    console.log("Этот ли даилог:", chatStorage.Data.idSelectedUser , "  message sender", newMessageData.user_send.id)
+
     if (chatStorage.Data.idSelectedUser === newMessageData.user_send.id ||
         chatStorage.Data.idSelectedUser === newMessageData.user_rec.id ||
         CurrentUser.Data.id === newMessageData.user_send.id ||
@@ -289,7 +305,7 @@ function addNewMessage(newMessageData) {
         }
 
         const messageHTML = chatMessageTemplate({
-            dateTime: newMessageData.created_at, author: user_send.login,
+            dateTime: newMessageData.created_at, author: newMessageData.user_send.login,
             messageText: newMessageData.message, textClass: textClass, messageClass: messageClass
         })
 
@@ -303,9 +319,46 @@ function addNewMessage(newMessageData) {
         addArr.push(newMessageData)
         chatStorage.addMessagesToStorage(addArr)
 
+
+        var chatWithId = newMessageData.user_send.id
+        if (chatWithId === CurrentUser.Data.id) {
+            chatWithId = newMessageData.user_send.id
+        }
+
+
+        console.log("chatWithId", chatWithId)
+        console.log("chatStorage.containsId(chatWithId):", chatStorage.containsId(chatWithId))
+
+        if (chatStorage.containsId(chatWithId)) { // если его нет в контактах
+
+            // api/user/{id} - get
+            FetchModule.fetchRequest({url: serverLocate + "/api/user/" + chatWithId.toString(), method:"get"})
+                .then((response) => {
+                    return response.ok ? response : Promise.reject(response);
+                })
+                .then((response) => {
+                    return response.json();
+                })
+                .then((jsonAns) => {
+
+                    if (jsonAns.status !== 200)
+                        throw Error("not 200: api/user/{id} - get");
+
+                    console.log("get NEW CONTACT USER:", jsonAns.body)
+                    jsonAns.body.avatarPath = jsonAns.body.avatar // когда-то я убью себя за такое
+
+                    chatStorage.addUser(jsonAns.body);
+                    addNewContact(jsonAns.body)
+
+                })
+
+                .catch((error) => {
+                    console.log('Что-то пошло не так с инфы для новового контакта (новый контакт из-за нового сообщения):', error);
+                });
+
+        }
+
     }
-
-
 
 }
 
