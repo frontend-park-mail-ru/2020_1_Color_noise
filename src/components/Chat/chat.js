@@ -37,31 +37,7 @@ export function getUsersForChat() {
 
     createStartDialogScreen();
 
-    // Получение сообщений: api/chat/user/id?start=value1&limit=value2 - get
-    //  api/chat/user/id?start=value1&limit=value2 - get
-    FetchModule.fetchRequest({url: serverLocate + "/api/chat/messages/" + CurrentUser.Data.id + "?start=0&limit=100", method: 'get'})
-        .then((response) => {
-            return response.ok ? response : Promise.reject(response);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((jsonAns) => {
 
-            if (jsonAns.status !== 200)
-                throw Error("not 200: api/chat/user/id?start=0&limit=10");
-
-            if (jsonAns.body.length !== 0) {
-                console.log("MESSAGES:", jsonAns.body)
-                chatStorage.addMessagesToStorage(jsonAns.body)
-            }
-
-
-        })
-
-        .catch((error) => {
-            console.log('Что-то пошло не так с получением сообщений:', error);
-        });
 
 }
 
@@ -137,13 +113,44 @@ export function createDialog(user) {
     })
 
 
-    // показываем сообщения из хранилища
-    const messages = chatStorage.getMessagesFromStorage(user.id)
-    if (messages !== undefined ) {
-        showMessages(messages)
-    } else {
-        console.log("createDialog: нет сообщений с этим пользователем:", user.login)
-    }
+
+
+
+
+    // Получение сообщений: api/chat/user/id?start=value1&limit=value2 - get
+    //  api/chat/user/id?start=value1&limit=value2 - get
+    FetchModule.fetchRequest({url: serverLocate + "/api/chat/messages/" + user.id + "?start=0&limit=100", method: 'get'})
+        .then((response) => {
+            return response.ok ? response : Promise.reject(response);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((jsonAns) => {
+
+            if (jsonAns.status !== 200)
+                throw Error("not 200: api/chat/user/id?start=0&limit=10");
+
+            if (jsonAns.body.length !== 0) {
+                console.log("MESSAGES:", jsonAns.body)
+                chatStorage.addMessagesToStorage(jsonAns.body)
+
+                // показываем сообщения из хранилища
+                const messages = chatStorage.getMessagesFromStorage(user.id)
+                if (messages !== undefined ) {
+                    showMessages(messages)
+                } else {
+                    console.log("createDialog: нет сообщений с этим пользователем:", user.login)
+                }
+
+            }
+
+
+        })
+
+        .catch((error) => {
+            console.log('Что-то пошло не так с получением сообщений:', error);
+        });
 
 
 }
@@ -254,10 +261,12 @@ function addNewMessage(newMessageData) {
        */
 
     if (chatStorage.Data.idSelectedUser === newMessageData.user_send.id ||
-        chatStorage.Data.idSelectedUser === newMessageData.user_rec.id ||
+        //chatStorage.Data.idSelectedUser === newMessageData.user_rec.id ||
         CurrentUser.Data.id === newMessageData.user_send.id ||
         CurrentUser.Data.id === newMessageData.user_rec.id) {
 
+
+        console.log("сообщение для текущего чата!!!")
 
         let addArr = []
         addArr.push(newMessageData)
@@ -283,7 +292,7 @@ function addNewMessage(newMessageData) {
         chatHistory.appendChild(message)
 
     } else { // соообщение не для текущего чата
-
+        console.log("сообщение НЕ ДЛЯ текущего чата!!!")
         let addArr = []
         addArr.push(newMessageData)
         chatStorage.addMessagesToStorage(addArr)

@@ -40,7 +40,20 @@ class chatStorage {
                     this.MessageData[element.user_send.id] = []
                     this.MessageData[element.user_send.id].push(element)
                 } else {
-                    this.MessageData[element.user_send.id].push(element)
+
+                    var needAdd = true
+                    this.MessageData[element.user_send.id].forEach((checkUniq)=>{
+
+                        if (checkUniq.created_at === element.created_at) {
+                            needAdd = false
+                        }}
+                    )
+                    if (needAdd){
+                        this.MessageData[element.user_send.id].push(element)
+                    }
+
+
+
                 }
 
             } else { // если текущий пользователь отправитель
@@ -49,7 +62,20 @@ class chatStorage {
                     this.MessageData[element.user_rec.id] = []
                     this.MessageData[element.user_rec.id].push(element)
                 } else {
-                    this.MessageData[element.user_rec.id].push(element)
+
+
+                    var needAdd = true
+                    this.MessageData[element.user_rec.id].forEach((checkUniq)=>{
+
+                        if (checkUniq.created_at === element.created_at) {
+                            needAdd = false
+                        }}
+                    )
+                    if (needAdd){
+                        this.MessageData[element.user_rec.id].push(element)
+                    }
+
+
                 }
 
             }
