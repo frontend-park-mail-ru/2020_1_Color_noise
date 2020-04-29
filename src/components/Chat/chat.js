@@ -5,11 +5,16 @@ import chatNoSelectedTemplate from "./noSelectedUser.pug"
 import {default as Router} from "../../utils/router";
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import {default as WebSocketSingl} from './webSocket.js';
-import {serverLocateWebSocket, serverLocate} from  '../../utils/constants.js'
-import { FetchModule  } from '../Network/Network.js'
-import {default as chatStorage } from "./currentChat.js"
+import {serverLocate, serverLocateWebSocket} from '../../utils/constants.js'
+import {FetchModule} from '../Network/Network.js'
+import {default as chatStorage} from "./currentChat.js"
 
 export function getUsersForChat() {
+
+    chatStorage.Data.idSelectedUser = -1
+    chatStorage.Data.userContactsList = []
+
+
 
     FetchModule.fetchRequest({url: serverLocate + "/api/chat/users?start=0&limit=100", method:"get"})
         .then((response) => {
@@ -47,10 +52,19 @@ function showContacts(UserContactsArr) {
 
 
     const chatUserList = document.getElementById("chat_user_list")
-    UserContactsArr.forEach((element) => {
+    UserContactsArr.forEach( function(element)  {
 
+        if (element.id === CurrentUser.Data.id) {
+            return;
+        }
+
+
+        console.log("ADD USER FROM ARR: element:", element)
         if (!chatStorage.containsId(element.id)) {
             chatStorage.addUser(element);
+        } else {
+            console.log("он уже есть!")
+            return;
         }
 
         console.log("showContacts: element avatar:", serverLocate +"/"+ element.avatar)
@@ -75,8 +89,10 @@ function showContacts(UserContactsArr) {
 
 function createStartDialogScreen() {
     const chatChatSection = document.getElementById("chat_chat_section")
-    const noSelected = chatNoSelectedTemplate()
-    chatChatSection.innerHTML = noSelected
+    chatChatSection.innerHTML = chatNoSelectedTemplate()
+
+    setReturnBtn();
+
 }
 
 
@@ -88,7 +104,7 @@ export function createDialog(user) {
 
     chatStorage.Data.idSelectedUser = user.id
 
-    console.log("user:", user)
+    console.log("createDialog:: user:", user)
 
     /*
 
@@ -100,7 +116,7 @@ export function createDialog(user) {
     }
 
 
-    // фетч запрос на сообщения установка шапки чата
+    // установка шапки чата
     const chatChatSection = document.getElementById("chat_chat_section")
     const headerHtml = chatTemplate({avatarSrc: serverLocate + "/" + avatarFile,
         nameWith:user.login})
@@ -119,14 +135,27 @@ export function createDialog(user) {
     })
 
 
+
+    const inputMessage =  document.getElementById("message_to_send")
     // активируем кнопку отправки
     const sendMessageBtn = document.getElementById("chat_send_message_btn")
     sendMessageBtn.addEventListener("click", (evt)=>{
-        const inputMessage =  document.getElementById("message_to_send").value
-        if (inputMessage !== "") {
-            sendMessage(inputMessage, user.id)
+        if (inputMessage.value !== "") {
+            sendMessage(inputMessage.value, user.id)
+            inputMessage.value = ""
         }
     })
+
+    // активируем отпарвку через enter
+    inputMessage.addEventListener('keypress',  (e) =>{
+        if (e.key === 'Enter') {
+            if (inputMessage.value !== "") {
+                sendMessage(inputMessage.value, user.id)
+                inputMessage.value = ""
+            }
+        }
+    });
+
 
 
 
@@ -154,13 +183,12 @@ export function createDialog(user) {
                 // показываем сообщения из хранилища
                 const messages = chatStorage.getMessagesFromStorage(user.id)
                 if (messages !== undefined ) {
+
                     showMessages(messages)
                 } else {
                     console.log("createDialog: нет сообщений с этим пользователем:", user.login)
                 }
-
             }
-
 
         })
 
@@ -168,6 +196,10 @@ export function createDialog(user) {
             console.log('Что-то пошло не так с получением сообщений:', error);
         });
 
+
+
+
+    setReturnBtn();
 
 }
 
@@ -183,17 +215,28 @@ function showMessages(messageArr) {
 
     const chatHistory = document.getElementById("chat_history")
 
+    console.log("showMessages ARR:", messageArr);
+
+
+
     messageArr.forEach( (element)=> {
 
 
-        console.log("chatStorage.containsId(element.user_send.id):", chatStorage.containsId(element.user_send.id))
+        //console.log("chatStorage.containsId(element.user_send.id):", chatStorage.containsId(element.user_send.id))
 
         if (!chatStorage.containsId(element.user_send.id) && element.user_send.id !== CurrentUser.Data.id) {
             console.log("ADD NEW CONTACT:", element.user_send.login)
             chatStorage.addUser(element.user_send);
             addNewContact(element.user_send);
+            return // не надо добавлять так как сейчас открыт другой чат
         }
 
+
+        if (element.user_send.id === element.user_rec.id ) {
+            return; // последнее почему-то дублируется ИЗ-ЗА этого условия невозможен чат с самим собой!
+        }
+
+      //  console.log("add message:", element);
 
 
         // данные классы определяютк как будет выглядеть сообщение в чате
@@ -211,6 +254,11 @@ function showMessages(messageArr) {
         message.innerHTML = messageHTML
         chatHistory.appendChild(message)
     })
+
+
+    // скрол по истории вниз
+    const chatHistoryClassForScroll = document.getElementsByClassName("chat_history")[0]
+    chatHistoryClassForScroll.scrollTop = chatHistoryClassForScroll.scrollHeight;
 
 }
 
@@ -313,6 +361,13 @@ function addNewMessage(newMessageData) {
         message.innerHTML = messageHTML
         chatHistory.appendChild(message)
 
+
+        // скрол по истории вниз
+        const chatHistoryClassForScroll = document.getElementsByClassName("chat_history")[0]
+        chatHistoryClassForScroll.scrollTop = chatHistoryClassForScroll.scrollHeight;
+
+
+
     } else { // соообщение не для текущего чата
         console.log("сообщение НЕ ДЛЯ текущего чата!!!")
         let addArr = []
@@ -329,7 +384,7 @@ function addNewMessage(newMessageData) {
         console.log("chatWithId", chatWithId)
         console.log("chatStorage.containsId(chatWithId):", chatStorage.containsId(chatWithId))
 
-        if (chatStorage.containsId(chatWithId)) { // если его нет в контактах
+        if (!chatStorage.containsId(chatWithId)) { // если его нет в контактах
 
             // api/user/{id} - get
             FetchModule.fetchRequest({url: serverLocate + "/api/user/" + chatWithId.toString(), method:"get"})
@@ -370,6 +425,19 @@ function sendMessage(message, userId) {
     };
     let json = JSON.stringify(jsonMsg);
     WebSocketSingl.webSocketSingl.send(json);
+
 }
 
+function setReturnBtn() {
 
+    const returnBtnId = document.getElementById("chat_return_btn_id")
+
+    returnBtnId.addEventListener("click", (evt)=>{
+        window.history.back();
+    })
+    /*
+    если пользователь накликал много раз на иконку чата и потом нажал "назад"
+    то он будет кликать назад столько же раз назад! крч надо чуть подфиксить роутер
+     */
+
+}

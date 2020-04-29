@@ -13,11 +13,14 @@ class chatStorage {
     }
 
     containsId(id) {
+        let isContnains = false
         this.Data.userContactsList.forEach( (element) => {
-            if (element.id === id)
-                return false
+            if (element.id === id) {
+                isContnains = true
+            }
+
         })
-        return true
+        return isContnains
     }
 
     addUser(user) {

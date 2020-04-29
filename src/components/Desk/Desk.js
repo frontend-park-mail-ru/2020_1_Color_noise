@@ -298,59 +298,72 @@ export function setSearch() {
     const searchInput = document.getElementById("search_main_input");
 
     searchImg.addEventListener('click', (evt) => {
-
-
-        let isUserSearch = false
-        const selectSearch = document.getElementById("select_search")
-        if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-            isUserSearch = true
-        }
-
-        const searchValue = searchInput.value.trim();
-        let searchObj = "pin";
-
-        if (isUserSearch){
-            searchObj = "user"
-        }
-
-        const start = 0;
-        const limit = 50;
-        FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
-                searchValue + "&start=" + start + "&limit=" + limit, method:'get'})
-            .then((res) => {
-                return res.ok ? res : Promise.reject(res);
-            })
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-                if (result.status !== 200) {
-                    setInfoDesk("Ничего не найдено");
-                } else {
-
-                        if (result.body.length === 0) {
-                            setInfoDesk("Ничего не найдено");
-                        }
-                        if (isUserSearch) {
-                            console.log("show users:", result.body)
-                            showUserSearch(result.body)
-                        } else {
-                            getInfoForShowing(result.body);
-                        }
-
-
-                }
-            })
-            .catch( (error) => {
-                console.log("ERR_SEARCH_PIN:", error);
-                setInfoDesk("Что-то пошло не так с поиском пинов");
-            });
-
+        searchEvent()
     })
+
+    searchInput.addEventListener('keypress',  (e) =>{
+        if (e.key === 'Enter') {
+            searchEvent()
+        }
+    });
+
+
+
 }
 
 
+function searchEvent() {
 
+    unSetScroll();
+    const searchInput = document.getElementById("search_main_input");
+
+    let isUserSearch = false
+    const selectSearch = document.getElementById("select_search")
+    if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
+        isUserSearch = true
+    }
+
+    const searchValue = searchInput.value.trim();
+    let searchObj = "pin";
+
+    if (isUserSearch){
+        searchObj = "user"
+    }
+
+    const start = 0;
+    const limit = 50;
+    FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
+            searchValue + "&start=" + start + "&limit=" + limit, method:'get'})
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            if (result.status !== 200) {
+                setInfoDesk("Ничего не найдено");
+            } else {
+
+                if (result.body.length === 0) {
+                    setInfoDesk("Ничего не найдено");
+                }
+                if (isUserSearch) {
+                    console.log("show users:", result.body)
+                    showUserSearch(result.body)
+                } else {
+                    getInfoForShowing(result.body);
+                }
+
+
+            }
+        })
+        .catch( (error) => {
+            console.log("ERR_SEARCH_PIN:", error);
+            setInfoDesk("Что-то пошло не так с поиском пинов");
+        });
+
+}
 
 
 
