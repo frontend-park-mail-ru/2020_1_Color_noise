@@ -231,6 +231,7 @@
     margin-right: 10px;
     vertical-align: sub;
     margin-left: 5px;
+    margin-bottom: 10px;
 
 }
 
@@ -295,4 +296,24 @@
 
 .message_data_time {
     margin-right: 10px;
+}
+
+.chat_return_btn {
+    background: linear-gradient(90deg, rgba(214,39,5,1) 0%, rgba(207,35,8,1) 50%);
+    border-radius: 10px;
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 10px 10px 10px;
+    width: 100px;
+    margin-right: 15px;
+    vertical-align: sub;
+    margin-left: 5px;
+    margin-top: 10px;
+    text-align: center;
+    float: right;
+    display: block;
+
 }
