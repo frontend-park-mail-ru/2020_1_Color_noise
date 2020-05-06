@@ -1,5 +1,4 @@
-import { setError, createAutorization } from "../components/Menu/Menu.js";
-import { FetchModule } from "../components/Network/Network";
+import FetchModule from "../components/Network/Network";
 import { createProfile } from "../components/Profile/Profile";
 import { serverLocate } from "../utils/constants";
 import { unSetScroll } from "../components/Desk/Desk.js";
@@ -20,11 +19,11 @@ export function createProfileView(state) {
                 createProfile(state.id, state);
             }
             else {
-                createAutorization();
+                //createAutorization();
             }
         })
         .catch(function(error) {
             console.log("CRETE PROFILE ERR:", error.toString());
-            setError();
+            //setError();
         });
 }

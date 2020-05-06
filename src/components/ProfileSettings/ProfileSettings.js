@@ -1,9 +1,9 @@
 import ProfileTemplate from './profileSetting.pug';
-import { validators } from '../Validation/Validation';
-import { FetchModule } from  '../Network/Network.js'
-import { serverLocate } from '../../utils/constants.js'
-import {default as CurrentUser} from '../../utils/userDataSingl.js';
-import { createProfile } from '../Profile/Profile.js'
+import { validators } from '../../utils/validation';
+import FetchModule from  '../Network/Network'
+import { serverLocate } from '../../utils/constants'
+import { default as CurrentUser } from '../../utils/userDataSingl';
+import { createProfile } from '../Profile/Profile'
 import Back from "../../images/004-back.svg";
 
 
@@ -141,13 +141,3 @@ export const createProfileSettings = () => {
     })
 
 };
-
-export function setInfo(text) {
-    const content = document.getElementById('banner');
-    content.innerHTML = "";
-
-    const err = document.createElement('h4');
-    err.textContent = text;
-
-    content.appendChild(err);
-}

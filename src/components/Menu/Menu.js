@@ -8,7 +8,7 @@ import notifImage from '../../images/notifIcon.svg';
 import profileImage from '../../images/profileIcon.svg';
 import plusImage from '../../images/plusIcon.svg';
 
-import { showLoginModal, showRegModal, showChooseModal, createInfoModal } from "../Modal/modal"
+import { showLoginModal, showRegModal, showChooseModal, showInfoModal } from "../Modal/modal"
 import Router from "../../utils/router"
 import { Requests } from '../Network/Requests'
 
@@ -35,7 +35,7 @@ const addLogin2 = () => {
     if (Requests.getUserProfile(false)) {
         addLogin();
     } else {
-        createInfoModal('Login auth error');
+        showInfoModal('Login auth error');
     }
 };
 
@@ -74,7 +74,7 @@ const addReg = () => {
 
     const regModal  = document.getElementById('regModal');
     regModal.addEventListener('click', showRegModal);
-}
+};
 
 const goMain = (evt) => {
     evt.preventDefault();
@@ -94,24 +94,4 @@ const goNotif = (evt) => {
 const goProfile = (evt) => {
     evt.preventDefault();
     Router.go('/profile','Profile');
-};
-
-
-// to utils
-export const setError = () => {
-    const content = document.getElementById('content');
-    content.innerHTML = "";
-    const err = document.createElement('h1');
-    err.textContent = 'Что-то пошло не так :(';
-    content.appendChild(err);
-};
-
-export const createAutorization = () => {
-    //evt.preventDefault();
-    Router.go("/authorizationOrRegistration", "AuthorizationOrRegistration");
-};
-
-const createLogin = (evt) => {
-    evt.preventDefault();
-    Router.go('/login','Login');
 };

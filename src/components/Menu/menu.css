@@ -4,7 +4,6 @@
 	width: 100%;
 	text-align: center;
 	display: table;
-	margin-bottom: 10px;
 }
 
 .menu img {
@@ -22,11 +21,10 @@
 	vertical-align: middle;
 	width: 100%;
 	text-align: center;
-	min-width: 120px;
+	min-width: 200px;
 }
 
 .menu .find .findPin {
-	min-width: 100px;
 	background: #f2f3f2;
 	border: #8A8A8A thin;
 	height: 40px;
@@ -42,6 +40,12 @@
 .menu .thirdpart .icons {
 	 min-width: 160px;
  }
+
+.icons img{
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
 
 .menu .thirdpart .buttons {
 	min-width: 270px;
@@ -67,31 +71,46 @@
 	background: #B50B0B;
 }
 
-@media (max-device-width: 400px) and (orientation: portrait) {
+@media (max-width: 700px) {
 	.menu .logo {
 		display: inline-block;
 	}
 
 	.menu .find {
 		display: inline-block;
-		width: 80%;
+		width: 90%;
 	}
 
 	.menu .thirdpart {
 		display: inline-block;
 	}
-
-	.menu .logo img {
-		width: 400px;
-	}
-
-	.menu .find .findPin {
-		height: 80px;
-	}
-
-	.menu .thirdpart .icons img {
-		width: 80px;
-		height: 80px;
-	 }
 }
+
+/*@media (max-device-width: 400px) and (orientation: portrait) {*/
+/*	.menu .logo {*/
+/*		display: inline-block;*/
+/*	}*/
+
+/*	.menu .find {*/
+/*		display: inline-block;*/
+/*		width: 80%;*/
+/*	}*/
+
+/*	.menu .thirdpart {*/
+/*		display: inline-block;*/
+/*	}*/
+
+/*	.menu .logo img {*/
+/*		width: 400px;*/
+/*	}*/
+
+/*	.menu .find .findPin {*/
+/*		height: 80px;*/
+/*	}*/
+
+/*	.menu .thirdpart .icons img {*/
+/*		width: 80px;*/
+/*		height: 80px;*/
+/*	 }*/
+/*}*/
 

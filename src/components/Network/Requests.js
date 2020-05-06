@@ -1,5 +1,5 @@
-import {default as CurrentUser} from '../../utils/userDataSingl.js';
-import {FetchModule} from './Network.js'
+import { default as CurrentUser } from '../../utils/userDataSingl.js';
+import FetchModule from './Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { default as Router} from "../../utils/router.js"
 
@@ -22,7 +22,6 @@ export class Requests {
             .then((result) => {
                 if (result.status === 401) {
                     Router.go("/", "Zinterest", null, needPush);
-                    //Router.go("/authorizationOrRegistration", "AuthorizationOrRegistration");
                     throw new Error("No auth");
                 }
                 CurrentUser.Data.id = result.body.id;
@@ -36,12 +35,6 @@ export class Requests {
 
                 console.log("MY CurrentUser.Data.token:", CurrentUser.Data.token);
                 let url = window.location.pathname;
-
-                // чтоб перенаправляло после регистрации
-                // (CurrentUser.Data.login !== "null") -> чтобы неаторизованных оставляло на регистрации или авторизации
-                // if (CurrentUser.Data.login !== "null"  && (url === "/registration" || url === "/authorization") ) {
-                //     url = "/";
-                // }
 
                 Router.go(url, "", null, needPush);
                 return true;

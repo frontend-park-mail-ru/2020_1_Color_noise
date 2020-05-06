@@ -2,4 +2,5 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	margin: 0px;
 	padding: 0px;
+	min-width: 320px;
 }

@@ -1,4 +1,4 @@
-import {FetchModule} from "../Network/Network.js";
+import FetchModule from "../../components/Network/Network.js";
 import {serverLocate} from "../../utils/constants.js";
 import CommentTemplate from "./comment.pug";
 

@@ -3,7 +3,7 @@ import {default as CurrentUser} from "../../utils/userDataSingl";
 /**
  *  network logic
  */
-export class FetchModule {
+export default class FetchModule {
 	/**
 	 * Post request with json
 	 *

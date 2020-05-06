@@ -6,7 +6,7 @@ import {default as Router} from "../../utils/router";
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import {default as WebSocketSingl} from './webSocket.js';
 import {serverLocateWebSocket, serverLocate} from  '../../utils/constants.js'
-import { FetchModule  } from '../Network/Network.js'
+import FetchModule from '../Network/Network.js'
 import {default as chatStorage } from "./currentChat.js"
 
 export function getUsersForChat() {
