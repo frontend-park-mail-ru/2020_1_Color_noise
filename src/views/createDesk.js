@@ -4,7 +4,6 @@ import {getMainPins, getSubPins, setScroll, setSearch, getUserPins, getBoardPins
 import {clearColumns, unSetScroll} from "../components/Desk/Desk";
 import {default as CurrentDesk} from "../components/Desk/CurrentDesk";
 import {serverLocate} from "../utils/constants";
-import PlusImage from "../images/002-plus.svg";
 
 
 export function createDeskView() {

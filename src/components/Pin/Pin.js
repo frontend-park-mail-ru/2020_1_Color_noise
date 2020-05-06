@@ -1,8 +1,8 @@
 import PinTemplate from "./pin.pug";
-import { FetchModule  } from '../Network/Network.js'
+import FetchModule from '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { default as CurrentUser } from '../../utils/userDataSingl.js';
-import { validateCreateBoard, validateAddPinComment } from '../Validation/Validation.js'
+import { validateCreateBoard, validateAddPinComment } from '../../utils/validation.js'
 import { createPinComments } from '../Comment/Comment.js'
 import { default as Router} from "../../utils/router.js"
 import {default as CurrentComments} from "../Comment/CurrentComments.js";

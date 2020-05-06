@@ -1,13 +1,6 @@
-import oneUserTemplate from "./oneUserInContactList.pug";
-import chatTemplate from "./chatSection.pug";
-import chatMessageTemplate from "./message.pug"
-import chatNoSelectedTemplate from "./noSelectedUser.pug"
-import {default as Router} from "../../utils/router";
-import {default as CurrentUser} from '../../utils/userDataSingl.js';
-import {default as WebSocketSingl} from './webSocket.js';
-import {serverLocate, serverLocateWebSocket} from '../../utils/constants.js'
-import {FetchModule} from '../Network/Network.js'
-import {default as chatStorage} from "./currentChat.js"
+import {serverLocateWebSocket, serverLocate} from  '../../utils/constants.js'
+import FetchModule from '../Network/Network.js'
+import {default as chatStorage } from "./currentChat.js"
 
 export function getUsersForChat() {
 

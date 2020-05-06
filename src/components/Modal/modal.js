@@ -6,9 +6,10 @@ import regTemplate from "./reg.pug";
 
 import logoImage from '../../images/logo.svg';
 
-import { FetchModule } from "../Network/Network";
+import FetchModule from "../Network/Network";
 import { serverLocate } from "../../utils/constants";
-import { validators } from '../Validation/Validation';
+import { validators } from '../../utils/validation';
+import Router from "../../utils/router";
 
 export const showLoginModal = () => {
     const modal = document.getElementById('modal');
@@ -46,17 +47,16 @@ export const showChooseModal = () => {
     backModal.addEventListener('click', hideModal);
 
     const pinLink = document.getElementById('pinLink');
-    pinLink.addEventListener('click', goPin);
+    pinLink.addEventListener('click', goNewPin);
 
     const newDeskModal = document.getElementById('newDeskModal');
     newDeskModal.addEventListener('click', deskCreateModal);
 };
 
-import { createPinTmp} from "../Profile/Profile";
-
-const goPin = (evt) => {
+const goNewPin = (evt) => {
     evt.preventDefault();
-    createPinTmp();
+    hideModal();
+    Router.go("/newPin","New Pin");
 };
 
 const deskCreateModal = (evt) => {
@@ -78,7 +78,7 @@ const sendLoginFunc = (evt) => {
     const pass_valid = validators.password(pass);
 
     if (!login_valid || !pass_valid) {
-        setInfoTitle('Некорректный логин или пароль');
+        setInfoModal('Некорректный логин или пароль');
         return;
     }
 
@@ -98,14 +98,14 @@ const sendLoginFunc = (evt) => {
         return response.json();
     }).then((result) => {
         if (result.status === 200) {
-            createInfoModal('С возвращением!');
+            showInfoModal('С возвращением!');
             const loginPart = document.getElementById('loginPart');
             loginPart.dispatchEvent(new Event('login'));
         } else {
-            setInfoTitle('Неверный логин или пароль');
+            setInfoModal('Неверный логин или пароль');
         }
     }).catch(function(error) {
-            setInfoTitle('Ошибка отправки, попробуйте еще раз');
+            setInfoModal('Ошибка отправки, попробуйте еще раз');
     });
 };
 
@@ -119,13 +119,13 @@ const sendRegFunc = (evt) => {
     const pass_valid = validators.password(pass);
 
     if (!email_valid) {
-        setInfoTitle('Введите корректный email');
+        setInfoModal('Введите корректный email');
         return;
     } else if (!login_valid) {
-        setInfoTitle('Логин должен состоять из более,<br>чем из трех символов: a-z, A-Z, 0-9, _');
+        setInfoModal('Логин должен состоять из более,<br>чем из трех символов: a-z, A-Z, 0-9, _');
         return;
     } else if (!pass_valid) {
-        setInfoTitle('Пароль должен состоять из шести символов или более символов');
+        setInfoModal('Пароль должен состоять из шести символов или более символов');
         return;
     }
 
@@ -146,18 +146,18 @@ const sendRegFunc = (evt) => {
         return response.json();
     }).then((result) => {
         if (result.status === 201) {
-            createInfoModal('Регистрация завершена!<br>Добро пожаловать!');
+            showInfoModal('Регистрация завершена!<br>Добро пожаловать!');
             const loginPart = document.getElementById('loginPart');
             loginPart.dispatchEvent(new Event('login'));
         } else if (result.status === 401 && result.body.error === "login") {
-            setInfoTitle('Пользователь с таким логином уже есть');
+            setInfoModal('Пользователь с таким логином уже есть');
         }  else if (result.status === 401 && result.body.error === "email") {
-            setInfoTitle('Пользователь с такой почтой уже есть');
+            setInfoModal('Пользователь с такой почтой уже есть');
         } else {
-            setInfoTitle('Ошибка регистрации');
+            setInfoModal('Ошибка регистрации');
         }
     }).catch(function(error) {
-            setInfoTitle('Ошибка отправки, попробуйте еще раз');
+            setInfoModal('Ошибка отправки, попробуйте еще раз');
     });
 };
 
@@ -165,8 +165,8 @@ const sendDeskFunc = (evt) => {
     const name = document.getElementById('deskName').value;
     const description = document.getElementById('deskDesc').value;
 
-    if (name.length <= 6) {
-        setInfoTitle("Название доски должно содержать более 6 символов");
+    if (name.length === 0) {
+        setInfoModal("Название доски не может быть пустым");
         return;
     }
 
@@ -183,18 +183,18 @@ const sendDeskFunc = (evt) => {
         ).then((res) => {
             return res.ok ? res : Promise.reject(res);
         }).then((response) => {
-                return response.json();
+            return response.json();
         }).then((result) => {
             if (result.status === 201) {
-                createInfoModal('Новая доска создана');
+                showInfoModal('Новая доска создана');
                 // if (profile_b === true) {
                 //     createDesks(CurrentUser.Data.id);
                 // }
             } else {
-                setInfoTitle('Ошибка обработки, попробуйте еще раз');
+                setInfoModal('Ошибка обработки, попробуйте еще раз');
             }
         }).catch(function(error) {
-            setInfoTitle('Ошибка отправки, попробуйте еще раз');
+            setInfoModal('Ошибка отправки, попробуйте еще раз');
         });
 };
 
@@ -203,9 +203,9 @@ const hideModal = (evt) => {
     modal.innerHTML = "";
 };
 
-export const createInfoModal = (info) => {
+export const showInfoModal = (info) => {
     const modal = document.getElementById('modal');
-    modal.innerHTML = showInfoTemplate({ logoImage : logoImage, infoMessage : info });
+    modal.innerHTML = showInfoTemplate({ logoImage : logoImage, infoModalMessage : info });
 
     const closeInfo  = document.getElementById('closeInfo');
     closeInfo.addEventListener('click', hideModal);
@@ -214,8 +214,25 @@ export const createInfoModal = (info) => {
     backModal.addEventListener('click', hideModal);
 };
 
-export const setInfoTitle = (info) => {
-    const infoMessage = document.getElementById('infoMessage');
+export const setInfoModal = (info) => {
+    const infoMessage = document.getElementById('infoModalMessage');
     infoMessage.innerHTML = info;
 };
 
+export const setInfoContent = (text = 'Что-то пошло не так :(') => {
+    const content = document.getElementById('content');
+    content.innerHTML = "";
+    const err = document.createElement('h2');
+    err.textContent = text;
+    content.appendChild(err);
+};
+
+export const setInfoPage = (info) => {
+    const infoMessage = document.createElement('div');
+    infoMessage.className = 'mini_title';
+    infoMessage.innerHTML = info;
+
+    const infoMessageBlock = document.getElementById('infoPageMessage');
+    infoMessageBlock.innerHTML = "";
+    infoMessageBlock.appendChild(infoMessage);
+};

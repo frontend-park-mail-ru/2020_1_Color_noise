@@ -1,7 +1,7 @@
 import {addCard} from '../Card/Card';
 import './desk.css';
 import findUserTemplate from "./findUser.pug"
-import {FetchModule} from '../Network/Network.js'
+import FetchModule from '../Network/Network.js'
 import {serverLocate} from '../../utils/constants.js'
 import {default as CurrentDesk} from './CurrentDesk.js';
 

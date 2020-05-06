@@ -31,55 +31,6 @@
 .gray_btn:hover {
 	background: #8A8A8A;
 }
-.create_pin_all {
-	width: 100%;
-	background: #E9E7E7;
-	margin-top: -10px;
-	padding-top: 30px;
-	padding-bottom: 30px;
-}
-.create_pin {
-	margin: auto;
-	background: #FFF;
-	padding: 10px;
-	width: 800px;
-	min-height: 600px;
-	border-radius: 15px;
-}
-
-.create_pin .title {
-	text-align: center;
-	font-weight: bold;
-	font-size: 25px;
-}
-.create_pin .add_img {
-	vertical-align: top;
-	display: inline-block;
-	width: 300px;
-	height: 400px;
-	margin-left: 50px;
-}
-
-.create_pin .add_img img {
-	border-radius: 18px;
-	box-shadow: 0 0 50px 0 rgba(0,0,0,0.20);
-	width: 320px;
-}
-
-.create_pin .add_text {
-	vertical-align: top;
-	margin-left: 50px;
-	display: inline-block;
-	width: 300px;
-}
-
-.create_pin .add_img .label {
-	vertical-align: middle;
-	margin-top: auto;
-	margin-bottom: auto;
-	text-align: center;
-	margin-top: 190px;
-}
 
 .profile .avatar {
 	margin: auto;

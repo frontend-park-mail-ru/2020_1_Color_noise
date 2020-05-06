@@ -22,5 +22,4 @@ export function CreateChatView(user = null) {
         // сюда проходит из роутера
         addNewContact(user)
     }
-
 }

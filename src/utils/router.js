@@ -1,26 +1,21 @@
-import  { createRegistration } from '../views/createRegistration.js'
-import { createLoginView } from "../views/createLogin.js"
-import { Requests } from '../components/Network/Requests.js'
-import {createProfileSettings} from "../components/ProfileSettings/ProfileSettings.js";
-import { createMenu } from '../components/Menu/Menu.js'
-import { createContent } from "../components/Content/Content.js";
-import { CreateChatView } from "../views/createChat.js"
-import { createProfileView } from "../views/createProfile.js";
-import { createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView } from "../views/createDesk.js";
-import { createNotificationsView } from "../views/createNotifications.js"
-import { createPinPageFromRequest } from "../components/Pin/Pin.js"
-import { authorizationOrRegistrationView } from "../views/createAuthorizationOrRegistration.js"
+import { Requests } from '../components/Network/Requests'
+import { createProfileSettings } from "../components/ProfileSettings/ProfileSettings";
+import { createMenu } from '../components/Menu/Menu'
+import { createContent } from "../components/Content/Content";
+import { CreateChatView } from "../views/createChat"
+import { createProfileView } from "../views/createProfile";
+import { createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView } from "../views/createDesk";
+import { createNotificationsView } from "../views/createNotifications"
+import { createNewPinView} from "../views/createNewPin";
+import { createPinPageFromRequest } from "../components/Pin/Pin"
 
 class Router {
     constructor() {
         this.routs = {
             "/": createDeskView,
             "/subscriptions": createSubDeskView,
-            "/main": createDeskView,
-            "/registration": createRegistration,
-            "/authorization": createLoginView,
             "/profile": createProfileView,
-            "/authorizationOrRegistration":authorizationOrRegistrationView,
+            "/newPin": createNewPinView,
             "/profileSettings": createProfileSettings,
             "/chats": CreateChatView,
             "/notifications":  createNotificationsView,
