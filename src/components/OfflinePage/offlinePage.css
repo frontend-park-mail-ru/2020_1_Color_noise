@@ -1,0 +1,31 @@
+.offline_page_div {
+    --pin-bg-color: #f2f3f2;
+    background:  var(--pin-bg-color);
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 30px;
+}
+
+.offline_page_msg{
+
+}
+
+.offline_page_btn{
+    width: 300px;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 16px;
+    height: 40px;
+    border: none;
+    background: #F01313;
+    border-radius: 17px;
+    display: block;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
