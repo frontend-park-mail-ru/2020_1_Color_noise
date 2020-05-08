@@ -8,6 +8,8 @@ import { createSubDeskView, createDeskView, createUserPinsDeskView, createBoardD
 import { createNotificationsView } from "../views/createNotifications"
 import { createNewPinView} from "../views/createNewPin";
 import { createPinPageFromRequest } from "../components/Pin/Pin"
+import {createOfflinePage} from "../components/OfflinePage/OfflinePage.js"
+
 
 class Router {
     constructor() {
@@ -39,6 +41,12 @@ class Router {
     }
 
     go(path, title, state=null, needPush) {
+
+        if (!navigator.onLine) {
+            createOfflinePage(path, title, state=null, needPush)
+            return;
+        }
+
         if (needPush === undefined || needPush === true) {
             console.log("GO path:" + path);
             if (state == null)
@@ -114,6 +122,12 @@ class Router {
     }
 
     start() {
+
+        if (!navigator.onLine) {
+            createOfflinePage("createMenu")
+            return;
+        }
+
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
         createContent(); // структура
         Requests.getUserProfile(false).then((result) => {
