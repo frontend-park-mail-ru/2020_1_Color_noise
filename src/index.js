@@ -7,8 +7,13 @@ if ('serviceWorker' in navigator) {
         // 'service-worker.js'
         //'http://localhost:8080' +'/public/service-worker.js'
         navigator.serviceWorker.register('service-worker.js')
-            .then(console.log)
-            .catch(console.error);
+            .then( obj => {
+                console.log("serviceWorker register!")
+                console.log("obj:", obj)
+            })
+            .catch(err => {
+                console.log("serviceWorker err:", err)
+            });
     });
 }
 

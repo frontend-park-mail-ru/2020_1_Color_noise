@@ -18,13 +18,18 @@ module.exports = {
       // Without it we got 404 when trying to open paths like /topics.
       app.get("*", (req, res, next) => {
         console.log(req, res);
-        if (req.url.endsWith("main.js")) {
-          req.url = "/main.js";
-        } else {
-          if (!req.url.endsWith(".svg")) {
-            req.url = "/";
-          }
+        if ( ! (req.url.endsWith(".svg")
+            || req.url.endsWith(".js")
+            || req.url.endsWith(".ico")
+            || req.url.endsWith(".js.map")) ) {
+          req.url = "/"
         }
+        /*
+        if (req.url.endsWith("service-worker.js")) {
+          req.url = "/service-worker.js";
+        } else
+         */
+
         next("route");
       });
     }
@@ -85,27 +90,33 @@ module.exports = {
 
     new WorkboxPlugin.GenerateSW({
 
+      directoryIndex: 'index.html',
+      clientsClaim: true, // true - захват управления клиентом без перезагрузки
 
-
-      // Do not precache images
-      exclude: [/\.(?:png|jpg|jpeg|svg)$/],
+      include: [/\.jpg$/, /\.png$/, /\.jpeg$/, /\.svg$/,  /\.html$/,  /\.js$/,  /\.css$/],
 
       // Define runtime caching rules.
+      // runtimeCaching - правила действующие во время  выполнения приложения
       runtimeCaching: [{
         // Match any request that ends with .png, .jpg, .jpeg or .svg.
-        urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
-
+        urlPattern: /\.(?:png|jpg|jpeg|svg|html|js|css)$/,
         // Apply a cache-first strategy.
         handler: 'CacheFirst',
 
         options: {
           // Use a custom cache name.
           cacheName: 'images',
-
-          // Cache 50 images.
           expiration: {
-            maxEntries: 50,
+            maxEntries: 50, // лимит кешированных записей, если достигнут лимит
+            // время жизни кеша, после которого кеш нужно обновлять
+            maxAgeSeconds: 86400,
           },
+          cacheableResponse: {
+            statuses: [0, 200],  // допустимые коды статусы ответа сервера
+          },
+
+
+
         },
       }],
     })
