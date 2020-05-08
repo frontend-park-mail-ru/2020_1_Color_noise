@@ -1,5 +1,6 @@
 import './index.css'
 import Router from "./utils/router.js"
+import {createOfflinePage} from "./components/OfflinePage/OfflinePage.js"
 
 if ('serviceWorker' in navigator) {
     window.addEventListener("load", () => {
@@ -11,6 +12,14 @@ if ('serviceWorker' in navigator) {
             .catch(err => {
                 console.log("serviceWorker err:", err)
             });
+
+        if (!navigator.onLine) {
+            console.log("offline load path:", window.location.pathname)
+            createOfflinePage(window.location.pathname, document.title);
+        }
+
+
+
     });
 }
 
