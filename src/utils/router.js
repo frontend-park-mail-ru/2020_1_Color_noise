@@ -115,8 +115,8 @@ class Router {
                 createDeskView();
             }
         } else {
-            //console.log("ROUTE FUNC:",func)
-
+            console.log("ROUTE FUNC:",func)
+            console.log("ROUTE state:",state)
             func(state);
         }
     }

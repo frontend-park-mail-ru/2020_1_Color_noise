@@ -24,11 +24,9 @@ module.exports = {
             || req.url.endsWith(".js.map")) ) {
           req.url = "/"
         }
-        /*
-        if (req.url.endsWith("service-worker.js")) {
-          req.url = "/service-worker.js";
-        } else
-         */
+        //if (req.url.endsWith(".js"))
+        //  req.url = "/main.js"
+
 
         next("route");
       });
@@ -99,7 +97,7 @@ module.exports = {
       // runtimeCaching - правила действующие во время  выполнения приложения
       runtimeCaching: [{
         // Match any request that ends with .png, .jpg, .jpeg or .svg.
-        urlPattern: /\.(?:png|jpg|jpeg|svg|html|js|css)$/,
+        urlPattern: /(?:chats|notifications|pin\/[*]|\.(?:png|jpg|jpeg|svg|html|js|css|))|$/,
         // Apply a cache-first strategy.
         handler: 'CacheFirst',
 
