@@ -97,7 +97,7 @@ module.exports = {
       // runtimeCaching - правила действующие во время  выполнения приложения
       runtimeCaching: [{
         // Match any request that ends with .png, .jpg, .jpeg or .svg.
-        urlPattern: /(?:chats|notifications|pin\/[*]|\.(?:png|jpg|jpeg|svg|html|js|css|))|$/,
+        urlPattern: /(?:chats|notifications|profile|newPin|main|pin\/[*]|\.(?:png|jpg|jpeg|svg|html|js|css|))|$/,
         // Apply a cache-first strategy.
         handler: 'CacheFirst',
 
