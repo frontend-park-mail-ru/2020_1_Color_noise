@@ -1,6 +1,8 @@
 import {serverLocateWebSocket, serverLocate} from  '../../utils/constants.js'
 import FetchModule from '../Network/Network.js'
 import {default as chatStorage } from "./currentChat.js"
+import {default as CurrentDesk} from "../Desk/CurrentDesk";
+import chatNoSelectedTemplate from "./noSelectedUser.pug";
 
 export function getUsersForChat() {
 
@@ -432,5 +434,33 @@ function setReturnBtn() {
     если пользователь накликал много раз на иконку чата и потом нажал "назад"
     то он будет кликать назад столько же раз назад! крч надо чуть подфиксить роутер
      */
+
+}
+
+
+
+export function getStickersForChat() {
+
+    // Получение стикеров: api/chat/stickers - get
+
+    FetchModule.fetchRequest({ url: serverLocate + '/api/chat/stickers', method:'get',})
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            console.log("stickers:", result);
+            if (result.body.length === 0) {
+                console.log("no stickers in response")
+                return;
+            }
+            console.log("stickers:",result.body)
+        })
+        .catch(function(error) {
+            console.log("ERR get stickers:", error);
+        });
+
 
 }
