@@ -35,7 +35,8 @@ workbox.precaching.precacheAndRoute([
     {url: '/chats', revision: null},
     {url: '/notifications', revision: null},
     {url: '/profile', revision: null},
-    {url: '/chatnewPins', revision: null},
+    {url: '/chat', revision: null},
+    {url: '/newPins', revision: null},
 ]);
 
 
