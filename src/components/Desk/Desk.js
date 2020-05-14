@@ -307,8 +307,6 @@ export function setSearch() {
 
 
     setDateBtns();
-    setHotBtn();
-
 }
 
 
@@ -344,7 +342,6 @@ function searchEvent() {
             if (result.status !== 200) {
                 setInfoDesk("Ничего не найдено");
             } else {
-
                 if (result.body.length === 0) {
                     setInfoDesk("Ничего не найдено");
                 }
@@ -354,7 +351,6 @@ function searchEvent() {
                 } else {
                     getInfoForShowing(result.body);
                 }
-
 
             }
         })
@@ -421,20 +417,50 @@ function setInfoDesk(message) {
 
 
 
-// при нажатии на кнопку поиска по дате появлются кнопки "за день" "за неделю" "за месяц" календарь и от этой даты
+
 function setDateBtns(){
 
-    const searchDatePins = document.getElementById("search_date_pins")
+    //const searchDatePins = document.getElementById("search_filter_vars")
 
-    searchDatePins.addEventListener("click", (evt)=>{
+    //searchDatePins.addEventListener("click", (evt)=>{
+
+
+        // если выбрали пользователя и зашли а дату то переключаем на пины(по дате только пины выводятся)
+        const selectSearch = document.getElementById("select_search")
+            if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
+                selectSearch.selectedIndex = 0;
+            }
+
 
         const searchDatePinsVars =  document.getElementById("search_date_pins_vars")
         searchDatePinsVars.innerHTML = searchDateDetailsTemplate()
 
 
+        const searchPopular = document.getElementById("search_popular")
+        searchPopular.addEventListener("click", evt=>{
+
+            console.log("searchPopular")
+            unSetScroll();
+            clearColumns();
+            CurrentDesk.State.numberOfPins = 0;
+            getMainPins();
+            setScroll(getPopularPins);
+            getPopularPins();
+
+        })
+
+
+        const searchMostComments = document.getElementById("search_most_comments")
+        searchMostComments.addEventListener("click", evt=>{
+            console.log(" searchMostComments")
+        })
+
+
         const searchDay = document.getElementById("search_day")
         searchDay.addEventListener("click", evt=>{
+
             console.log("hot day")
+
         })
 
         const searchWeek = document.getElementById("search_week")
@@ -448,73 +474,58 @@ function setDateBtns(){
             console.log("hot month")
         })
 
-
-    })
-
-}
-
-function deleteSearchDateDetails() {
-    console.log("delete data buttons!")
-    const searchDatePins = document.getElementById("search_date_pins")
-    searchDatePins.innerHTML = ""
-
+    //})
 
 }
 
-function setHotBtn() {
-
-    unSetScroll();
-    clearColumns();
-    CurrentDesk.State.numberOfPins = 0;
-    deleteSearchDateDetails();
-
-
-    const hotPinsBtn = document.getElementById("search_hot_pins")
-
-    hotPinsBtn.addEventListener("click", (evt)=>{
-
-        console.log("get hot pins!")
-        FetchModule.fetchRequest({ url: serverLocate + '/api/hot?start=' + ( CurrentDesk.State.numberOfPins )
-                + '&limit=15', method:'get', body:null})
-            .then((res) => {
-                return res.ok ? res : Promise.reject(res);
-            })
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-                console.log("hot PINS:", result);
-                showPins(result.body)
-            })
-
-            .catch(function(error) {
-                console.log('ERR_HOT_DESK',error);
-
-                setInfoDesk("Что-то пошло не так с популярными пинами");
-            });
-
-    })
-
-
-}
 
 
 function setDeleteBtnsIfSearchUser() {
     console.log("delete all buttons! (user selected)")
+
     const selectSearch = document.getElementById("select_search")
-    selectSearch.addEventListener("onchange", evt=>{
+    selectSearch.addEventListener("change", evt=>{
         if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-            const searchHotAndDatePins = document.getElementById("search_hot_and_date_pins")
-            searchHotAndDatePins.innerHTML = ""
+            const searchDatePinsVars = document.getElementById("search_date_pins_vars")
+            searchDatePinsVars.innerHTML = ""
         }
+
+        if (selectSearch.options[selectSearch.selectedIndex].text === "Пины") {
+            const searchDatePinsVars = document.getElementById("search_date_pins_vars")
+            searchDatePinsVars.innerHTML = searchDateDetailsTemplate()
+            setDateBtns()
+
+        }
+
+
+
     })
 }
 
 
 
+function getPopularPins() {
+    /*
+    FetchModule.fetchRequest({ url: serverLocate + '/api/list/sub?start=' + ( CurrentDesk.State.numberOfPins )
+            + '&limit=15', method:'get',})
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            console.log("SUB PINS:", result);
+            if (result.body.length === 0) {
+                setInfoDesk("Нет ничего нового в ваших подписках");
+                return;
+            }
+            showPins(result.body)
+        })
+        .catch(function(error) {
+            console.log("ERR_SUB", error);
+            setInfoDesk("Что-то пошло не так с подписками");
+        });
 
-
-
-
-
-
+     */
+}
