@@ -3,8 +3,10 @@ div.find_pin
     select(class="select_search" id="select_search")
         option Пины
         option Пользователь
+    input(id="search_main_input" type="text" class="search_input")
     img(id="search_main_img" src=image alt="icon" width="30px" height="30px")
-    input(id="search_main_input" type="text")
+    div(id="search_hot_and_date_pins" class="search_hot_and_date_pins")
+        div(id="search_date_pins_vars")
 div(id="main_page_info")
 div(class="desk" id="mainDesk")
     div#columns

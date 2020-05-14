@@ -13,20 +13,6 @@ export function createDeskView() {
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
 
-    /*
-    getMainPins();
-    setScroll(getMainPins);
-    setSearch();
-
-    unSetScroll();
-    CurrentDesk.State.numberOfPins = 0;
-    CurrentDesk.getSomePinsFunc = getSubPins;
-    clearColumns();
-    getMainPins();
-    setScroll(getMainPins);
-    */
-
-
     // try that way
     unSetScroll();
     clearColumns();
@@ -34,12 +20,7 @@ export function createDeskView() {
 
     getMainPins();
     setScroll(getMainPins);
-
     setSearch();
-
-    // try that way end
-
-
 
 }
 

@@ -17,8 +17,10 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
-	height: 45px;
+	padding: 7px;
 	border-radius: 18px;
+	box-sizing: content-box;
+	min-height: 55px;
 
 }
 
@@ -29,9 +31,11 @@
 }
 
 .find_pin img {
-	margin-top: 7px;
+	margin-top: 12px;
 	float: left;
 	margin-left: 10px;
+	cursor: pointer;
+
 }
 
 .find_pin input[type=text] {
@@ -53,9 +57,11 @@
 }
 
 .find_pin select {
-	margin-top: 7px;
+	margin-top: 12px;
 	float: left;
 	margin-left: 10px;
+	cursor: pointer;
+
 }
 
 .find_user_avatar {
@@ -71,4 +77,38 @@
 
 .find_user_user_info {
 	display: inline;
+}
+
+.search_hot_and_date_pins {
+	display: inline-block;
+}
+
+
+.search_hot_date_btn {
+	width: 150px;
+	font-weight: bold;
+	color: #ffffff;
+	font-size: 14px;
+	height: 35px;
+	border: none;
+	background: #F01313;
+	border-radius: 12px;
+	display: inline-block;
+	margin-top: 10px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.data_filter_section {
+	display: inline-block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.search_input {
+	padding: 5px;
+	background: white;
+	border-radius: 15px;
+	font-size: 28px;
+	height: 35px;
 }
