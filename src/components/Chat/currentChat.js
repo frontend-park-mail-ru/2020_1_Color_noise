@@ -1,4 +1,5 @@
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
+import {serverLocate} from "../../utils/constants";
 
 /**
  *  chat storage  singleton
@@ -10,6 +11,8 @@ class chatStorage {
             userContactsList: []
         };
         this.MessageData = {}; // сообщения
+        this.stickersMap = new Map();
+        this.isAlreadyAddStickersInStickersSelect = false;
     }
 
     containsId(id) {
@@ -34,8 +37,17 @@ class chatStorage {
   user_rec - кому (юзер)
   created_at
   message
+  sticker
   */
         messageArr.forEach((element)=>{
+
+            element.created_at = element.created_at.substr(0, element.created_at.length - 8).replace("T","  ")
+
+            // todo обработка стикера
+            if (element.sticker !== "") {
+                element.sticker = serverLocate + "/" + element.sticker
+            }
+
 
             if (CurrentUser.Data.id === element.user_rec.id) { // если получатель текущей пользователь
 
@@ -80,12 +92,7 @@ class chatStorage {
 
 
                 }
-
             }
-
-
-
-
         })
 
     }
@@ -104,8 +111,21 @@ class chatStorage {
             result.push(element)
         })
 
+        console.log("result messages:", result)
+        this.MessageData = {} // todo сделать без запроса всех при переключении чата
     return result
     }
+
+
+    addStickers(stickerArr) {
+        stickerArr.forEach( (stickerNew) => {
+            console.log("sticker add:", serverLocate + "/" + stickerNew)
+            this.stickersMap.set(stickerNew, serverLocate + "/" + stickerNew);
+            console.log("STICKER ADEED:", this.stickersMap[stickerNew])
+
+        });
+    }
+
 
 
 

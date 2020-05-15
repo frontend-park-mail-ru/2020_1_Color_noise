@@ -1,7 +1,7 @@
 import ChatsTemplate from "../components/Chat/chats.pug";
 import {unSetScroll} from "../components/Desk/Desk.js";
 import '../components/Chat/chat.css'
-import  {getUsersForChat, createWebSocket, addNewContact} from "../components/Chat/chat"
+import  {getUsersForChat, createWebSocket, addNewContact, getStickersForChat} from "../components/Chat/chat"
 import {default as chatStorage} from "../components/Chat/currentChat.js";
 
 
@@ -14,6 +14,9 @@ export function CreateChatView(user = null) {
 
     chatStorage.Data.idSelectedUser = -1
     getUsersForChat();
+
+    getStickersForChat();
+
     createWebSocket();
 
     // если пришли сюда от нажатия "написать" на странице профиля
