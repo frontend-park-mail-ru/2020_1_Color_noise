@@ -5,7 +5,7 @@ import {createOfflinePage} from "./components/OfflinePage/OfflinePage.js"
 import {registerServiceWorker} from "./utils/serviceWorker.js"
 
 
-registerServiceWorker();
+//registerServiceWorker();
 
 
 Router.start();
