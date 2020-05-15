@@ -522,17 +522,6 @@ export function getStickersForChat() {
 
 function setEventShowStickers() {
 
-    /*
-    // todo тут фальшивые стикеры пока бэк их не отдает!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    const FAKE_STICKERS = [{src:"https://nakleikashop.ru/images/detailed/22/CAT-110.png", id:1},
-        {src:"https://app.clilk.com/db/userpics/577ded585c498eeb6f3926d6.png", id:2},
-        {src:"https://avatanplus.com/files/resources/original/57b744017249d156a3e1a5bc.png", id:3},
-        {src:"https://telegram.org.ru/uploads/posts/2017-03/1490197642_13.png", id:4},
-        {src:"https://vkclub.su/_data/stickers/persik/sticker_vk_persik_023.png", id:5},
-        {src:"https://nakleikashop.ru/images/detailed/22/CAT-109.png", id:6},
-    ]
-    chatStorage.addStickers(FAKE_STICKERS);
-    */
 
     const chatSendSticker = document.getElementById("chat_send_sticker")
     chatSendSticker.addEventListener("click", (evt)=> {
@@ -542,7 +531,7 @@ function setEventShowStickers() {
         darkLayer.id = 'shadow';
         document.body.appendChild(darkLayer);
 
-        const showBlock = document.getElementById('sticker_select');
+        const showBlock = document.getElementById('sticker_select_menu');
         showBlock.style.display = 'block';
 
         darkLayer.onclick = () => {
@@ -551,10 +540,12 @@ function setEventShowStickers() {
             return false;
         };
 
+        const stickerSelect = document.getElementById("sticker_select")
 
+
+
+        stickerSelect.innerHTML = "";
         // add stickers images
-        if (!chatStorage.isAlreadyAddStickersInStickersSelect) {
-
             console.log("chatStorage.stickersArr:", chatStorage.stickersMap)
 
             chatStorage.stickersMap.forEach((sticker) => {
@@ -573,53 +564,29 @@ function setEventShowStickers() {
                 })
 
                 console.log("try add img:", stickerHtml)
-
-                showBlock.appendChild(stickerHtml)
-
-
+                stickerSelect.appendChild(stickerHtml)
             });
 
-            chatStorage.isAlreadyAddStickersInStickersSelect = true
-        }
+
 
         // кнопочка НАЗАД в стикерах
         const stickerSelectBackBtn = document.getElementById("sticker_select_back_btn")
         stickerSelectBackBtn.addEventListener("click", (evt)=>{
             darkLayer.parentNode.removeChild(darkLayer);
             showBlock.style.display = 'none';
-
         })
-
     })
-
-
 }
 
 
 
-
-
 function setClickOnEmoji() {
-
     const emojiCount  = 12
-
-
     const messageToSend = document.getElementById("message_to_send")
-
     for (let i = 1; i <= emojiCount; i++) {
-
         const oneEmoji = document.getElementById("emojiId_" + i.toString());
-
         oneEmoji.addEventListener("click", evt=>{
-
             messageToSend.value += oneEmoji.innerText
-
         })
-
-
     }
-
-
-
-
 }
