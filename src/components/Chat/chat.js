@@ -198,7 +198,7 @@ export function createDialog(user) {
 
     setReturnBtn();
     setEventShowStickers();
-    setEventShowEmogi();
+    setClickOnEmoji();
 
 }
 
@@ -241,21 +241,31 @@ function showMessages(messageArr) {
 
         // данные классы определяютк как будет выглядеть сообщение в чате
         // это чтобы различать свои сообщения от сообщений собеседника
-        let textClass = "chat_message chat_float-right  chat_my_message";
-        let messageClass = "message_data chat_align-right"
+        let textClass = "chat_message chat_float-right  ";
+        let messageClass = "message_data chat_align-left chat_my_message"
         if (element.user_send.id !== CurrentUser.Data.id) {
-            textClass = "chat_message chat_align-left  chat_other_message";
-            messageClass = "message_data chat_align-left"
+            textClass = "chat_message chat_align-left  ";
+            messageClass = "message_data chat_align-left chat_other_message"
         }
 
-        let stickerCSSClass = " "
-        if (element.sticker === serverLocate + "/undefined"){
-            stickerCSSClass = " chat_sticker_hidden"
+        let stickerCssNotHiddenClass = " "
+        let chatMessageHiddenCssClass = " "
+        if (element.stickers === "") {
+            stickerCssNotHiddenClass = " chat_sticker_hidden"
+
+        }
+        if (element.message === ""){
+            chatMessageHiddenCssClass = " chat_message_hidden"
         }
 
 
-        const messageHTML = chatMessageTemplate({dateTime:element.created_at, author: element.user_send.login, stickerSrc:element.sticker,
-            messageText:element.message, textClass:textClass, messageClass:messageClass, stickerCSSClass:stickerCSSClass})
+        messageClass += chatMessageHiddenCssClass
+
+        element.stickers = serverLocate + "/" + element.stickers
+
+        const messageHTML = chatMessageTemplate({dateTime:element.created_at, author: element.user_send.login,
+            stickerSrc:element.stickers, messageText:element.message, textClass:textClass, messageClass:messageClass,
+            stickerCssNotHiddenClass:stickerCssNotHiddenClass})
 
 
 
@@ -342,6 +352,9 @@ function addNewMessage(newMessageData) {
        */
 
 
+    console.log("newMessageData:", newMessageData)
+
+
 
     console.log("Этот ли даилог:", chatStorage.Data.idSelectedUser , " = message sender", newMessageData.user_send.id)
 
@@ -352,14 +365,7 @@ function addNewMessage(newMessageData) {
 
 
 
-        // todo обработка стикера
-        let stickerCSSClass = " "
-        if (newMessageData.sticker === undefined){
-            stickerCSSClass = " chat_sticker_hidden"
-        }
-
-        //console.log("сообщение для текущего чата!!!")
-
+        //бесполезно пока не храним постоянно все сообщения в фоне
         let addArr = []
         addArr.push(newMessageData)
         chatStorage.addMessagesToStorage(addArr)
@@ -367,17 +373,33 @@ function addNewMessage(newMessageData) {
 
         const chatHistory = document.getElementById("chat_history")
 
-        let textClass = "chat_message chat_float-right  chat_my_message";
-        let messageClass = "message_data chat_align-right"
+        // данные классы определяютк как будет выглядеть сообщение в чате
+        // это чтобы различать свои сообщения от сообщений собеседника
+        let textClass = "chat_message chat_float-right  ";
+        let messageClass = "message_data chat_align-left chat_my_message"
         if (newMessageData.user_send.id !== CurrentUser.Data.id) {
-            textClass = "chat_message chat_align-left  chat_other_message";
-            messageClass = "message_data chat_align-left"
+            textClass = "chat_message chat_align-left  ";
+            messageClass = "message_data chat_align-left chat_other_message"
         }
 
-        const messageHTML = chatMessageTemplate({
-            dateTime: newMessageData.created_at, author: newMessageData.user_send.login, stickerSrc:newMessageData.sticker,
-            messageText: newMessageData.message, textClass: textClass, messageClass: messageClass, stickerCSSClass:stickerCSSClass
-        })
+        let stickerCssNotHiddenClass = " "
+        let chatMessageHiddenCssClass = " "
+        if (newMessageData.stickers === "") {
+            stickerCssNotHiddenClass = " chat_sticker_hidden"
+
+        }
+        if (newMessageData.message === ""){
+            chatMessageHiddenCssClass = " chat_message_hidden"
+        }
+
+
+        messageClass += chatMessageHiddenCssClass
+
+        newMessageData.stickers = serverLocate + "/" + newMessageData.stickers
+
+        const messageHTML = chatMessageTemplate({dateTime:newMessageData.created_at, author: newMessageData.user_send.login,
+            stickerSrc:newMessageData.stickers, messageText:newMessageData.message, textClass:textClass, messageClass:messageClass,
+            stickerCssNotHiddenClass:stickerCssNotHiddenClass})
 
         let message = document.createElement('div');
         message.innerHTML = messageHTML
@@ -440,13 +462,19 @@ function addNewMessage(newMessageData) {
 }
 
 function sendMessage(message, sticker, userId) {
-    console.log("SEND MESSAGE:", message, "\t to User with id:", userId)
+
+    sticker = sticker.substr( (serverLocate + "/").length)
+
+    console.log("SEND MESSAGE:", message, "\t to User with id:", userId, "\tsticker:", sticker)
     let jsonMsg = {
         user_id: userId,
         message: message,
-        sticker: sticker,
+        stickers: sticker,
     };
     let json = JSON.stringify(jsonMsg);
+
+    console.log("send json to server:", json)
+
     WebSocketSingl.webSocketSingl.send(json);
 
 }
@@ -538,7 +566,7 @@ function setEventShowStickers() {
 
                     // send
                     sendMessage("", sticker, chatStorage.Data.idSelectedUser );
-                    console.log("send sticker:", sticker)
+                    //console.log("send sticker:", sticker)
                     darkLayer.parentNode.removeChild(darkLayer);
                     showBlock.style.display = 'none';
 
@@ -568,54 +596,29 @@ function setEventShowStickers() {
 }
 
 
-function setEventShowEmogi(){
-
-    const chatEmojiImg = document.getElementById("chat_emoji_img")
-
-    let isShowingEmojiSelect = false
-
-
-    chatEmojiImg.addEventListener("mouseover", evt=>{
-
-        if (isShowingEmojiSelect === true) {
-            return
-        }
-        isShowingEmojiSelect = true;
 
 
 
-        //const darkLayer = document.createElement('div');
-        //darkLayer.id = 'shadow';
-        //document.body.appendChild(darkLayer);
+function setClickOnEmoji() {
 
-        const showBlock = document.getElementById('emoji_selector_menu');
-        showBlock.style.display = 'block';
+    const emojiCount  = 12
 
-        // moseout
-        showBlock.addEventListener("click", evt=>{
-            showBlock.style.display = 'none';
-            isShowingEmojiSelect = false
+
+    const messageToSend = document.getElementById("message_to_send")
+
+    for (let i = 1; i <= emojiCount; i++) {
+
+        const oneEmoji = document.getElementById("emojiId_" + i.toString());
+
+        oneEmoji.addEventListener("click", evt=>{
+
+            messageToSend.value += oneEmoji.innerText
 
         })
 
-        /*
-        darkLayer.mousemove = () => {
-            console.log("REMOVE!!")
-            darkLayer.parentNode.removeChild(darkLayer);
-            showBlock.style.display = 'none';
-            isShowingEmojiSelect = false
 
-            return false;
-        };
+    }
 
-
-         */
-
-
-
-        console.log("on focus")
-
-    })
 
 
 

@@ -111,6 +111,8 @@ class chatStorage {
             result.push(element)
         })
 
+        console.log("result messages:", result)
+        this.MessageData = {} // todo сделать без запроса всех при переключении чата
     return result
     }
 
@@ -119,6 +121,8 @@ class chatStorage {
         stickerArr.forEach( (stickerNew) => {
             console.log("sticker add:", serverLocate + "/" + stickerNew)
             this.stickersMap.set(stickerNew, serverLocate + "/" + stickerNew);
+            console.log("STICKER ADEED:", this.stickersMap[stickerNew])
+
         });
     }
 
