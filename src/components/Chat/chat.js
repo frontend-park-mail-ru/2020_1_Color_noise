@@ -590,3 +590,14 @@ function setClickOnEmoji() {
         })
     }
 }
+
+
+export function setBackImg() {
+
+    const chatBackImg = document.getElementById("chat_back_img")
+    chatBackImg.addEventListener("click", evt =>{
+        window.history.back();
+    })
+
+
+}
