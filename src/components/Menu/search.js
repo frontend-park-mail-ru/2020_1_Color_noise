@@ -6,6 +6,8 @@ import {serverLocate} from "../../utils/constants";
 import findUserTemplate from "../Desk/findUser.pug";
 import Router from "../../utils/router";
 import {addCard} from "../Card/Card";
+import DeskTemplate from "../Desk/desk.pug";
+import findIcon from "../../images/find.svg";
 
 
 
@@ -28,6 +30,13 @@ function searchEvent() {
         searchObj = "user"
     }
 
+
+    // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
+    const root = document.getElementById('content');
+    root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
+
+
+
     const start = 0;
     const limit = 50;
     FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
@@ -40,10 +49,15 @@ function searchEvent() {
         })
         .then((result) => {
             if (result.status !== 200) {
-                setInfoDesk("Ничего не найдено");
+                setInfoDesk("Ошибка сервера");
             } else {
                 if (result.body.length === 0) {
-                    setInfoDesk("Ничего не найдено");
+                    if (isUserSearch) {
+                        setInfoDesk("Пользователи не найдены");
+                    } else {
+                        setInfoDesk("Пины не найдены");
+                    }
+                    return;
                 }
                 if (isUserSearch) {
                     console.log("show users:", result.body)
@@ -165,7 +179,6 @@ function getInfoForShowing(pinIdArr) {
 
 export function setDateBtns(){
 
-    /*
 
     // если выбрали пользователя и зашли а дату то переключаем на пины(по дате только пины выводятся)
     const selectSearch = document.getElementById("select_search")
@@ -173,8 +186,7 @@ export function setDateBtns(){
         selectSearch.selectedIndex = 1;
     }
 
-    const searchDatePinsVars =  document.getElementById("search_date_pins_vars")
-    searchDatePinsVars.innerHTML = searchDateDetailsTemplate()
+
 
 
     const searchPopular = document.getElementById("search_popular")
@@ -183,7 +195,11 @@ export function setDateBtns(){
         console.log("searchPopular")
         // mb create desk
         unSetScroll();
-        clearColumns();
+
+        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
+        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
+        const root = document.getElementById('content');
+        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
         getPopularPins();
@@ -198,7 +214,11 @@ export function setDateBtns(){
         console.log(" searchMostComments")
         // mb create desk
         unSetScroll();
-        clearColumns();
+
+        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
+        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
+        const root = document.getElementById('content');
+        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
         getMostCommentPins();
@@ -215,7 +235,11 @@ export function setDateBtns(){
 
         // mb create desk
         unSetScroll();
-        clearColumns();
+
+        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
+        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
+        const root = document.getElementById('content');
+        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
         getDayPins();
@@ -230,7 +254,11 @@ export function setDateBtns(){
 
         // mb create desk
         unSetScroll();
-        clearColumns();
+
+        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
+        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
+        const root = document.getElementById('content');
+        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
         getWeekPins();
@@ -245,7 +273,11 @@ export function setDateBtns(){
 
         // mb create desk
         unSetScroll();
-        clearColumns();
+
+        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
+        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
+        const root = document.getElementById('content');
+        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
         getMonthPins();
@@ -255,7 +287,7 @@ export function setDateBtns(){
     })
 
 
-     */
+
 
 }
 
@@ -294,13 +326,12 @@ function setDeleteBtnsIfSearchUser() {
     selectSearch.addEventListener("change", evt=>{
         if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
             const searchDatePinsVars = document.getElementById("search_date_pins_vars")
-            searchDatePinsVars.innerHTML = ""
+            console.log("setDeleteBtnsIfSearchUser: тут надо скрыть функции для пинов")
         }
 
         if (selectSearch.options[selectSearch.selectedIndex].text === "Пины") {
             const searchDatePinsVars = document.getElementById("search_date_pins_vars")
-            searchDatePinsVars.innerHTML = searchDateDetailsTemplate()
-            setDateBtns()
+            console.log("setDeleteBtnsIfSearchUser: тут надо назначить действия на появляющийся фильтры для пинов")
         }
     })
 }
@@ -319,6 +350,7 @@ function getPopularPins() {
             console.log("PopularPins:", result);
             if (result.body.length === 0) {
                 console.log("не было получего новых популярных пинов")
+                setInfoDesk("Ничего не найдено среди популярных");
                 return;
             }
             showPins(result.body)
@@ -330,6 +362,7 @@ function getPopularPins() {
 }
 
 function getMostCommentPins() {
+
 
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&most=comment' + "&start=" + ( CurrentDesk.State.numberOfPins )
             + '&limit=15', method:'get',})
@@ -343,6 +376,7 @@ function getMostCommentPins() {
             console.log("MostCommentPins:", result);
             if (result.body.length === 0) {
                 console.log("не было получего новых обсуждаемых пинов")
+                setInfoDesk("Ничего не найдено среди обсуждаемого");
                 return;
             }
             showPins(result.body)
@@ -359,6 +393,7 @@ function getMostCommentPins() {
 
 function getDayPins() {
 
+
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=day' + "&start=" + ( CurrentDesk.State.numberOfPins )
             + '&limit=15', method:'get',})
         .then((res) => {
@@ -371,6 +406,7 @@ function getDayPins() {
             console.log("day pins:", result);
             if (result.body.length === 0) {
                 console.log("не было получего новых пинов дня")
+                setInfoDesk("Ничего не найдено за день");
                 return;
             }
             showPins(result.body)
@@ -384,6 +420,7 @@ function getDayPins() {
 
 function getWeekPins() {
 
+
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=week' + "&start=" + ( CurrentDesk.State.numberOfPins )
             + '&limit=15', method:'get',})
         .then((res) => {
@@ -396,6 +433,7 @@ function getWeekPins() {
             console.log("week pins:", result);
             if (result.body.length === 0) {
                 console.log("не было получего новых пинов недели")
+                setInfoDesk("Ничего не найдено за неделю");
                 return;
             }
             showPins(result.body)
@@ -410,6 +448,7 @@ function getWeekPins() {
 
 function getMonthPins() {
 
+    
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=month' + "&start=" + ( CurrentDesk.State.numberOfPins )
             + '&limit=15', method:'get',})
         .then((res) => {
@@ -422,6 +461,7 @@ function getMonthPins() {
             console.log("month pins:", result);
             if (result.body.length === 0) {
                 console.log("не было получего новых пинов месяца")
+                setInfoDesk("Ничего не найдено за месяц");
                 return;
             }
             showPins(result.body)

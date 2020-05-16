@@ -32,7 +32,7 @@ export function createSubDeskView() {
     const followsOrMainLink = document.getElementById('followsOrMainLink');
     document.title = "Subscriptions";
     const root = document.getElementById('content');
-    root.innerHTML = DeskTemplate({image : findIcon});
+    root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
 
     unSetScroll();
     clearColumns();
@@ -57,7 +57,7 @@ export function createUserPinsDeskView(state) {
 
     document.title = "User Pins";
     const root = document.getElementById('content');
-    root.innerHTML = DeskTemplate({image : findIcon});
+    root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
 
     unSetScroll();
     clearColumns();
@@ -77,7 +77,7 @@ export function createBoardDeskView(state) {
     CurrentDesk.State.boardId = state.deskId;
     //CurrentDesk.State.username = state.username;
     const root = document.getElementById('content');
-    root.innerHTML = DeskTemplate({image : findIcon});
+    root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
 
 
     unSetScroll();
@@ -85,8 +85,9 @@ export function createBoardDeskView(state) {
     CurrentDesk.State.numberOfPins = 0;
 
     getBoardPins();
-    //CurrentDesk.getSomePinsFunc = getBoardPins;
-    setScroll(getBoardPins);
+
+    // не надо скролить доску пользователя - она разом вся приходит
+    //setScroll(getBoardPins);
 
    // setSearch();
 

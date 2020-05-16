@@ -207,22 +207,36 @@
 
 
 
-
-
-
-
-
-
-
+/* это должно было быть выпадающее меню*/
 .search_sub_menu {
 	background: #273037;
 	position: absolute;
 	left: 0;
 	top: 100%;
-	z-index: 5;
 	width: 180px;
 	opacity: 0;
 	transform: scaleY(0);
 	transform-origin: 0 0;
 	transition: .5s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.delete_class {
+	background: #a6a6f3;
 }

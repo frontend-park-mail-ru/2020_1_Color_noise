@@ -4,7 +4,7 @@ div.menu
             img(src=logoImage width="190px")
     div.find
         div.find_pin
-            select(class="select_search" id="select_search")
+            select(class="select_search" id="select_search_DELETEIT")
                 option Пользователь
                 option Пины
             div(class="search_filter_section") Фильтры
@@ -15,12 +15,22 @@ div.menu
                     li За неделю
                     li За месяц
 
-
-
-
             input(id="search_main_input" type="text" class="search_input")
             img(id="search_main_img" src=image)
 
 
-
     div.thirdpart#loginPart
+
+
+
+
+
+div(class="delete_class") Это будет удалено
+    select(class="select_search" id="select_search")
+        option Пользователь
+        option Пины
+    button(id="search_popular") search_popular
+    button(id="search_most_comments") search_most_comments
+    button(id="search_day") search_day
+    button(id="search_week") search_week
+    button(id="search_month") search_month
