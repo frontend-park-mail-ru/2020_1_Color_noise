@@ -12,8 +12,14 @@ import { showLoginModal, showRegModal, showChooseModal, showInfoModal } from "..
 import Router from "../../utils/router"
 import { Requests } from '../Network/Requests'
 
+import {setSearch} from "./search.js"
+import {serverLocate} from "../../utils/constants";
+
 export const createMenu = (login = false) => {
-    const template = MenuTemplate({ logoImage : logoImage });
+
+    const searchImgSrc =  serverLocate + "/images/find.svg"
+
+    const template = MenuTemplate({ logoImage : logoImage, image:searchImgSrc });
 
     const menu = document.getElementById('menu');
     menu.innerHTML = template;
@@ -27,6 +33,8 @@ export const createMenu = (login = false) => {
     const loginPart = document.getElementById('loginPart');
     loginPart.addEventListener('login', addLogin2);
     loginPart.addEventListener('reg', addReg);
+
+    setSearch();
 };
 
 
@@ -95,3 +103,5 @@ const goProfile = (evt) => {
     evt.preventDefault();
     Router.go('/profile','Profile');
 };
+
+

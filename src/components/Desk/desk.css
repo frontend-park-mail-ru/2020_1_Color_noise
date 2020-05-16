@@ -10,19 +10,7 @@
 	margin: auto;
 }
 
-.find_pin {
-	width: 90%;
-	max-width: 800px;
-	background: #e4e4e4;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-	padding: 7px;
-	border-radius: 18px;
-	box-sizing: content-box;
-	min-height: 55px;
 
-}
 
 #main_page_info {
 	margin-top: 20px;
@@ -30,85 +18,3 @@
 	text-align: center;
 }
 
-.find_pin img {
-	margin-top: 12px;
-	float: left;
-	margin-left: 10px;
-	cursor: pointer;
-
-}
-
-.find_pin input[type=text] {
-	font-size: 15px;
-	display: inline;
-	max-width: 600px;
-	float: left;
-	margin-left: 5px;
-}
-
-.find_user {
-	max-width: 500px;
-	margin: 0 auto 30px;
-
-	border-radius: 30px;
-	border-color: black;
-	border-style: double;
-	border-width: 1px;
-}
-
-.find_pin select {
-	margin-top: 12px;
-	float: left;
-	margin-left: 10px;
-	cursor: pointer;
-
-}
-
-.find_user_avatar {
-	display: inline;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-	border-radius: 50%;
-	width: 200px;
-	height: 200px;
-	object-fit: cover;
-}
-
-.find_user_user_info {
-	display: inline;
-}
-
-.search_hot_and_date_pins {
-	display: inline-block;
-}
-
-
-.search_hot_date_btn {
-	width: 150px;
-	font-weight: bold;
-	color: #ffffff;
-	font-size: 14px;
-	height: 35px;
-	border: none;
-	background: #F01313;
-	border-radius: 12px;
-	display: inline-block;
-	margin-top: 10px;
-	margin-right: 10px;
-	cursor: pointer;
-}
-
-.data_filter_section {
-	display: inline-block;
-	margin-right: auto;
-	margin-left: auto;
-}
-
-.search_input {
-	padding: 5px;
-	background: white;
-	border-radius: 15px;
-	font-size: 28px;
-	height: 35px;
-}

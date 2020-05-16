@@ -3,5 +3,24 @@ div.menu
         a(href="/" id= "logoLink")
             img(src=logoImage width="190px")
     div.find
-        div.findPin
+        div.find_pin
+            select(class="select_search" id="select_search")
+                option Пользователь
+                option Пины
+            div(class="search_filter_section") Фильтры
+                ul(class="search_sub_menu select_search")
+                    li Популярные
+                    li Комментируемые
+                    li За день
+                    li За неделю
+                    li За месяц
+
+
+
+
+            input(id="search_main_input" type="text" class="search_input")
+            img(id="search_main_img" src=image)
+
+
+
     div.thirdpart#loginPart
