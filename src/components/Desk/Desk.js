@@ -4,7 +4,7 @@ import findUserTemplate from "./findUser.pug"
 import FetchModule from '../Network/Network.js'
 import {serverLocate} from '../../utils/constants.js'
 import {default as CurrentDesk} from './CurrentDesk.js';
-import searchDateDetailsTemplate from "./searchDateDetails.pug"
+import searchDateDetailsTemplate from "../Menu/searchDateDetails.pug"
 import Router from "../../utils/router.js"
 
 /**
@@ -143,7 +143,7 @@ export function getBoardPins() {
  * @param {[{string, string}]} pinsArr - array of pins file names
  * @return {void}
  */
-function showPins(pinsArr) {
+export function showPins(pinsArr) {
 
     CurrentDesk.State.numberOfPins += pinsArr.length;
     let columnArr = document.getElementById('columns');
@@ -153,20 +153,7 @@ function showPins(pinsArr) {
     });
 }
 
-/**
- *  showOnePin
- *  columnArr - array of column on main page
- *  sortColumnArr - func for sorting with comparator (add picture in the lowest column)
- *
- * @param {map} onePin - one pin (map with pin info)
- * @return {void}
- */
-function showOnePin(onePin) {
-    CurrentDesk.State.numberOfPins += 1;
-    let columnArr = document.getElementById('columns');
 
-    addCard(onePin, columnArr.id );
-}
 
 /**
  *  scroll
@@ -235,172 +222,10 @@ export function clearColumns() {
 }
 
 
-/**
- * getInfoForShowing
- * get info about pin and call showOnePin for every pin
- *
- * @param {[int]} pinIdArr - pin id array
- * @return {void}
- */
-function getInfoForShowing(pinIdArr) {
-
-    CurrentDesk.State.numberOfPins = 0;
-    //CurrentDesk.State.getSomePinsFunc = скрол по поиску
-    clearColumns();
-    unSetScroll();
-
-    if (pinIdArr.length !==0) {
-        setInfoDesk("")
-    }
-
-
-    pinIdArr.forEach((item) => {
-
-        console.log("URL:",serverLocate + "/api/pin/" + item.id);
-
-        FetchModule.fetchRequest({url:serverLocate + "/api/pin/" + item.id, method:'get'})
-            .then((res) => {
-                return res.ok ? res : Promise.reject(res);
-            })
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-
-                if (result.status !== 200) {
-                    throw Error("search pin get info request not 200");
-                } else {
-                showOnePin(result.body);
-                }
-
-            })
-
-            .catch( (error) => {
-                console.log("ERR_SEARCH_PIN::getInfoForShowing() :", error);
-                //setInfoDesk("Что-то пошло не так с получением инфы о пине в поиске");
-            });
-    });
-}
-
-
-/**
- * setSearch
- * set action for search
- * @return {void}
- */
-export function setSearch() {
-
-    setDeleteBtnsIfSearchUser();
-
-    const searchImg = document.getElementById("search_main_img");
-    const searchInput = document.getElementById("search_main_input");
-
-    searchImg.addEventListener('click', (evt) => {
-        searchEvent()
-    })
-
-    searchInput.addEventListener('keypress',  (e) =>{
-        if (e.key === 'Enter') {
-            searchEvent()
-        }
-    });
-
-
-    setDateBtns();
-}
-
-
-function searchEvent() {
-
-    unSetScroll();
-    const searchInput = document.getElementById("search_main_input");
-
-    let isUserSearch = false
-    const selectSearch = document.getElementById("select_search")
-    if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-        isUserSearch = true
-    }
-
-    const searchValue = searchInput.value.trim();
-    let searchObj = "pin";
-
-    if (isUserSearch){
-        searchObj = "user"
-    }
-
-    const start = 0;
-    const limit = 50;
-    FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
-            searchValue + "&start=" + start + "&limit=" + limit, method:'get'})
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((result) => {
-            if (result.status !== 200) {
-                setInfoDesk("Ничего не найдено");
-            } else {
-                if (result.body.length === 0) {
-                    setInfoDesk("Ничего не найдено");
-                }
-                if (isUserSearch) {
-                    console.log("show users:", result.body)
-                    showUserSearch(result.body)
-                } else {
-                    getInfoForShowing(result.body);
-                }
-
-            }
-        })
-        .catch( (error) => {
-            console.log("ERR_SEARCH_PIN:", error);
-            setInfoDesk("Что-то пошло не так с поиском пинов");
-        });
-
-}
 
 
 
 
-
-function showUserSearch(UserArr) {
-
-    const mainDesk = document.getElementById("mainDesk")
-
-    if (UserArr.length !== 0) {
-
-        mainDesk.innerHTML = ""
-        setInfoDesk("") // убираем "ничего не найдено"
-
-        UserArr.forEach((element) => {
-
-            const userAvatarId = "avatarID:" + element.id
-
-            const findUserHtml = findUserTemplate({
-                avatarSrc: serverLocate + "/" + element.avatar, login: element.login,
-                subscriptions: element.subscriptions, subscribers: element.subscribers, avatarID: userAvatarId
-            })
-
-
-            const findUserElement = document.createElement("div");
-            findUserElement.innerHTML = findUserHtml
-
-            mainDesk.appendChild(findUserElement)
-
-            const addedAvatar = document.getElementById(userAvatarId)
-            addedAvatar.addEventListener("click", (evt) => {
-                element.avatarPath = element.avatar
-                Router.go("/profile", "Profile", element)
-            })
-
-        })
-    }
-
-
-
-}
 
 
 
@@ -412,120 +237,4 @@ function showUserSearch(UserArr) {
 function setInfoDesk(message) {
     const info = document.getElementById('main_page_info');
     info.innerHTML = message;
-}
-
-
-
-
-
-function setDateBtns(){
-
-    //const searchDatePins = document.getElementById("search_filter_vars")
-
-    //searchDatePins.addEventListener("click", (evt)=>{
-
-
-        // если выбрали пользователя и зашли а дату то переключаем на пины(по дате только пины выводятся)
-        const selectSearch = document.getElementById("select_search")
-            if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-                selectSearch.selectedIndex = 0;
-            }
-
-
-        const searchDatePinsVars =  document.getElementById("search_date_pins_vars")
-        searchDatePinsVars.innerHTML = searchDateDetailsTemplate()
-
-
-        const searchPopular = document.getElementById("search_popular")
-        searchPopular.addEventListener("click", evt=>{
-
-            console.log("searchPopular")
-            unSetScroll();
-            clearColumns();
-            CurrentDesk.State.numberOfPins = 0;
-            getMainPins();
-            setScroll(getPopularPins);
-            getPopularPins();
-
-        })
-
-
-        const searchMostComments = document.getElementById("search_most_comments")
-        searchMostComments.addEventListener("click", evt=>{
-            console.log(" searchMostComments")
-        })
-
-
-        const searchDay = document.getElementById("search_day")
-        searchDay.addEventListener("click", evt=>{
-
-            console.log("hot day")
-
-        })
-
-        const searchWeek = document.getElementById("search_week")
-        searchWeek.addEventListener("click", evt=>{
-            console.log("hot week")
-        })
-
-
-        const searchMonth = document.getElementById("search_month")
-        searchMonth.addEventListener("click", evt=>{
-            console.log("hot month")
-        })
-
-    //})
-
-}
-
-
-
-function setDeleteBtnsIfSearchUser() {
-    console.log("delete all buttons! (user selected)")
-
-    const selectSearch = document.getElementById("select_search")
-    selectSearch.addEventListener("change", evt=>{
-        if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-            const searchDatePinsVars = document.getElementById("search_date_pins_vars")
-            searchDatePinsVars.innerHTML = ""
-        }
-
-        if (selectSearch.options[selectSearch.selectedIndex].text === "Пины") {
-            const searchDatePinsVars = document.getElementById("search_date_pins_vars")
-            searchDatePinsVars.innerHTML = searchDateDetailsTemplate()
-            setDateBtns()
-
-        }
-
-
-
-    })
-}
-
-
-
-function getPopularPins() {
-    /*
-    FetchModule.fetchRequest({ url: serverLocate + '/api/list/sub?start=' + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15', method:'get',})
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((result) => {
-            console.log("SUB PINS:", result);
-            if (result.body.length === 0) {
-                setInfoDesk("Нет ничего нового в ваших подписках");
-                return;
-            }
-            showPins(result.body)
-        })
-        .catch(function(error) {
-            console.log("ERR_SUB", error);
-            setInfoDesk("Что-то пошло не так с подписками");
-        });
-
-     */
 }

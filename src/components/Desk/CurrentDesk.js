@@ -6,6 +6,8 @@ class CurrentDesk {
         this.State = {
             getSomePinsFunc : "null",
             numberOfPins:0,
+            searchReverseCheckbox : null,
+            searchObj : "pin",
         };
     }
 }

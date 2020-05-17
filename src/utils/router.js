@@ -76,6 +76,7 @@ class Router {
                 }
                 // если url корректный, то запросим инфу о пине и отобразим его
                 createPinPageFromRequest(pinId);
+                return;
             } else
                 //createUserPinsDeskView
             if (validators.pinsUserLink(path)) {// если находится на странице пинов одного пользователя
