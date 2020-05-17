@@ -236,7 +236,25 @@
 
 
 
-
+/*
+удалить эти классы после переноса поиска
+ */
 .delete_class {
 	background: #a6a6f3;
+}
+.DELETE_search_checkbox_area {
+	display: inline-block;
+	margin-left: 20px;
+	box-sizing: content-box;
+	line-height: normal;
+
+}
+
+.DELETE_search_checkbox_title {
+	display: inline-block;
+}
+.DELETE_input_checkbox {
+	display: inline-block;
+	height: 30px;
+	-webkit-appearance: checkbox;
 }

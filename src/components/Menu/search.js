@@ -36,7 +36,6 @@ function searchEvent() {
     root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
 
 
-
     const start = 0;
     const limit = 50;
     FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
@@ -70,7 +69,7 @@ function searchEvent() {
         })
         .catch( (error) => {
             console.log("ERR_SEARCH_PIN:", error);
-            setInfoDesk("Что-то пошло не так с поиском пинов");
+            setInfoDesk("Что-то пошло не так с поиском");
         });
 
 }
@@ -178,6 +177,27 @@ function getInfoForShowing(pinIdArr) {
 
 
 export function setDateBtns(){
+
+    // помещаем в синглтон значение checkbox и ставим действие при смене состояния
+    const searchReverseCheckbox = document.getElementById("search_reverse_checkbox")
+    CurrentDesk.State.searchReverseCheckbox = 0;
+    console.log("CurrentDesk.State.searchReverseCheckbox:", CurrentDesk.State.searchReverseCheckbox)
+    searchReverseCheckbox.addEventListener("click", evt => {
+
+        if (CurrentDesk.State.searchReverseCheckbox === 0) {
+            CurrentDesk.State.searchReverseCheckbox = 1
+        } else {
+            CurrentDesk.State.searchReverseCheckbox = 0
+        }
+
+        console.log("изменение состояния checkbox:", CurrentDesk.State.searchReverseCheckbox)
+        let columns = document.getElementById('columns');
+        if (columns !== null) {
+            clearColumns()
+        }
+        CurrentDesk.State.numberOfPins = 0;
+    })
+
 
 
     // если выбрали пользователя и зашли а дату то переключаем на пины(по дате только пины выводятся)
@@ -338,8 +358,13 @@ function setDeleteBtnsIfSearchUser() {
 
 function getPopularPins() {
 
+    let reverse = "&desc=false"
+    if (CurrentDesk.State.searchReverseCheckbox === 1){
+        reverse = "&desc=true"
+    }
+
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&most=popular' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15', method:'get',})
+            + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -363,9 +388,13 @@ function getPopularPins() {
 
 function getMostCommentPins() {
 
+    let reverse = "&desc=false"
+    if (CurrentDesk.State.searchReverseCheckbox === 1){
+        reverse = "&desc=true"
+    }
 
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&most=comment' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15', method:'get',})
+            + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -393,9 +422,13 @@ function getMostCommentPins() {
 
 function getDayPins() {
 
+    let reverse = "&desc=false"
+    if (CurrentDesk.State.searchReverseCheckbox === 1){
+        reverse = "&desc=true"
+    }
 
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=day' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15', method:'get',})
+            + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -420,9 +453,13 @@ function getDayPins() {
 
 function getWeekPins() {
 
+    let reverse = "&desc=false"
+    if (CurrentDesk.State.searchReverseCheckbox === 1){
+        reverse = "&desc=true"
+    }
 
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=week' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15', method:'get',})
+            + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -448,9 +485,13 @@ function getWeekPins() {
 
 function getMonthPins() {
 
-    
+    let reverse = "&desc=false"
+    if (CurrentDesk.State.searchReverseCheckbox === 1){
+        reverse = "&desc=true"
+    }
+
     FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=month' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15', method:'get',})
+            + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
