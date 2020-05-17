@@ -5,7 +5,6 @@ import CommentTemplate from "./comment.pug";
 import '../Comment/comment.css'
 
 import {default as CurrentComments} from './CurrentComments.js';
-import { createProfile  } from '../Profile/Profile.js'
 import { default as Router} from "../../utils/router.js"
 
 
@@ -66,9 +65,7 @@ export function showComment(comment) {
                             User.avatarPath = commentAuthorInfo.avatar;
                             User.login = commentAuthorInfo.login;
                             User.id = comment.user_id;
-
-                            Router.go("/profile", "Profile", User)
-
+                            Router.go("/user/" + comment.user_id,"User");
                         })
                     // avatar click code
                     //console.log("avatar click  user:", commentAuthorInfo.login, "   user ID:", comment.user_id)

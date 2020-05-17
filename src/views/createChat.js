@@ -5,21 +5,21 @@ import  {getUsersForChat, createWebSocket, addNewContact} from "../components/Ch
 import {default as chatStorage} from "../components/Chat/currentChat.js";
 
 
-export function CreateChatView(user = null) {
+export function CreateChatView(userID = null) {
     unSetScroll();
-    document.title = "Chats";
+    //document.title = "Chats";
     const chats = ChatsTemplate();
     const content = document.getElementById('content');
     content.innerHTML = chats;
 
-    chatStorage.Data.idSelectedUser = -1
+    chatStorage.Data.idSelectedUser = -1;
     getUsersForChat();
     createWebSocket();
 
     // если пришли сюда от нажатия "написать" на странице профиля
-    if (user !== null && user.login !== undefined) {
+    if (userID !== null) {
         // проверка user.login !== undefined из-за того что state
         // сюда проходит из роутера
-        addNewContact(user)
+        addNewContact(userID);
     }
 }

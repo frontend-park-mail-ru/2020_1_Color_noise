@@ -1,0 +1,18 @@
+div.page
+    div.page_content
+        h1.page_title Профиль
+        div(id="infoPageMessage")
+        div(class="profile")
+            div(class="avatar")
+                img(src=avatarImage)
+            div.nickname= login
+            a(id="followersModal" user_id=userID)
+                div.follow(id="followersLabel" num=numFollowers)= userFollowers
+            a(id="followingModal" user_id=userID)
+                div.follow(id="followingLabel" num=numFollowings)= userFollowing
+            div#userThirdPart
+            div(class="AllUserPins")
+                a(href=pinsLink id= "allUserPinsLink" user_id=userID)
+                    input(type="submit" class="red_medium_btn" value="Посмотреть все пины")
+            div.desks
+                div#deskBlock

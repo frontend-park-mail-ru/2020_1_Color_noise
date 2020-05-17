@@ -3,6 +3,7 @@
     text-align: center;
     display: inline-block;
     width: 50%;
+    animation: visibleAnimation .5s 1 ease-in-out;
 }
 
 .page_content .pin_block .line:first-child {

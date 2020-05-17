@@ -30,6 +30,11 @@
     border: 3px solid #E9E7E7;
     display: flex;
     align-items: center;
+    animation: visibleAnimation .5s 1 ease-in-out;
+}
+
+.notif_item:hover {
+    background: #E9E7E7;
 }
 
 .notif_item:first-child {

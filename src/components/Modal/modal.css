@@ -19,6 +19,7 @@
 	text-align: center;
 
 	margin: 10px;
+	animation: visibleAnimation .5s 1 ease-in-out;
 }
 
 .modal .window .great_title {
@@ -55,4 +56,43 @@
 	position: fixed;
 	top: 0;
 	left: 0;
+	animation: visibleAnimation .5s 1 ease-in-out;
+}
+
+.modal .followBlockModal {
+	margin-top: 20px;
+	height: 400px;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+.follow_item {
+	border-radius: 15px;
+	margin: 10px;
+	padding: 5px;
+	font-size: 18px;
+	border: 3px solid #E9E7E7;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	color: black;
+}
+
+.follow_item:hover {
+	background: #E9E7E7;
+}
+
+.follow_item:first-child {
+	margin-top: 0px;
+}
+
+.follow_item .avatar_img img {
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+}
+
+.follow_item .follow_login {
+	margin-left: 20px;
 }

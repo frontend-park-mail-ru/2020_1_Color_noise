@@ -1,19 +1,20 @@
-import FetchModule from "../components/Network/Network.js";
-import {serverLocate} from "../utils/constants.js";
-import { createPageNotif } from "../components/Notif/Notif";
+import FetchModule from "../components/Network/Network";
 import { setInfoContent } from "../components/Modal/modal";
+import { serverLocate } from "../utils/constants";
+import Router from "../utils/router";
 
-export const createNotificationsView = () => {
+export const createLogoutView = (state) => {
     FetchModule.fetchRequest({
-        url:serverLocate + '/api/notifications?start=0&limit=9999',
-        method: 'get',
+        url: serverLocate + '/api/auth', method: 'delete',
     }).then((res) => {
         return res.ok ? res : Promise.reject(res);
     }).then((response) => {
         return response.json();
     }).then((result) => {
         if (result.status === 200) {
-            createPageNotif(result.body);
+            Router.go("/","Main");
+            const loginPart = document.getElementById('loginPart');
+            loginPart.dispatchEvent(new Event('reg'));
         } else {
             setInfoContent('Ошибка обработки запроса');
         }

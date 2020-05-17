@@ -1,26 +1,27 @@
 import { Requests } from '../components/Network/Requests'
-import { createProfileSettings } from "../components/ProfileSettings/ProfileSettings";
 import { createMenu } from '../components/Menu/Menu'
 import { createContent } from "../components/Content/Content";
 import { CreateChatView } from "../views/createChat"
-import { createProfileView } from "../views/createProfile";
+import { createUserView } from "../views/createUser";
+import { createSettingsView } from "../views/createSettings";
 import { createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView } from "../views/createDesk";
 import { createNotificationsView } from "../views/createNotifications"
 import { createNewPinView} from "../views/createNewPin";
 import { createPinPageFromRequest } from "../components/Pin/Pin"
+import {createLogoutView} from "../views/createLogout";
 import {createOfflinePage} from "../components/OfflinePage/OfflinePage.js"
-
+import {validators} from "./validation";
 
 class Router {
     constructor() {
         this.routs = {
             "/": createDeskView,
-            "/subscriptions": createSubDeskView,
-            "/profile": createProfileView,
-            "/newPin": createNewPinView,
-            "/profileSettings": createProfileSettings,
+            "/subs": createSubDeskView,
+            "/newpin": createNewPinView,
+            "/settings": createSettingsView,
             "/chats": CreateChatView,
             "/notifications":  createNotificationsView,
+            "/logout": createLogoutView
 
             // пути ниже буду проверяться в методе go(), если не будет совпадения с путями, обозначенными выше
             // проверяются в (func === undefined)
@@ -32,7 +33,7 @@ class Router {
         window.addEventListener('popstate', evt => {
             //Если зашли первый раз только на страницу и браузер сохранил уже ее себе в стек
            if (evt.state === null) {
-                 this.go('/', null, evt.state, false);
+                this.go('/', null, evt.state, false);
             } else {
                 let path = evt.state.path;
                 this.go(path, evt.state.title, evt.state, false);
@@ -40,14 +41,13 @@ class Router {
         });
     }
 
-    go(path, title, state=null, needPush) {
-
+    go(path, title, state=null, needPush=true) {
         if (!navigator.onLine) {
             createOfflinePage(path, title, state=null, needPush)
             return;
         }
 
-        if (needPush === undefined || needPush === true) {
+        if (needPush === true) {
             console.log("GO path:" + path);
             if (state == null)
                 state = {};
@@ -61,7 +61,7 @@ class Router {
         }
         //alert("Go : path:" + path);
 
-
+        document.title = title;
         const func = this.routs[path];
 
         if (func === undefined) {
@@ -78,8 +78,8 @@ class Router {
                 createPinPageFromRequest(pinId);
             } else
                 //createUserPinsDeskView
-            if (path.includes("/userPins/")) { // если находится на странице пинов одного пользователя
-                const userId = path.substring("/userPins/".length, path.length);
+            if (validators.pinsUserLink(path)) {// если находится на странице пинов одного пользователя
+                const userId = path.substring("/pins/user/".length, path.length);
                 const isInt = Number.isInteger(Number(userId));
                 if (!isInt) {
                     console.log("error get userID from url");
@@ -94,8 +94,8 @@ class Router {
 
             } else
             //createBoardDeskView
-            if (path.includes("/board/")) { // если находится на странице пинов одного пользователя
-                const boardId = path.substring("/board/".length, path.length);
+            if (validators.deskUserLink(path)) { // если находится на странице пинов одного пользователя
+                const boardId = path.substring("/desk/".length, path.length);
                 const isInt = Number.isInteger(Number(boardId));
                 if (!isInt) {
                     console.log("error get boardID from url");
@@ -108,15 +108,26 @@ class Router {
                 state.deskId = boardId;
                 createBoardDeskView(state);
                 return;
-            } else {
-
+            } else if (validators.userLink(path)) {
+                const userId = path.substring("/user/".length, path.length);
+                const state = {};
+                state.id = userId;
+                createUserView(state);
+            }  else if (validators.chatUserLink(path)) {
+                const userId = path.substring("/chats/user/".length, path.length);
+                const state = {};
+                state.id = userId;
+                alert('Route to chat, user:' + userId);
+                //CreateChatView(userId) Только ID человека
+            }  else {
                 // не страница пина - по дефолту главная
-
                 createDeskView();
+                document.title = 'Bug route!';
+                alert('Bug route, сообщите отделу фротенда об этом!\n' + path);
             }
         } else {
-            console.log("ROUTE FUNC:",func)
-            console.log("ROUTE state:",state)
+            console.log("ROUTE FUNC:",func);
+            console.log("ROUTE state:",state);
             func(state);
         }
     }
@@ -124,7 +135,7 @@ class Router {
     start() {
 
         if (!navigator.onLine) {
-            createOfflinePage("createMenu")
+            createOfflinePage("createMenu");
             return;
         }
 
