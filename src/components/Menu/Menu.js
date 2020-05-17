@@ -7,6 +7,8 @@ import chatsImage from '../../images/chatsIcon.svg';
 import notifImage from '../../images/notifIcon.svg';
 import profileImage from '../../images/profileIcon.svg';
 import plusImage from '../../images/plusIcon.svg';
+import lupaImage from '../../images/find.svg';
+
 
 import {showLoginModal, showRegModal, showChooseModal, showInfoModal} from "../Modal/modal"
 import Router from "../../utils/router"
@@ -18,9 +20,8 @@ import {serverLocate} from "../../utils/constants";
 
 export const createMenu = (login = false) => {
 
-    const searchImgSrc =  serverLocate + "/images/find.svg"
 
-    const template = MenuTemplate({ logoImage : logoImage, image:searchImgSrc });
+    const template = MenuTemplate({ logoImage : logoImage, image:lupaImage });
 
     const menu = document.getElementById('menu');
     menu.innerHTML = template;
@@ -94,7 +95,7 @@ const goMain = (evt) => {
 
 const goChats = (evt) => {
     evt.preventDefault();
-    Router.go("/chats","Chats");
+    Router.go("/chats","Chats", null);
 };
 
 const goNotif = (evt) => {

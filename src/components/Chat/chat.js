@@ -7,6 +7,8 @@ import chatTemplate from "./chatSection.pug"
 import chatNoSelectedTemplate from "./noSelectedUser.pug";
 import { default as CurrentUser } from '../../utils/userDataSingl.js';
 import chatMessageTemplate from "./message.pug"
+import {createPageUser} from "../User/CreateUser";
+import {setInfoContent} from "../Modal/modal";
 
 
 
@@ -284,7 +286,50 @@ function showMessages(messageArr) {
 
 
 export function addNewContact(newUser) {
-    console.log("сообщения от пользователя что не в контактах или новый:", newUser.login)
+    console.log("сообщения от пользователя что не в контактах или новый(если undefined, то newUser== id кому писать):",
+        newUser.login)
+
+    // случай когда newUser - это айди (новый вызов "написать")
+    if (newUser.login === undefined) {
+
+        FetchModule.fetchRequest({
+            url:serverLocate + '/api/user/' + newUser,
+            method: 'get',
+        }).then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        }).then((response) => {
+            return response.json();
+        }).then((result) => {
+            if (result.status === 200) {
+                newUser = result.body
+
+
+                // дублирование логики из кода ниже
+                // где не надо делать запрос на собеседника
+                if (!chatStorage.containsId(newUser.id)) {
+                    chatStorage.addUser(newUser);
+                }
+                const chatUserList = document.getElementById("chat_user_list")
+                const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ newUser.avatar,
+                    AuthorName:newUser.login, onlineStatus:""});
+                let userBlock = document.createElement('div');
+                userBlock.innerHTML = user
+                userBlock.addEventListener('click', (evt) => {
+                    createDialog(newUser)
+                    chatStorage.Data.idSelectedUser = newUser.id
+                })
+                chatUserList.appendChild(userBlock)
+
+
+            }
+        }).catch(function(error) {
+           console.log("addNewContact ошибка получения инфы о собеседнике:",error)
+        });
+
+        return;
+    }
+
+
 
     if (!chatStorage.containsId(newUser.id)) { // даная проверка нужна есди мы добавляем юзера в контакты при нажатии "написать"
         chatStorage.addUser(newUser);

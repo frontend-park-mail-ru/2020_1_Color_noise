@@ -183,7 +183,7 @@
 	padding-left:10px;
 	padding-top: 2px;
 	padding-bottom: 2px;
-	border-radius: 15px;
+	border-radius: 5px;
 	font-size: 16px;
 	display: inline-block;
 	margin-left: 5px;
@@ -293,8 +293,8 @@
 
 .search_submenu {
 	background: white;
-	border: 2px solid #f50000;
-	border-radius: 20px;
+	border: 2px solid #745f5f;
+	border-radius: 5px;
 	position: absolute;
 	left: 0;
 	visibility: hidden;
@@ -315,7 +315,6 @@
 	font-size: 13px;
 	line-height: 36px;
 	padding: 0 25px;
-	font-family: 'Kurale', serif;
 }
 
 
