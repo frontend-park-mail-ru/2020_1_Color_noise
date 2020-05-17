@@ -8,9 +8,10 @@ import notifImage from '../../images/notifIcon.svg';
 import profileImage from '../../images/profileIcon.svg';
 import plusImage from '../../images/plusIcon.svg';
 
-import { showLoginModal, showRegModal, showChooseModal, showInfoModal } from "../Modal/modal"
+import {showLoginModal, showRegModal, showChooseModal, showInfoModal} from "../Modal/modal"
 import Router from "../../utils/router"
 import { Requests } from '../Network/Requests'
+import CurrentUser from "../../utils/userDataSingl";
 
 import {setSearch} from "./search.js"
 import {serverLocate} from "../../utils/constants";
@@ -31,7 +32,7 @@ export const createMenu = (login = false) => {
     }
 
     const loginPart = document.getElementById('loginPart');
-    loginPart.addEventListener('login', addLogin2);
+    loginPart.addEventListener('login', addLogin);
     loginPart.addEventListener('reg', addReg);
 
     setSearch();
@@ -39,18 +40,20 @@ export const createMenu = (login = false) => {
 
 
 // will be deleted
-const addLogin2 = () => {
-    if (Requests.getUserProfile(false)) {
-        addLogin();
-    } else {
-        showInfoModal('Login auth error');
-    }
-};
+// const addLogin2 = () => {
+//     Requests.getUserProfile(false).then((result) => {
+//         if (result) {
+//             addLogin();
+//         } else {
+//             showInfoModal('Login auth error');
+//         }
+//         });
+// };
 
 const addLogin = () => {
     const menuLoginTemplate = MenuLoginTemplate({
         chatsImage : chatsImage,  notifImage : notifImage,
-        profileImage : profileImage, plusImage : plusImage });
+        profileImage : profileImage, plusImage : plusImage, userLink : '/user/' + CurrentUser.Data.id });
 
     const loginPart = document.getElementById('loginPart');
     loginPart.innerHTML = menuLoginTemplate;
@@ -101,7 +104,7 @@ const goNotif = (evt) => {
 
 const goProfile = (evt) => {
     evt.preventDefault();
-    Router.go('/profile','Profile');
-};
 
+    Router.go('/user/' + CurrentUser.Data.id,'Profile');
+};
 

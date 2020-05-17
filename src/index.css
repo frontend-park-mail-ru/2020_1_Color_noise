@@ -16,5 +16,5 @@
 
 @import './components/Comment/comment.css';
 @import './components/Pin/pin.css';
-@import './components/Profile/profile.css';
-@import './components/ProfileSettings/profileSettings.css';
+@import './components/User/user.css';
+@import './components/Settings/settings.css';

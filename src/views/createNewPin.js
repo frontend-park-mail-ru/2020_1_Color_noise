@@ -21,4 +21,4 @@ export const createNewPinView = (state) => {
         }).catch(function(error) {
             setInfoContent('Ошибка отправки запроса');
         });
-}
+};

@@ -1,5 +1,6 @@
-li(class="chat_clearfix chat_li")
-    div(class=messageClass)
-        span(class="message_data_time") #{author}
-        span(class="message-data-name") #{dateTime}
-    div(class=textClass ) #{messageText}
+li(class="chat_clearfix chat_li " + textClass)
+    div(class="message_data")
+        span(class="message_data_name") #{author}
+        span(class="message_data_time") #{dateTime}
+    div(class=messageClass) #{messageText}
+    img(class=("sticker_in_message " +  stickerCssNotHiddenClass) src=stickerSrc)

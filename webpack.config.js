@@ -86,20 +86,31 @@ module.exports = {
 
 
 
-    new WorkboxPlugin.GenerateSW({
+    new WorkboxPlugin.InjectManifest({
 
-      directoryIndex: 'index.html',
-      clientsClaim: true, // true - захват управления клиентом без перезагрузки
+
+      swSrc: "./src/utils/serviceWorkerMy.js",
+      swDest: "service-worker.js",
+
+      //directoryIndex: 'index.html',
+      //clientsClaim: true, // true - захват управления клиентом без перезагрузки
 
       include: [/\.jpg$/, /\.png$/, /\.jpeg$/, /\.svg$/,  /\.html$/,  /\.js$/,  /\.css$/],
+
+
+      /* тут настройка для старого воркера
+
 
       // Define runtime caching rules.
       // runtimeCaching - правила действующие во время  выполнения приложения
       runtimeCaching: [{
         // Match any request that ends with .png, .jpg, .jpeg or .svg.
-        urlPattern: /(?:chats|notifications|pin\/[*]|\.(?:png|jpg|jpeg|svg|html|js|css|))|$/,
+        urlPattern: /(?:chats|notifications|profile|newPin|main|pin\/[*]|\.(?:png|jpg|jpeg|svg|html|js|css|))|$/,
         // Apply a cache-first strategy.
-        handler: 'CacheFirst',
+       handler: 'CacheFirst',
+
+
+        navigateFallback : "/",
 
         options: {
           // Use a custom cache name.
@@ -109,15 +120,19 @@ module.exports = {
             // время жизни кеша, после которого кеш нужно обновлять
             maxAgeSeconds: 86400,
           },
+
           cacheableResponse: {
-            statuses: [0, 200],  // допустимые коды статусы ответа сервера
+            statuses: [0, 200, 300, 301, 304],  // допустимые коды статусы ответа сервера
           },
-
-
-
         },
       }],
+      */
+
+
+
+
     })
+
 
 
 
