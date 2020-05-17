@@ -22,6 +22,12 @@ import { default as Router} from "../../utils/router.js"
  */
 export function showComment(comment) {
 
+    if (CurrentComments.State.commentsMap[comment.id]) {
+        return
+    }
+    CurrentComments.State.commentsMap[comment.id] = true
+
+
     //console.log("LOAD DATA FOR COMMENT:", comment);
 
     FetchModule.fetchRequest({url:serverLocate + '/api/user/'+ comment.user_id, method:'get'})
@@ -93,6 +99,8 @@ export function showComment(comment) {
 // @todo remove FAKE comments and fix scroll
 function commentsRequest() {
 
+    CurrentComments.State.commentsMap = {}
+
     //console.log("START:", (CurrentComments.State.numberOfComments + 1));
 
     //if (CurrentComments.State.isGetAll)
@@ -100,7 +108,7 @@ function commentsRequest() {
     let num = (CurrentComments.State.numberOfComments).toString();
 
     FetchModule.fetchRequest({url: serverLocate + '/api/comment/pin/' + CurrentComments.State.pinId
-            + '?start=' + num +'&limit=50', method: 'get'})
+            + '?start=' + num +'&limit=100', method: 'get'})
         .then((response) => {
             return response.ok ? response : Promise.reject(response);
         })
@@ -117,12 +125,19 @@ function commentsRequest() {
             commentsArr = commentsArr.body;
 
 
+
+
+
             // set timeout 5 sec for check new comments OR not check every 5 sec ?
             if (commentsArr.length === 0) {
                 //CurrentComments.State.timeOut = 5000;
                 CurrentComments.State.isGetAll = true;
             }
             CurrentComments.State.numberOfComments += commentsArr.length;
+
+
+
+
             commentsArr.forEach((item) => {
                 showComment(item)
             });
@@ -172,6 +187,7 @@ export function createPinComments(pinId) {
     CurrentComments.State.pinId = pinId;
     CurrentComments.State.numberOfComments = 0;
     //CurrentComments.State.isGetAll = false;
+
     commentsRequest();
 
     // todo fix comments scroll

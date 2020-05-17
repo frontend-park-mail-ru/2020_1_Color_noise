@@ -307,11 +307,13 @@ export function createPinPage(target) {
 
     document.title = "Pin " + target.name;
     const pin = PinTemplate({image:  serverLocate + "/" + target.image, PinId: target.id, pinName: target.name,
-
     pinMeta:target.about});
     const content = document.getElementById('content');
     content.innerHTML = pin;
     content.className = "comments_section";
+
+
+
     createPinComments(target.id);
     setAddPinComment(target.id);
     setShowFullPinImage(target.id);

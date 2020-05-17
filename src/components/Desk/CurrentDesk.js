@@ -7,6 +7,7 @@ class CurrentDesk {
             getSomePinsFunc : "null",
             numberOfPins:0,
             searchReverseCheckbox : null,
+            searchObj : "pin",
         };
     }
 }

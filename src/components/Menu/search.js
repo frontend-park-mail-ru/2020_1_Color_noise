@@ -207,8 +207,6 @@ export function setDateBtns(){
     }
 
 
-
-
     const searchPopular = document.getElementById("search_popular")
     searchPopular.addEventListener("click", evt=>{
 
@@ -222,9 +220,9 @@ export function setDateBtns(){
         root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
-        getPopularPins();
-        setScroll(getPopularPins);
-        getPopularPins();
+        getPopularPinsOrUsers();
+        setScroll(getPopularPinsOrUsers);
+        getPopularPinsOrUsers();
 
     })
 
@@ -262,9 +260,9 @@ export function setDateBtns(){
         root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
-        getDayPins();
-        setScroll(getDayPins);
-        getDayPins();
+        getDayPinsOrUsers();
+        setScroll(getDayPinsOrUsers);
+        getDayPinsOrUsers();
 
     })
 
@@ -281,9 +279,9 @@ export function setDateBtns(){
         root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
-        getWeekPins();
-        setScroll(getWeekPins);
-        getWeekPins();
+        getWeekPinsOrUsers();
+        setScroll(getWeekPinsOrUsers);
+        getWeekPinsOrUsers();
     })
 
 
@@ -300,14 +298,11 @@ export function setDateBtns(){
         root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
         CurrentDesk.State.numberOfPins = 0;
 
-        getMonthPins();
-        setScroll(getMonthPins);
-        getMonthPins();
+        getMonthPinsOrUsers();
+        setScroll(getMonthPinsOrUsers);
+        getMonthPinsOrUsers();
 
     })
-
-
-
 
 }
 
@@ -341,29 +336,48 @@ export function setSearch() {
 
 
 function setDeleteBtnsIfSearchUser() {
+
     console.log("delete all buttons! (user selected)")
     const selectSearch = document.getElementById("select_search")
     selectSearch.addEventListener("change", evt=>{
         if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-            const searchDatePinsVars = document.getElementById("search_date_pins_vars")
             console.log("setDeleteBtnsIfSearchUser: тут надо скрыть функции для пинов")
+            CurrentDesk.State.searchObj = "user"
+            hideMostCommentsBtn();
+
         }
 
         if (selectSearch.options[selectSearch.selectedIndex].text === "Пины") {
-            const searchDatePinsVars = document.getElementById("search_date_pins_vars")
             console.log("setDeleteBtnsIfSearchUser: тут надо назначить действия на появляющийся фильтры для пинов")
+            CurrentDesk.State.searchObj = "pin"
+            showMostCommentsBtn();
         }
     })
 }
 
-function getPopularPins() {
+
+function hideMostCommentsBtn() {
+    const searchMostComments = document.getElementById("search_most_comments")
+    searchMostComments.hidden = true;
+
+}
+
+function showMostCommentsBtn() {
+    const searchMostComments = document.getElementById("search_most_comments")
+    searchMostComments.hidden = false;
+}
+
+
+
+function getPopularPinsOrUsers() {
 
     let reverse = "&desc=false"
     if (CurrentDesk.State.searchReverseCheckbox === 1){
         reverse = "&desc=true"
     }
 
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&most=popular' + "&start=" + ( CurrentDesk.State.numberOfPins )
+    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=' + CurrentDesk.State.searchObj
+            + '&most=popular' + "&start=" + ( CurrentDesk.State.numberOfPins )
             + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
@@ -382,7 +396,12 @@ function getPopularPins() {
         })
         .catch(function(error) {
             console.log("ERR_Popular", error);
-            setInfoDesk("Что-то пошло не так с популярными пинами");
+            if (CurrentDesk.State.searchObj === "user") {
+                setInfoDesk("Что-то пошло не так с популярными пользователями");
+            } else {
+                setInfoDesk("Что-то пошло не так с популярными пинами");
+            }
+
         });
 }
 
@@ -420,14 +439,15 @@ function getMostCommentPins() {
 
 
 
-function getDayPins() {
+function getDayPinsOrUsers() {
 
     let reverse = "&desc=false"
     if (CurrentDesk.State.searchReverseCheckbox === 1){
         reverse = "&desc=true"
     }
 
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=day' + "&start=" + ( CurrentDesk.State.numberOfPins )
+    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=' + CurrentDesk.State.searchObj
+            + '&date=day' + "&start=" + ( CurrentDesk.State.numberOfPins )
             + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
@@ -446,19 +466,24 @@ function getDayPins() {
         })
         .catch(function(error) {
             console.log("ERR_day pins", error);
-            setInfoDesk("Что-то пошло не так пинами за день");
+            if (CurrentDesk.State.searchObj === "user") {
+                setInfoDesk("Что-то пошло не так с пользователями, который регистрировались за последний день");
+            } else {
+                setInfoDesk("Что-то пошло не так с пинами за день");
+            }
         });
 
 }
 
-function getWeekPins() {
+function getWeekPinsOrUsers() {
 
     let reverse = "&desc=false"
     if (CurrentDesk.State.searchReverseCheckbox === 1){
         reverse = "&desc=true"
     }
 
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=week' + "&start=" + ( CurrentDesk.State.numberOfPins )
+    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=' + CurrentDesk.State.searchObj
+            + '&date=week' + "&start=" + ( CurrentDesk.State.numberOfPins )
             + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
@@ -477,20 +502,25 @@ function getWeekPins() {
         })
         .catch(function(error) {
             console.log("ERR_week pins", error);
-            setInfoDesk("Что-то пошло не так пинами за неделю");
+            if (CurrentDesk.State.searchObj === "user") {
+                setInfoDesk("Что-то пошло не так с пользователями, который регистрировались за последнюю неделю");
+            } else {
+                setInfoDesk("Что-то пошло не так с пинами за неделю");
+            }
         });
 
 }
 
 
-function getMonthPins() {
+function getMonthPinsOrUsers() {
 
     let reverse = "&desc=false"
     if (CurrentDesk.State.searchReverseCheckbox === 1){
         reverse = "&desc=true"
     }
 
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&date=month' + "&start=" + ( CurrentDesk.State.numberOfPins )
+    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=' + CurrentDesk.State.searchObj
+            + '&date=month' + "&start=" + ( CurrentDesk.State.numberOfPins )
             + '&limit=15' + reverse, method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
@@ -509,15 +539,14 @@ function getMonthPins() {
         })
         .catch(function(error) {
             console.log("ERR_month pins", error);
-            setInfoDesk("Что-то пошло не так пинами за немяц");
+            if (CurrentDesk.State.searchObj === "user") {
+                setInfoDesk("Что-то пошло не так с пользователями, который регистрировались за последний месяц");
+            } else {
+                setInfoDesk("Что-то пошло не так с пинами за месяц");
+            }
         });
 }
 
-
-/*
-  /api/search?what=value1&description=value2&start=value3&limit=value4&date=day/week/month&false&desc=true/false&most=popular/comment
-   (value1 - что ищем user, pin, board; value2 - описание, start - c какой позиции загружать, limit - сколько заагружать) - get
-   */
 
 
 /**
@@ -530,5 +559,3 @@ function setInfoDesk(message) {
     const info = document.getElementById('main_page_info');
     info.innerHTML = message;
 }
-
-// setDeleteBtnsIfSearchUser();
