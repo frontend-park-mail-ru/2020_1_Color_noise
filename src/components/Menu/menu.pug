@@ -6,25 +6,40 @@ div.menu
         div.find_pin
             ul(class="search_menu search_select")
                 li
-                    a( href="") Пин
+                    a( href="" id="search_selected_obj") Пин
                         ul( class="search_submenu")
                             li
-                                a( href="") Пин
+                                a( href="" id="search_select_pin_vars" ) Пин
                             li
-                                a( href="") Пользователь
+                                a( href="" id="search_select_user_vars") Пользователь
                 li
-                    a( href="") Фильтры
+                    a( href="" id="search_selected_filter") Условия поиска
                         ul( class="search_submenu")
                             li
-                                a( href="") Популярные
+                                a( href="" id="search_popular") Популярные
                             li
-                                a( href="") Комментируемые
+                                a( href="" id="search_most_comments") Комментируемые
                             li
-                                a( href="") За день
+                                a( href="" id="search_default") По умолчанию
+
+                li
+                    a( href="" id="search_selected_time") Время
+                        ul( class="search_submenu")
                             li
-                                a( href="") За неделю
+                                a( href="" id="search_day") За день
                             li
-                                a( href="") За месяц
+                                a( href="" id="search_week") За неделю
+                            li
+                                a( href="" id="search_month") За месяц
+                            li
+                                a( href="" id="search_all_time") За все время
+                li
+                    a( href="" id="search_selected_order") Обычный порядок
+                        ul( class="search_submenu")
+                            li
+                                a( href="" id="search_order_norm") Обычный
+                            li
+                                a( href="" id="search_order_reverse") Обратный
 
 
 
@@ -36,19 +51,3 @@ div.menu
 
     div.thirdpart#loginPart
 
-
-
-
-
-div(class="delete_class") Это будет удалено
-    select(class="select_search" id="select_search")
-        option Пользователь
-        option Пины
-    button(id="search_popular") search_popular
-    button(id="search_most_comments") search_most_comments
-    button(id="search_day") search_day
-    button(id="search_week") search_week
-    button(id="search_month") search_month
-    div(class="DELETE_search_checkbox_area")
-        input(type="checkbox" id="search_reverse_checkbox" class="DELETE_input_checkbox")
-        label(class="DELETE_search_checkbox_title") Обратный порядок

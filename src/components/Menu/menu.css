@@ -115,6 +115,7 @@
 	border: #8A8A8A thin;
 	height: 40px;
 	border-radius: 5px;
+	margin-top: 7px;
 }
 
 
@@ -184,14 +185,14 @@
 	padding-top: 2px;
 	padding-bottom: 2px;
 	border-radius: 5px;
-	font-size: 16px;
+	font-size: 18px;
 	display: inline-block;
 	margin-left: 5px;
 	background: white;
-	max-width: 75%;
+	max-width: 40%;
+	margin-top: 8px;
+	vertical-align: top;
 }
-
-
 
 
 
@@ -210,40 +211,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-удалить эти классы после переноса поиска
- */
-.delete_class {
-	background: #a6a6f3;
-}
-.DELETE_search_checkbox_area {
-	display: inline-block;
-	margin-left: 20px;
-	box-sizing: content-box;
-	line-height: normal;
-
-}
-
-.DELETE_search_checkbox_title {
-	display: inline-block;
-}
-.DELETE_input_checkbox {
-	display: inline-block;
-	height: 30px;
-	-webkit-appearance: checkbox;
-}
 
 
 
@@ -278,8 +245,10 @@
 }
 .search_menu > li > a {
 	height: 50px;
-	line-height: 50px;
-	padding: 0 10px;
+	margin-top: 10px;
+	padding-left: 10px;
+	padding-right: 5px;
+	vertical-align: top;
 	font-weight: bold;
 	color: #000000;
 }
@@ -316,9 +285,5 @@
 	line-height: 36px;
 	padding: 0 25px;
 }
-
-
-
-
 
 

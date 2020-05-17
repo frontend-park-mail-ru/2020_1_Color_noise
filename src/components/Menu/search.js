@@ -11,35 +11,65 @@ import findIcon from "../../images/find.svg";
 
 
 
-
+// подготовим url для поиска и установим скрол
 function searchEvent() {
 
+    // обнуляем предыдущие варианты и если надо строим каркас для пинов
     unSetScroll();
-    const searchInput = document.getElementById("search_main_input");
-
-    let isUserSearch = false
-    const selectSearch = document.getElementById("select_search")
-    if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-        isUserSearch = true
-    }
-
-    const searchValue = searchInput.value.trim();
-    let searchObj = "pin";
-
-    if (isUserSearch){
-        searchObj = "user"
-    }
-
-
     // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
+    CurrentDesk.State.numberOfPins = 0;
 
 
-    const start = 0;
-    const limit = 50;
-    FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
-            searchValue + "&start=" + start + "&limit=" + limit, method:'get'})
+    const searchMainInput = document.getElementById("search_main_input")
+    const searchValue = searchMainInput.value
+
+
+    /*
+    Поиск: /api/search?what=value1&description=value2&start=value3&
+    limit=value4&date=day/week/month&false&desc=true/false&most=popular/comment
+     (value1 - что ищем user, pin, board; value2 - описание, start - c какой позиции загружать,
+      limit - сколько заагружать)
+     */
+
+
+    let searchUrl = serverLocate + "/api/search?what=" + CurrentDesk.State.searchObj + "&description=" +
+        searchValue
+
+    if (CurrentDesk.State.searchTime !== null) {
+        searchUrl += "&date=" + CurrentDesk.State.searchTime
+    }
+
+    if (CurrentDesk.State.searchFilter !== null) {
+        searchUrl += "&most=" + CurrentDesk.State.searchFilter
+    }
+
+    if (CurrentDesk.State.searchOrderDesc === 0) {
+        searchUrl += "&desc=false"
+    } else {
+        searchUrl += "&desc=true"
+    }
+
+
+    CurrentDesk.State.searchUrl = searchUrl
+    getSearchFilter();
+    setScroll(getSearchFilter)
+
+}
+
+
+
+
+function getSearchFilter() {
+
+    const limit = 15
+
+    let searchUrl = CurrentDesk.State.searchUrl
+
+    searchUrl += "&start=" + CurrentDesk.State.numberOfPins + "&limit=" + limit
+
+    FetchModule.fetchRequest({url: searchUrl, method:'get'})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -51,30 +81,27 @@ function searchEvent() {
                 setInfoDesk("Ошибка сервера");
             } else {
                 if (result.body.length === 0) {
-                    if (isUserSearch) {
+                    if (CurrentDesk.State.searchObj === "user") {
                         setInfoDesk("Пользователи не найдены");
                     } else {
                         setInfoDesk("Пины не найдены");
                     }
                     return;
                 }
-                if (isUserSearch) {
+                if (CurrentDesk.State.searchObj === "user") {
                     console.log("show users:", result.body)
                     showUserSearch(result.body)
                 } else {
                     getInfoForShowing(result.body);
                 }
-
             }
         })
         .catch( (error) => {
-            console.log("ERR_SEARCH_PIN:", error);
+            console.log("ERR_SEARCH: search url:", searchUrl)
+            console.log("ERR_SEARCH: err:", error);
             setInfoDesk("Что-то пошло не так с поиском");
         });
-
 }
-
-
 
 
 
@@ -176,133 +203,121 @@ function getInfoForShowing(pinIdArr) {
 }
 
 
-export function setDateBtns(){
+function setSelectedVars() {
 
-    // помещаем в синглтон значение checkbox и ставим действие при смене состояния
-    const searchReverseCheckbox = document.getElementById("search_reverse_checkbox")
-    CurrentDesk.State.searchReverseCheckbox = 0;
-    console.log("CurrentDesk.State.searchReverseCheckbox:", CurrentDesk.State.searchReverseCheckbox)
-    searchReverseCheckbox.addEventListener("click", evt => {
 
-        if (CurrentDesk.State.searchReverseCheckbox === 0) {
-            CurrentDesk.State.searchReverseCheckbox = 1
-        } else {
-            CurrentDesk.State.searchReverseCheckbox = 0
+    // Выбор объекта поиска
+    const searchSelectedObj = document.getElementById("search_selected_obj")
+
+    const searchSelectPinVars = document.getElementById("search_select_pin_vars")
+    searchSelectPinVars.addEventListener("click", (evt)=>{
+        evt.preventDefault();
+        console.log(" searchSelectedObj.innerText = \"Пин\"")
+        searchSelectedObj.innerText = "Пин"
+        CurrentDesk.State.searchObj = "pin"
+
+        const searchMostComments = document.getElementById("search_most_comments")
+        searchMostComments.style.display = "block"
+
+    })
+    const searchSelectUserVars = document.getElementById("search_select_user_vars")
+    searchSelectUserVars.addEventListener("click", evt=>{
+        event.preventDefault();
+        console.log("searchSelectedObj.innerText = \"Пользователь\"")
+        searchSelectedObj.innerText = "Пользователь"
+        CurrentDesk.State.searchObj = "user"
+        // строем самые комментируемые
+        const searchMostComments = document.getElementById("search_most_comments")
+        searchMostComments.style.display = "none"
+        if (CurrentDesk.State.searchFilter === "comment") {
+            searchSelectedFilter.innerText = "По умолчанию"
+            CurrentDesk.State.searchFilter = null
         }
 
-        console.log("изменение состояния checkbox:", CurrentDesk.State.searchReverseCheckbox)
-        let columns = document.getElementById('columns');
-        if (columns !== null) {
-            clearColumns()
-        }
-        CurrentDesk.State.numberOfPins = 0;
     })
 
-
-
-    // если выбрали пользователя и зашли а дату то переключаем на пины(по дате только пины выводятся)
-    const selectSearch = document.getElementById("select_search")
-    if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-        selectSearch.selectedIndex = 1;
-    }
-
-
+    //Выбор параметра поиска (популярные или комментируемые) если не выбоано то
+    const searchSelectedFilter = document.getElementById("search_selected_filter")
     const searchPopular = document.getElementById("search_popular")
     searchPopular.addEventListener("click", evt=>{
-
-        console.log("searchPopular")
-        // mb create desk
-        unSetScroll();
-
-        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
-        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
-        const root = document.getElementById('content');
-        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
-        CurrentDesk.State.numberOfPins = 0;
-
-        getPopularPinsOrUsers();
-        setScroll(getPopularPinsOrUsers);
-        getPopularPinsOrUsers();
+        evt.preventDefault();
+        searchSelectedFilter.innerText = "Популярные"
+        CurrentDesk.State.searchFilter = "popular"
 
     })
-
 
     const searchMostComments = document.getElementById("search_most_comments")
     searchMostComments.addEventListener("click", evt=>{
-        console.log(" searchMostComments")
-        // mb create desk
-        unSetScroll();
-
-        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
-        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
-        const root = document.getElementById('content');
-        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
-        CurrentDesk.State.numberOfPins = 0;
-
-        getMostCommentPins();
-        setScroll(getMostCommentPins);
-        getMostCommentPins();
-
+        evt.preventDefault();
+        searchSelectedFilter.innerText = "Комментируемые"
+        CurrentDesk.State.searchFilter = "comment"
     })
 
+    const searchDefault = document.getElementById("search_default")
+    searchDefault.addEventListener("click", evt=>{
+        evt.preventDefault();
+        searchSelectedFilter.innerText = "По умолчанию"
+        CurrentDesk.State.searchFilter = null
+    })
+
+
+
+    // выбор времени поиска
+    const searchSelectedTime = document.getElementById("search_selected_time")
 
     const searchDay = document.getElementById("search_day")
     searchDay.addEventListener("click", evt=>{
-
-        console.log("hot day")
-
-        // mb create desk
-        unSetScroll();
-
-        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
-        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
-        const root = document.getElementById('content');
-        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
-        CurrentDesk.State.numberOfPins = 0;
-
-        getDayPinsOrUsers();
-        setScroll(getDayPinsOrUsers);
-        getDayPinsOrUsers();
+        evt.preventDefault();
+        searchSelectedTime.innerText = "За день"
+        CurrentDesk.State.searchTime = "day"
 
     })
-
     const searchWeek = document.getElementById("search_week")
     searchWeek.addEventListener("click", evt=>{
-        console.log("hot week")
+        evt.preventDefault();
+        searchSelectedTime.innerText = "За неделю"
+        CurrentDesk.State.searchTime = "week"
 
-        // mb create desk
-        unSetScroll();
-
-        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
-        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
-        const root = document.getElementById('content');
-        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
-        CurrentDesk.State.numberOfPins = 0;
-
-        getWeekPinsOrUsers();
-        setScroll(getWeekPinsOrUsers);
-        getWeekPinsOrUsers();
     })
-
-
     const searchMonth = document.getElementById("search_month")
     searchMonth.addEventListener("click", evt=>{
-        console.log("hot month")
-
-        // mb create desk
-        unSetScroll();
-
-        //clearColumns(); не надо - мы очищаем через отрисовку новых колонок
-        // необходимо создать заголовку под пины (теперь поиск может быть вызван откуда угодно)
-        const root = document.getElementById('content');
-        root.innerHTML = DeskTemplate({image : serverLocate +"/"+ findIcon});
-        CurrentDesk.State.numberOfPins = 0;
-
-        getMonthPinsOrUsers();
-        setScroll(getMonthPinsOrUsers);
-        getMonthPinsOrUsers();
-
+        evt.preventDefault();
+        searchSelectedTime.innerText = "За месяц"
+        CurrentDesk.State.searchTime = "month"
     })
+    const searchAllTime = document.getElementById("search_all_time")
+    searchAllTime.addEventListener("click", evt=>{
+        evt.preventDefault();
+        searchSelectedTime.innerText = "За все время"
+        CurrentDesk.State.searchTime = null
+    })
+
+
+
+    // выбор порядка
+    const searchSelectedOrder = document.getElementById("search_selected_order")
+    const searchOrderNorm = document.getElementById("search_order_norm")
+    searchOrderNorm.addEventListener("click", evt=>{
+        evt.preventDefault();
+        searchSelectedOrder.innerText = "Обычный порядок"
+        CurrentDesk.State.searchOrderDesc = 0
+    })
+
+    const searchOrderReverse = document.getElementById("search_order_reverse")
+    searchOrderReverse.addEventListener("click", evt=>{
+        evt.preventDefault();
+        searchSelectedOrder.innerText = "Обратный порядок"
+        CurrentDesk.State.searchOrderDesc = 1
+    })
+
+
+}
+
+export function setDateBtns(){
+
+    setSelectedVars();
+
+    // добавить что при изменении какого либо параметра запрос идет заново
 
 }
 
@@ -314,8 +329,7 @@ export function setDateBtns(){
  * @return {void}
  */
 export function setSearch() {
-
-    setDeleteBtnsIfSearchUser();
+    console.log("set search!")
 
     const searchImg = document.getElementById("search_main_img");
     const searchInput = document.getElementById("search_main_input");
@@ -335,217 +349,8 @@ export function setSearch() {
 }
 
 
-function setDeleteBtnsIfSearchUser() {
-
-    console.log("delete all buttons! (user selected)")
-    const selectSearch = document.getElementById("select_search")
-    selectSearch.addEventListener("change", evt=>{
-        if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-            console.log("setDeleteBtnsIfSearchUser: тут надо скрыть функции для пинов")
-            CurrentDesk.State.searchObj = "user"
-            hideMostCommentsBtn();
-
-        }
-
-        if (selectSearch.options[selectSearch.selectedIndex].text === "Пины") {
-            console.log("setDeleteBtnsIfSearchUser: тут надо назначить действия на появляющийся фильтры для пинов")
-            CurrentDesk.State.searchObj = "pin"
-            showMostCommentsBtn();
-        }
-    })
-}
 
 
-function hideMostCommentsBtn() {
-    const searchMostComments = document.getElementById("search_most_comments")
-    searchMostComments.hidden = true;
-
-}
-
-function showMostCommentsBtn() {
-    const searchMostComments = document.getElementById("search_most_comments")
-    searchMostComments.hidden = false;
-}
-
-
-
-function getPopularPinsOrUsers() {
-
-    let reverse = "&desc=false"
-    if (CurrentDesk.State.searchReverseCheckbox === 1){
-        reverse = "&desc=true"
-    }
-
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=' + CurrentDesk.State.searchObj
-            + '&most=popular' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15' + reverse, method:'get',})
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((result) => {
-            console.log("PopularPins:", result);
-            if (result.body.length === 0) {
-                console.log("не было получего новых популярных пинов")
-                setInfoDesk("Ничего не найдено среди популярных");
-                return;
-            }
-            showPins(result.body)
-        })
-        .catch(function(error) {
-            console.log("ERR_Popular", error);
-            if (CurrentDesk.State.searchObj === "user") {
-                setInfoDesk("Что-то пошло не так с популярными пользователями");
-            } else {
-                setInfoDesk("Что-то пошло не так с популярными пинами");
-            }
-
-        });
-}
-
-function getMostCommentPins() {
-
-    let reverse = "&desc=false"
-    if (CurrentDesk.State.searchReverseCheckbox === 1){
-        reverse = "&desc=true"
-    }
-
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=pin&most=comment' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15' + reverse, method:'get',})
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((result) => {
-            console.log("MostCommentPins:", result);
-            if (result.body.length === 0) {
-                console.log("не было получего новых обсуждаемых пинов")
-                setInfoDesk("Ничего не найдено среди обсуждаемого");
-                return;
-            }
-            showPins(result.body)
-        })
-        .catch(function(error) {
-            console.log("ERR_Comment", error);
-            setInfoDesk("Что-то пошло не так с самыми обсуждаемыми пинами");
-        });
-
-}
-
-
-
-
-function getDayPinsOrUsers() {
-
-    let reverse = "&desc=false"
-    if (CurrentDesk.State.searchReverseCheckbox === 1){
-        reverse = "&desc=true"
-    }
-
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=' + CurrentDesk.State.searchObj
-            + '&date=day' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15' + reverse, method:'get',})
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((result) => {
-            console.log("day pins:", result);
-            if (result.body.length === 0) {
-                console.log("не было получего новых пинов дня")
-                setInfoDesk("Ничего не найдено за день");
-                return;
-            }
-            showPins(result.body)
-        })
-        .catch(function(error) {
-            console.log("ERR_day pins", error);
-            if (CurrentDesk.State.searchObj === "user") {
-                setInfoDesk("Что-то пошло не так с пользователями, который регистрировались за последний день");
-            } else {
-                setInfoDesk("Что-то пошло не так с пинами за день");
-            }
-        });
-
-}
-
-function getWeekPinsOrUsers() {
-
-    let reverse = "&desc=false"
-    if (CurrentDesk.State.searchReverseCheckbox === 1){
-        reverse = "&desc=true"
-    }
-
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=' + CurrentDesk.State.searchObj
-            + '&date=week' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15' + reverse, method:'get',})
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((result) => {
-            console.log("week pins:", result);
-            if (result.body.length === 0) {
-                console.log("не было получего новых пинов недели")
-                setInfoDesk("Ничего не найдено за неделю");
-                return;
-            }
-            showPins(result.body)
-        })
-        .catch(function(error) {
-            console.log("ERR_week pins", error);
-            if (CurrentDesk.State.searchObj === "user") {
-                setInfoDesk("Что-то пошло не так с пользователями, который регистрировались за последнюю неделю");
-            } else {
-                setInfoDesk("Что-то пошло не так с пинами за неделю");
-            }
-        });
-
-}
-
-
-function getMonthPinsOrUsers() {
-
-    let reverse = "&desc=false"
-    if (CurrentDesk.State.searchReverseCheckbox === 1){
-        reverse = "&desc=true"
-    }
-
-    FetchModule.fetchRequest({ url: serverLocate + '/api/search?what=' + CurrentDesk.State.searchObj
-            + '&date=month' + "&start=" + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15' + reverse, method:'get',})
-        .then((res) => {
-            return res.ok ? res : Promise.reject(res);
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((result) => {
-            console.log("month pins:", result);
-            if (result.body.length === 0) {
-                console.log("не было получего новых пинов месяца")
-                setInfoDesk("Ничего не найдено за месяц");
-                return;
-            }
-            showPins(result.body)
-        })
-        .catch(function(error) {
-            console.log("ERR_month pins", error);
-            if (CurrentDesk.State.searchObj === "user") {
-                setInfoDesk("Что-то пошло не так с пользователями, который регистрировались за последний месяц");
-            } else {
-                setInfoDesk("Что-то пошло не так с пинами за месяц");
-            }
-        });
-}
 
 
 
