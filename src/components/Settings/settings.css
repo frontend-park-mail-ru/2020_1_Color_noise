@@ -1,0 +1,25 @@
+.settings {
+	animation: visibleAnimation .5s 1 ease-in-out;
+}
+
+.backProfileLink {
+	position: relative;
+}
+
+.backProfileLink img{
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	left: 5%;
+	cursor: pointer;
+}
+
+.settings .avatar img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 50%;
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+}

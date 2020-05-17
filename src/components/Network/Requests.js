@@ -2,6 +2,7 @@ import { default as CurrentUser } from '../../utils/userDataSingl.js';
 import FetchModule from './Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { default as Router} from "../../utils/router.js"
+import {showInfoModal} from "../Modal/modal";
 
 /**
  *  Use logic FetchModule and work with promises
@@ -23,24 +24,30 @@ export class Requests {
                 if (result.status === 401) {
                     Router.go("/", "Zinterest", null, needPush);
                     throw new Error("No auth");
+                    return false;
+                } else {
+                    setDataUser(result.body);
+
+                    let url = window.location.pathname;
+
+                    Router.go(url, "", null, needPush);
+                    return true;
                 }
-                CurrentUser.Data.id = result.body.id;
-                CurrentUser.Data.login = result.body.login;
-                CurrentUser.Data.email = result.body.email;
-                CurrentUser.Data.about = result.body.about;
-                CurrentUser.Data.avatarPath = result.body.avatar;
-                CurrentUser.Data.subscribers = result.body.subscribers;
-                CurrentUser.Data.subscriptions = result.body.subscriptions;
-                CurrentUser.Data.token = document.cookie["csrf_token"];
-
-                console.log("MY CurrentUser.Data.token:", CurrentUser.Data.token);
-                let url = window.location.pathname;
-
-                Router.go(url, "", null, needPush);
-                return true;
             }).catch((error) => {
                 console.log("getUserProfile ERROR:", error);
                 return false;
             });
     }
 }
+
+export const setDataUser = (user) => {
+    CurrentUser.Data.id = user.id;
+    CurrentUser.Data.login = user.login;
+    CurrentUser.Data.email = user.email;
+    CurrentUser.Data.about = user.about;
+    CurrentUser.Data.avatarPath = user.avatar;
+    CurrentUser.Data.subscribers = user.subscribers;
+    CurrentUser.Data.subscriptions = user.subscriptions;
+    CurrentUser.Data.token = document.cookie["csrf_token"];
+    console.log("MY CurrentUser.Data.token:", CurrentUser.Data.token);
+};

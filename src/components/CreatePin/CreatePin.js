@@ -1,14 +1,10 @@
 import createPinTemplate from './createPin.pug';
-
 import pinDefaultImage from '../../images/pinDefault.jpg';
-
 import { showInfoModal, setInfoPage } from "../Modal/modal"
 
 import Router from '../../utils/router'
-import { Requests } from '../Network/Requests'
 import FetchModule from "../Network/Network";
 import {serverLocate} from "../../utils/constants";
-import {createProfile} from "../Profile/Profile";
 
 export const createPageNewPin = (desks) => {
     const template = createPinTemplate({ pinDefaultImage : pinDefaultImage });
@@ -29,7 +25,7 @@ const addDesksChoose = (desks) => {
     const deskSelect = document.getElementById('deskSelect');
     desks.forEach((item) => {
         const option = document.createElement('option');
-        option.text = item.description;
+        option.text = item.name;
         option.setAttribute('id', item.id);
         deskSelect.add(option);
     });

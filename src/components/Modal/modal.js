@@ -3,6 +3,8 @@ import createDeskTemplate from './createDesk.pug';
 import showInfoTemplate from "./showInfo.pug";
 import loginTemplate from "./login.pug";
 import regTemplate from "./reg.pug";
+import followTemplate from './follow.pug';
+import followItemTemplate from './followItem.pug';
 
 import logoImage from '../../images/logo.svg';
 
@@ -10,6 +12,7 @@ import FetchModule from "../Network/Network";
 import { serverLocate } from "../../utils/constants";
 import { validators } from '../../utils/validation';
 import Router from "../../utils/router";
+import { setDataUser } from "../Network/Requests"
 
 export const showLoginModal = () => {
     const modal = document.getElementById('modal');
@@ -56,7 +59,7 @@ export const showChooseModal = () => {
 const goNewPin = (evt) => {
     evt.preventDefault();
     hideModal();
-    Router.go("/newPin","New Pin");
+    Router.go("/newpin","New Pin");
 };
 
 const deskCreateModal = (evt) => {
@@ -68,6 +71,83 @@ const deskCreateModal = (evt) => {
 
     const sendDesk = document.getElementById('sendDesk');
     sendDesk.addEventListener('click', sendDeskFunc);
+};
+
+export const showFollowersModal = (evt) => {
+    const modal = document.getElementById('modal');
+    modal.innerHTML = followTemplate({ logoImage : logoImage });
+
+    const userID = evt.currentTarget.getAttribute('user_id');
+    FetchModule.fetchRequest({
+        url:serverLocate + '/api/user/subscribers/' + userID + '?start=0&limit=9999',
+        method: 'get',
+    }).then((res) => {
+        return res.ok ? res : Promise.reject(res);
+    }).then((response) => {
+        return response.json();
+    }).then((result) => {
+        if (result.status === 200) {
+            setFollow(result.body);
+        } else {
+            hideModal();
+            setInfoPage('Ошибка обработки запроса');
+        }
+    }).catch(function(error) {
+        hideModal();
+        setInfoPage('Ошибка отправки запроса');
+    });
+
+    const backModal  = document.getElementById('backModal');
+    backModal.addEventListener('click', hideModal);
+};
+
+export const showFollowingModal = (evt) => {
+    const modal = document.getElementById('modal');
+    modal.innerHTML = followTemplate({ logoImage : logoImage });
+
+    const userID = evt.currentTarget.getAttribute('user_id');
+    FetchModule.fetchRequest({
+        url:serverLocate + '/api/user/subscriptions/' + userID + '?start=0&limit=9999',
+        method: 'get',
+    }).then((res) => {
+        return res.ok ? res : Promise.reject(res);
+    }).then((response) => {
+        return response.json();
+    }).then((result) => {
+        if (result.status === 200) {
+            setFollow(result.body);
+        } else {
+            hideModal();
+            setInfoPage('Ошибка обработки запроса');
+        }
+    }).catch(function(error) {
+        hideModal();
+        setInfoPage('Ошибка отправки запроса');
+    });
+
+    const backModal  = document.getElementById('backModal');
+    backModal.addEventListener('click', hideModal);
+};
+
+const setFollow = (follows) => {
+    const followBlock = document.getElementById('followBlockModal');
+    followBlock.innerHTML = '';
+    follows.forEach((item) => {
+        const template = followItemTemplate({ followLogin : item.login,
+            followLink : "/user/" + item.id, followAttrId : 'follow_' + item.id,
+            avatarImage : serverLocate + '/' + item.avatar });
+        followBlock.insertAdjacentHTML('beforeend', template);
+
+        const follow = document.getElementById('follow_' + item.id);
+        follow.addEventListener('click', goUser);
+    });
+};
+
+const goUser = (evt) => {
+    evt.preventDefault();
+    const userID = evt.currentTarget.getAttribute('id').split('_', 2)[1];
+    hideModal();
+    Router.go("/user/" + userID,"User");
 };
 
 const sendLoginFunc = (evt) => {
@@ -98,6 +178,7 @@ const sendLoginFunc = (evt) => {
         return response.json();
     }).then((result) => {
         if (result.status === 200) {
+            setDataUser(result.body);
             showInfoModal('С возвращением!');
             const loginPart = document.getElementById('loginPart');
             loginPart.dispatchEvent(new Event('login'));
@@ -122,10 +203,11 @@ const sendRegFunc = (evt) => {
         setInfoModal('Введите корректный email');
         return;
     } else if (!login_valid) {
-        setInfoModal('Логин должен состоять из более,<br>чем из трех символов: a-z, A-Z, 0-9, _');
+        setInfoModal('Логин должен состоять из трех и более символов,<br>' +
+            'и содержать только латинские буквы, цифры и подчеркивание');
         return;
     } else if (!pass_valid) {
-        setInfoModal('Пароль должен состоять из шести символов или более символов');
+        setInfoModal('Пароль должен состоять из шести или более символов');
         return;
     }
 
@@ -146,6 +228,7 @@ const sendRegFunc = (evt) => {
         return response.json();
     }).then((result) => {
         if (result.status === 201) {
+            setDataUser(result.body);
             showInfoModal('Регистрация завершена!<br>Добро пожаловать!');
             const loginPart = document.getElementById('loginPart');
             loginPart.dispatchEvent(new Event('login'));
@@ -186,10 +269,16 @@ const sendDeskFunc = (evt) => {
             return response.json();
         }).then((result) => {
             if (result.status === 201) {
+
                 showInfoModal('Новая доска создана');
-                // if (profile_b === true) {
-                //     createDesks(CurrentUser.Data.id);
-                // }
+
+                const deskBlock = document.getElementById('deskBlock');
+                if (deskBlock && deskBlock.hasAttribute('mine')) {
+                    deskBlock.dispatchEvent(new CustomEvent("newDesk",
+                        { detail:
+                                { 'nameDesk': name, 'idDesk': result.body.id }
+                        }));
+                }
             } else {
                 setInfoModal('Ошибка обработки, попробуйте еще раз');
             }
@@ -215,8 +304,13 @@ export const showInfoModal = (info) => {
 };
 
 export const setInfoModal = (info) => {
-    const infoMessage = document.getElementById('infoModalMessage');
+    const infoMessage = document.createElement('div');
+    infoMessage.className = 'mini_title';
     infoMessage.innerHTML = info;
+
+    const infoMessageBlock = document.getElementById('infoModalMessage');
+    infoMessageBlock.innerHTML = "";
+    infoMessageBlock.appendChild(infoMessage);
 };
 
 export const setInfoContent = (text = 'Что-то пошло не так :(') => {

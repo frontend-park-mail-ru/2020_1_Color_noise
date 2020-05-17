@@ -1,11 +1,11 @@
-import FetchModule from "../components/Network/Network.js";
-import {serverLocate} from "../utils/constants.js";
-import { createPageNotif } from "../components/Notif/Notif";
+import FetchModule from "../components/Network/Network";
+import { createPageUser } from "../components/User/CreateUser";
 import { setInfoContent } from "../components/Modal/modal";
+import { serverLocate } from "../utils/constants";
 
-export const createNotificationsView = () => {
+export const createUserView = (state) => {
     FetchModule.fetchRequest({
-        url:serverLocate + '/api/notifications?start=0&limit=9999',
+        url:serverLocate + '/api/user/' + state.id,
         method: 'get',
     }).then((res) => {
         return res.ok ? res : Promise.reject(res);
@@ -13,7 +13,7 @@ export const createNotificationsView = () => {
         return response.json();
     }).then((result) => {
         if (result.status === 200) {
-            createPageNotif(result.body);
+            createPageUser(result.body);
         } else {
             setInfoContent('Ошибка обработки запроса');
         }

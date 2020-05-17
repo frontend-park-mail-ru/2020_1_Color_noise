@@ -2,6 +2,8 @@
     display: inline-block;
     margin: 25px;
     width: 240px;
+    animation: visibleAnimation .5s 1 ease-in-out;
+    cursor: pointer;
 }
 
 /*@media only screen and (max-width: 750px) {*/
