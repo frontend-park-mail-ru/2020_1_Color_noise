@@ -20,28 +20,18 @@
 
 
 
-
-
-
-
-
-*, *:before, *:after {
-   /* box-sizing: border-box;
-    */
-}
-
-
-
 .chat_container {
     margin: 0 auto;
     width: 750px;
     height: 700px;
+   /* box-shadow: 0 0 50px 0 rgba(0,0,0,0.50); */
 }
 
 .chat_people_list {
     width: 260px;
     float: left;
     background: linear-gradient(90deg, rgba(214,39,5,1) 0%, rgba(207,35,8,1) 50%);
+   /* background: white; */
     border-radius: 30px 0 0 30px;
     height: 700px;
 }
@@ -71,7 +61,7 @@
     padding-bottom: 20px;
     padding-top: 5px;
     height: 450px;
-    color: white;
+    color: black;
 }
 
 
@@ -81,7 +71,7 @@
 }
 
 .chat_separate_users_in_contact {
-    border-bottom: 1px double #ffffff;
+    border-bottom: 1px double black;
     padding-top: 5px;
     cursor: pointer;
 }
@@ -153,10 +143,11 @@
 
 
 .chat_history {
-    padding: 30px 30px 20px;
+    padding: 0px;
     border-bottom: 2px solid rgba(68, 57, 57, 0.57);
     overflow-y: scroll;
     height: 488px;
+
 }
 
 .message_data {

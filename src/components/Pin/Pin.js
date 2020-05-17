@@ -290,7 +290,7 @@ function setAddPinComment(PinId) {
             })
 
             .catch((error) => {
-                showAddPinMsg("Ошибка добавления комментария", "addCommentMsg");
+                showAddPinMsg("Ошибка добавления, авторизируйтесь", "addCommentMsg");
             });
     })
 }

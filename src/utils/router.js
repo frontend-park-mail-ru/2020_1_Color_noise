@@ -77,9 +77,7 @@ class Router {
                 // если url корректный, то запросим инфу о пине и отобразим его
                 createPinPageFromRequest(pinId);
                 return;
-            } else
-                //createUserPinsDeskView
-            if (validators.pinsUserLink(path)) {// если находится на странице пинов одного пользователя
+            } else if (validators.pinsUserLink(path)) {// если находится на странице пинов одного пользователя
                 const userId = path.substring("/pins/user/".length, path.length);
                 const isInt = Number.isInteger(Number(userId));
                 if (!isInt) {
@@ -92,7 +90,6 @@ class Router {
                 const state = {};
                 state.userId = userId;
                 createUserPinsDeskView(state);
-
             } else
             //createBoardDeskView
             if (validators.deskUserLink(path)) { // если находится на странице пинов одного пользователя
@@ -113,13 +110,14 @@ class Router {
                 const userId = path.substring("/user/".length, path.length);
                 const state = {};
                 state.id = userId;
+                console.log("createUserView!!!!")
                 createUserView(state);
             }  else if (validators.chatUserLink(path)) {
                 const userId = path.substring("/chats/user/".length, path.length);
                 const state = {};
                 state.id = userId;
-                alert('Route to chat, user:' + userId);
-                //CreateChatView(userId) Только ID человека
+                console.log("CreateChatView with contact person Id:", userId)
+                CreateChatView(userId) //Только ID человека
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();
@@ -131,6 +129,7 @@ class Router {
             console.log("ROUTE state:",state);
             func(state);
         }
+
     }
 
     start() {
@@ -143,6 +142,7 @@ class Router {
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
         createContent(); // структура
         Requests.getUserProfile(false).then((result) => {
+            console.log("создаю смтраницу по умолчанию")
             createMenu(result);
         });
         // if (Requests.getUserProfile(false)) {
