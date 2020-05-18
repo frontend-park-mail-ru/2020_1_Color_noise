@@ -7,7 +7,6 @@ import {serverLocate} from "../utils/constants";
 import backBtn from "../images/backBtn.svg";
 
 export function CreateChatView(userID = null) {
-    unSetScroll();
     document.title = "Chats";
     const backImage = serverLocate + backBtn;
     const chats = ChatsTemplate({backImage:backImage});
