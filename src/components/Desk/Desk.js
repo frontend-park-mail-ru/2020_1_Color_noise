@@ -123,7 +123,7 @@ export function getBoardPins() {
                 return;
             }
             //document.title += result.body.name;
-
+            console.log("BOARD PINS body:", result.body)
             showPins(result.body.pins)
 
         })

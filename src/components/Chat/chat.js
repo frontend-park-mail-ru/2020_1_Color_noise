@@ -652,7 +652,7 @@ export function setSupportBtn() {
     const chatSupportBtn = document.getElementById("chat_support_btn")
     chatSupportBtn.addEventListener("click", evt=>{
 
-        FetchModule.fetchRequest({url: serverLocate + "/api/suuport", method:"get"})
+        FetchModule.fetchRequest({url: serverLocate + "/api/support", method:"get"})
             .then((res) => {
                 return res.ok ? res : Promise.reject(res);
             })

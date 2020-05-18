@@ -18,13 +18,8 @@ import { unSetScroll } from "../Desk/Desk";
  */
 function addPinOnBoard(target, boardId) {
     FetchModule.fetchRequest({
-        url: serverLocate + '/api/pin', method: 'post', body: {
-            name: target.name,
-            description: target.about,
+        url: serverLocate + '/api/pin/saving/' + target.id, method: 'post', body: {
             board_id: Number(boardId),
-            image: target.image // send src NOT REAL IMG
-            // @todo зачем отправлять изображение, если оно уже есть на сервере
-            // изображение весит примерно 90% запроса
         }
     })
         .then((response) => {
@@ -35,16 +30,17 @@ function addPinOnBoard(target, boardId) {
         })
         .then((jsonAns) => {
 
-            if (jsonAns.status !== 200)
-                throw Error("not 200: /api/pin" + CurrentUser.Data.id);
-            // можно отобразить доску куда он добавился
-            // но мне кажется лучше просто вернуть пользователя к пину
+            if (jsonAns.status !== 201) {
+                throw Error("not 200: api/pin/saving/" + target.id);
+            }
+
+            showAddPinMsg('Пин добавлен на доску', "savePinMsg");
 
         })
 
         .catch((error) => {
             console.log('Что-то пошло не так с добавлением пина на доску:', error);
-            showAddPinMsg('Сохранение будет доступно в следующей версии', "savePinMsg");
+            showAddPinMsg('Ошибка сохранения пина', "savePinMsg");
         });
 
 }
@@ -77,6 +73,22 @@ function getUserBoards(target) {
             jsonAns = jsonAns.body;
 
             // real work here
+            jsonAns.forEach((item) => {
+                let board = document.createElement('option');
+                board.className = "boardName";
+                board.innerText = item.name;
+                board.id = 'boardID:' + item.id;
+                chooseBoards.append(board);
+            });
+
+            const saveSelectedPinBtn = document.getElementById("saveSelectedPinBtn");
+            saveSelectedPinBtn.addEventListener('click', (evt) => {
+                // board id after 8 symbols 'boardID:'
+                const boardId = chooseBoards.options[chooseBoards.selectedIndex].id.slice(8,
+                    chooseBoards.options[chooseBoards.selectedIndex].id.length);
+                addPinOnBoard(target, boardId);
+            });
+
 
         })
 
@@ -90,21 +102,7 @@ function getUserBoards(target) {
             let jsonAns = [{name:"boardName1", id: 1}, {name:"boardName2", id: 2},
                 {name:"boardName3", id: 3}, {name:"boardName4", id: 4}];
 
-            jsonAns.forEach((item) => {
-                let board = document.createElement('option');
-                board.className = "boardName";
-                board.innerText = item.name;
-                board.id = 'boardID:' + item.id; // not use id like [1,2,3,4...] !
-                chooseBoards.append(board);
-            });
 
-            const saveSelectedPinBtn = document.getElementById("saveSelectedPinBtn");
-            saveSelectedPinBtn.addEventListener('click', (evt) => {
-                // board id after 8 symbols 'boardID:'
-                const boardId = chooseBoards.options[chooseBoards.selectedIndex].id.slice(8,
-                    chooseBoards.options[chooseBoards.selectedIndex].id.length);
-                addPinOnBoard(target, boardId);
-            });
         });
 }
 
@@ -144,7 +142,7 @@ function setCreateNewBoardRequest(target) {
             )
             .then((jsonAns) => {
 
-                if (jsonAns.status !== 200)
+                if (jsonAns.status !== 201)
                     throw Error("not 200: /api/board");
 
                 const boardId = jsonAns.id;
@@ -155,7 +153,7 @@ function setCreateNewBoardRequest(target) {
 
             .catch( (error) => {
                 showAddPinMsg("Ошибка создания доски", "createBoardMsg");
-                console.log('Что-то пошло не так с созданием доски');
+                console.log('Что-то пошло не так с созданием доски :', error);
             });
 
     });
