@@ -1,7 +1,7 @@
 import CardTemplate from './card.pug';
-import { unSetScroll } from '../Desk/Desk.js'
+import {unSetScroll} from '../Desk/Desk.js'
 import {serverLocate} from "../../utils/constants.js";
-import { default as Router} from "../../utils/router.js"
+import {default as Router} from "../../utils/router.js"
 /**
  * addCard
  *  Добавляет картинку в указанную колонку

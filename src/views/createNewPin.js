@@ -1,7 +1,7 @@
 import FetchModule from "../components/Network/Network";
-import { createPageNewPin } from "../components/CreatePin/CreatePin";
-import { setInfoContent } from "../components/Modal/modal";
-import { serverLocate } from "../utils/constants";
+import {createPageNewPin} from "../components/CreatePin/CreatePin";
+import {setInfoContent} from "../components/Modal/modal";
+import {serverLocate} from "../utils/constants";
 import CurrentUser from "../utils/userDataSingl";
 
 export const createNewPinView = (state) => {

@@ -1,13 +1,13 @@
 import PinTemplate from "./pin.pug";
 import FetchModule from '../Network/Network.js'
-import { serverLocate } from '../../utils/constants.js'
-import { default as CurrentUser } from '../../utils/userDataSingl.js';
-import { validateCreateBoard, validateAddPinComment } from '../../utils/validation.js'
-import { createPinComments } from '../Comment/Comment.js'
-import { default as Router} from "../../utils/router.js"
+import {serverLocate} from '../../utils/constants.js'
+import {default as CurrentUser} from '../../utils/userDataSingl.js';
+import {validateCreateBoard, validateAddPinComment} from '../../utils/validation.js'
+import {createPinComments} from '../Comment/Comment.js'
+import {default as Router} from "../../utils/router.js"
 import {default as CurrentComments} from "../Comment/CurrentComments.js";
-import { showComment } from '../Comment/Comment'
-import { unSetScroll } from "../Desk/Desk";
+import {showComment} from '../Comment/Comment'
+import {unSetScroll} from "../Desk/Desk";
 
 import linkImage1 from '../../images/share/whatsapp.svg'
 import linkImage2 from '../../images/share/twitter.svg'
@@ -305,9 +305,6 @@ function setAddPinComment(PinId) {
  * @return {void}
  */
 export function createPinPage(target) {
-
-
-    document.title = "Pin " + target.name;
     const pin = PinTemplate({image:  serverLocate + "/" + target.image, PinId: target.id, pinName: target.name,
     pinMeta:target.about,
         link1 : 'https://web.whatsapp.com/send?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + target.id,
