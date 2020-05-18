@@ -132,7 +132,7 @@ function showUserSearch(UserArr) {
             const addedAvatar = document.getElementById(userAvatarId)
             addedAvatar.addEventListener("click", (evt) => {
                 element.avatarPath = element.avatar
-                Router.go("/profile", "Profile", element)
+                Router.go("/user/" + element.id,"User", element, true );
             })
 
         })
@@ -208,6 +208,7 @@ function setSelectedVars() {
 
     // Выбор объекта поиска
     const searchSelectedObj = document.getElementById("search_selected_obj")
+
 
     const searchSelectPinVars = document.getElementById("search_select_pin_vars")
     searchSelectPinVars.addEventListener("click", (evt)=>{

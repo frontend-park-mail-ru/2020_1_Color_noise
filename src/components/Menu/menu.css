@@ -171,6 +171,7 @@
 	width: 200px;
 	height: 200px;
 	object-fit: cover;
+	cursor: pointer;
 }
 
 .find_user_user_info {

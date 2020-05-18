@@ -6,14 +6,14 @@ div.menu
         div.find_pin
             ul(class="search_menu search_select")
                 li
-                    a( href="" id="search_selected_obj") Пин
+                    a( href="" id="search_selected_obj" onclick="event.preventDefault()") Пин
                         ul( class="search_submenu")
                             li
                                 a( href="" id="search_select_pin_vars" ) Пин
                             li
                                 a( href="" id="search_select_user_vars") Пользователь
                 li
-                    a( href="" id="search_selected_filter") Условия поиска
+                    a( href="" id="search_selected_filter" onclick="event.preventDefault()") Условия поиска
                         ul( class="search_submenu")
                             li
                                 a( href="" id="search_popular") Популярные
@@ -23,7 +23,7 @@ div.menu
                                 a( href="" id="search_default") По умолчанию
 
                 li
-                    a( href="" id="search_selected_time") Время
+                    a( href="" id="search_selected_time" onclick="event.preventDefault()") Время
                         ul( class="search_submenu")
                             li
                                 a( href="" id="search_day") За день
@@ -34,7 +34,7 @@ div.menu
                             li
                                 a( href="" id="search_all_time") За все время
                 li
-                    a( href="" id="search_selected_order") Обычный порядок
+                    a( href="" id="search_selected_order" onclick="event.preventDefault()") Обычный порядок
                         ul( class="search_submenu")
                             li
                                 a( href="" id="search_order_norm") Обычный
