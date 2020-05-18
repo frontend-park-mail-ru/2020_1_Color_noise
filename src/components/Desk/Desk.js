@@ -1,10 +1,10 @@
 import {addCard} from '../Card/Card';
 import './desk.css';
 import findUserTemplate from "./findUser.pug"
-import {FetchModule} from '../Network/Network.js'
+import FetchModule from '../Network/Network.js'
 import {serverLocate} from '../../utils/constants.js'
 import {default as CurrentDesk} from './CurrentDesk.js';
-
+import searchDateDetailsTemplate from "../Menu/searchDateDetails.pug"
 import Router from "../../utils/router.js"
 
 /**
@@ -123,7 +123,7 @@ export function getBoardPins() {
                 return;
             }
             //document.title += result.body.name;
-
+            console.log("BOARD PINS body:", result.body)
             showPins(result.body.pins)
 
         })
@@ -143,7 +143,7 @@ export function getBoardPins() {
  * @param {[{string, string}]} pinsArr - array of pins file names
  * @return {void}
  */
-function showPins(pinsArr) {
+export function showPins(pinsArr) {
 
     CurrentDesk.State.numberOfPins += pinsArr.length;
     let columnArr = document.getElementById('columns');
@@ -153,20 +153,7 @@ function showPins(pinsArr) {
     });
 }
 
-/**
- *  showOnePin
- *  columnArr - array of column on main page
- *  sortColumnArr - func for sorting with comparator (add picture in the lowest column)
- *
- * @param {map} onePin - one pin (map with pin info)
- * @return {void}
- */
-function showOnePin(onePin) {
-    CurrentDesk.State.numberOfPins += 1;
-    let columnArr = document.getElementById('columns');
 
-    addCard(onePin, columnArr.id );
-}
 
 /**
  *  scroll
@@ -235,193 +222,11 @@ export function clearColumns() {
 }
 
 
-/**
- * getInfoForShowing
- * get info about pin and call showOnePin for every pin
- *
- * @param {[int]} pinIdArr - pin id array
- * @return {void}
- */
-function getInfoForShowing(pinIdArr) {
-
-    CurrentDesk.State.numberOfPins = 0;
-    //CurrentDesk.State.getSomePinsFunc = скрол по поиску
-    clearColumns();
-    unSetScroll();
-
-    if (pinIdArr.length !==0) {
-        setInfoDesk("")
-    }
-
-
-    pinIdArr.forEach((item) => {
-
-        console.log("URL:",serverLocate + "/api/pin/" + item.id);
-
-        FetchModule.fetchRequest({url:serverLocate + "/api/pin/" + item.id, method:'get'})
-            .then((res) => {
-                return res.ok ? res : Promise.reject(res);
-            })
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-
-                if (result.status !== 200) {
-                    throw Error("search pin get info request not 200");
-                } else {
-
-
-                showOnePin(result.body);
-
-
-                }
-
-            })
-
-            .catch( (error) => {
-                console.log("ERR_SEARCH_PIN::getInfoForShowing() :", error);
-                //setInfoDesk("Что-то пошло не так с получением инфы о пине в поиске");
-            });
-    });
-}
-
-
-/**
- * setSearch
- * set action for search
- * @return {void}
- */
-export function setSearch() {
-
-    const searchImg = document.getElementById("search_main_img");
-    const searchInput = document.getElementById("search_main_input");
-
-    searchImg.addEventListener('click', (evt) => {
-
-
-        let isUserSearch = false
-        const selectSearch = document.getElementById("select_search")
-        if (selectSearch.options[selectSearch.selectedIndex].text === "Пользователь") {
-            isUserSearch = true
-        }
-
-        const searchValue = searchInput.value.trim();
-        let searchObj = "pin";
-
-        if (isUserSearch){
-            searchObj = "user"
-        }
-
-        const start = 0;
-        const limit = 50;
-        FetchModule.fetchRequest({url: serverLocate + "/api/search?what=" + searchObj + "&description=" +
-                searchValue + "&start=" + start + "&limit=" + limit, method:'get'})
-            .then((res) => {
-                return res.ok ? res : Promise.reject(res);
-            })
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-                if (result.status !== 200) {
-                    setInfoDesk("Ничего не найдено");
-                } else {
-
-                        if (result.body.length === 0) {
-                            setInfoDesk("Ничего не найдено");
-                        }
-                        if (isUserSearch) {
-                            console.log("show users:", result.body)
-                            showUserSearch(result.body)
-                        } else {
-                            getInfoForShowing(result.body);
-                        }
-
-
-                }
-            })
-            .catch( (error) => {
-                console.log("ERR_SEARCH_PIN:", error);
-                setInfoDesk("Что-то пошло не так с поиском пинов");
-            });
-
-    })
-}
 
 
 
 
 
-
-
-
-function showUserSearch(UserArr) {
-
-    const mainDesk = document.getElementById("mainDesk")
-
-    if (UserArr.length !== 0) {
-
-        mainDesk.innerHTML = ""
-        setInfoDesk("") // убираем "ничего не найдено"
-
-        UserArr.forEach((element) => {
-
-            const userAvatarId = "avatarID:" + element.id
-
-            const findUserHtml = findUserTemplate({
-                avatarSrc: serverLocate + "/" + element.avatar, login: element.login,
-                subscriptions: element.subscriptions, subscribers: element.subscribers, avatarID: userAvatarId
-            })
-
-
-            const findUserElement = document.createElement("div");
-            findUserElement.innerHTML = findUserHtml
-
-            mainDesk.appendChild(findUserElement)
-
-            const addedAvatar = document.getElementById(userAvatarId)
-            addedAvatar.addEventListener("click", (evt) => {
-                element.avatarPath = element.avatar
-                Router.go("/profile", "Profile", element)
-            })
-
-        })
-    }
-
-
-    /*
-    id	17
-login	"Slava"
-avatar	"D9upSSzWZUT1T9Gsc6H7SkhZX5FJh6.jpg"
-subscriptions	0
-subscribers	0
-     */
-
-    // unSCROLL
-
-}
-
-
-/**
-
-export const createDesk = (deskContent = "mainRandom") => {
-    const root = document.getElementById('content');
-    root.innerHTML = DeskTemplate({image : findIcon});
-    if (deskContent === "mainRandom") {
-        changeLocation("/main","main");
-        getMainPins();
-        setScroll(getMainPins);
-    } else if (deskContent === "follows") {
-        changeLocation("/follows","follows");
-        getSubPins();
-        setScroll(getSubPins);
-    }
-
-    setSearch();
-
-};
-*/
 
 
 /**

@@ -1,0 +1,20 @@
+div.page
+    div.page_content
+        h1.page_title Настройки профиля
+        div(id="infoPageMessage")
+        div(class="settings")
+            div.backProfileLink(id="backProfileLink")
+                 img(src=backBtn)
+            div(class="avatar")
+                img(src=avatarImage id="avatarImage")
+            input(type="submit" class="grey_sq_medium_btn" value="Изменить аватарку" id="changeAvatar")
+            div.line
+                input#userPass(type="password" placeholder="Пароль")
+            input(type="submit" class="red_btn" value="Сохранить новый пароль" id="sendPass")
+            div.line
+                input#userEmail(type="email" placeholder="Почта" value=userEmail)
+            div.line
+                input#userName(type="text" placeholder="Логин" value=userName)
+            div.line_area
+                textarea#userAbout(placeholder="О себе" maxlength="512" rows="12" cols="33")= userAbout
+            input(type="submit" class="red_btn" value="Сохранить личные данные" id="saveData")

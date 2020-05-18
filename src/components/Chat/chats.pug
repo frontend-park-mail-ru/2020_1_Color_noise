@@ -1,12 +1,12 @@
 div.chat_global
-    div.chatG
+    img(src=backImage class="chat_back_img_div" id="chat_back_img")
+    div.chatG(class="chat_content")
         h1.title Мои чаты
         div(id="chat_sections")
             div(class="chat_container chat_clearfix")
                 div(class="chat_people_list" id="chat_people-list")
-                    div(class="chat_search")
-                        input(class="chat_input" type="text" placeholder="search" )
-                        i(class="fa chat_fa_search")
                     ul(class="list chat_ul" id="chat_user_list")
+                    button(class="chat_support_btn" id="chat_support_btn")  Написать в поддержку
 
                 div(class="chat_messages" id="chat_chat_section")
+

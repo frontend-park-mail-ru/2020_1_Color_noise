@@ -3,5 +3,51 @@ div.menu
         a(href="/" id= "logoLink")
             img(src=logoImage width="190px")
     div.find
-        div.findPin
+        div.find_pin
+            ul(class="search_menu search_select")
+                li
+                    a( href="" id="search_selected_obj" onclick="event.preventDefault()") Пин
+                        ul( class="search_submenu")
+                            li
+                                a( href="" id="search_select_pin_vars" ) Пин
+                            li
+                                a( href="" id="search_select_user_vars") Пользователь
+                li
+                    a( href="" id="search_selected_filter" onclick="event.preventDefault()") Условия поиска
+                        ul( class="search_submenu")
+                            li
+                                a( href="" id="search_popular") Популярные
+                            li
+                                a( href="" id="search_most_comments") Комментируемые
+                            li
+                                a( href="" id="search_default") По умолчанию
+
+                li
+                    a( href="" id="search_selected_time" onclick="event.preventDefault()") Время
+                        ul( class="search_submenu")
+                            li
+                                a( href="" id="search_day") За день
+                            li
+                                a( href="" id="search_week") За неделю
+                            li
+                                a( href="" id="search_month") За месяц
+                            li
+                                a( href="" id="search_all_time") За все время
+                li
+                    a( href="" id="search_selected_order" onclick="event.preventDefault()") Обычный порядок
+                        ul( class="search_submenu")
+                            li
+                                a( href="" id="search_order_norm") Обычный
+                            li
+                                a( href="" id="search_order_reverse") Обратный
+
+
+
+
+
+            input(id="search_main_input" type="text" class="search_input")
+            img(id="search_main_img" src=image)
+
+
     div.thirdpart#loginPart
+

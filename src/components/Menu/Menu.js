@@ -7,13 +7,21 @@ import chatsImage from '../../images/chatsIcon.svg';
 import notifImage from '../../images/notifIcon.svg';
 import profileImage from '../../images/profileIcon.svg';
 import plusImage from '../../images/plusIcon.svg';
+import lupaImage from '../../images/find.svg';
 
-import { showLoginModal, showRegModal, showChooseModal, createInfoModal } from "../Modal/modal"
+
+import {showLoginModal, showRegModal, showChooseModal, showInfoModal} from "../Modal/modal"
 import Router from "../../utils/router"
 import { Requests } from '../Network/Requests'
+import CurrentUser from "../../utils/userDataSingl";
+
+import {setSearch} from "./search.js"
+import {serverLocate} from "../../utils/constants";
 
 export const createMenu = (login = false) => {
-    const template = MenuTemplate({ logoImage : logoImage });
+
+
+    const template = MenuTemplate({ logoImage : logoImage, image:lupaImage });
 
     const menu = document.getElementById('menu');
     menu.innerHTML = template;
@@ -25,24 +33,28 @@ export const createMenu = (login = false) => {
     }
 
     const loginPart = document.getElementById('loginPart');
-    loginPart.addEventListener('login', addLogin2);
+    loginPart.addEventListener('login', addLogin);
     loginPart.addEventListener('reg', addReg);
+
+    setSearch();
 };
 
 
 // will be deleted
-const addLogin2 = () => {
-    if (Requests.getUserProfile(false)) {
-        addLogin();
-    } else {
-        createInfoModal('Login auth error');
-    }
-};
+// const addLogin2 = () => {
+//     Requests.getUserProfile(false).then((result) => {
+//         if (result) {
+//             addLogin();
+//         } else {
+//             showInfoModal('Login auth error');
+//         }
+//         });
+// };
 
 const addLogin = () => {
     const menuLoginTemplate = MenuLoginTemplate({
         chatsImage : chatsImage,  notifImage : notifImage,
-        profileImage : profileImage, plusImage : plusImage });
+        profileImage : profileImage, plusImage : plusImage, userLink : '/user/' + CurrentUser.Data.id });
 
     const loginPart = document.getElementById('loginPart');
     loginPart.innerHTML = menuLoginTemplate;
@@ -74,7 +86,7 @@ const addReg = () => {
 
     const regModal  = document.getElementById('regModal');
     regModal.addEventListener('click', showRegModal);
-}
+};
 
 const goMain = (evt) => {
     evt.preventDefault();
@@ -83,7 +95,7 @@ const goMain = (evt) => {
 
 const goChats = (evt) => {
     evt.preventDefault();
-    Router.go("/chats","Chats");
+    Router.go("/chats","Chats", null);
 };
 
 const goNotif = (evt) => {
@@ -93,25 +105,7 @@ const goNotif = (evt) => {
 
 const goProfile = (evt) => {
     evt.preventDefault();
-    Router.go('/profile','Profile');
+
+    Router.go('/user/' + CurrentUser.Data.id,'Profile');
 };
 
-
-// to utils
-export const setError = () => {
-    const content = document.getElementById('content');
-    content.innerHTML = "";
-    const err = document.createElement('h1');
-    err.textContent = 'Что-то пошло не так :(';
-    content.appendChild(err);
-};
-
-export const createAutorization = () => {
-    //evt.preventDefault();
-    Router.go("/authorizationOrRegistration", "AuthorizationOrRegistration");
-};
-
-const createLogin = (evt) => {
-    evt.preventDefault();
-    Router.go('/login','Login');
-};

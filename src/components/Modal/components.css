@@ -5,6 +5,7 @@
 	height: 40px;
 	width: 320px;
 	margin: 10px auto 10px auto;
+	text-align: center;
 }
 
 /*.line input {*/
@@ -15,6 +16,8 @@ input {
 	width: 95%;
 	font-size: 13px;
 	font-weight: bold;
+	appearance: none;
+	-webkit-appearance: none;
 }
 
 input:focus {
@@ -27,6 +30,7 @@ input:focus {
 	border-radius: 12px;
 	width: 320px;
 	margin: 10px auto 10px auto;
+	text-align: center;
 }
 
 .line_area textarea {
@@ -55,4 +59,57 @@ input:focus {
 
 .red_btn:hover {
 	background: #B50B0B;
+}
+
+.grey_mini_btn {
+	color: #fff;
+	font-size: 12px;
+	height: 25px;
+	width: 105px;
+	background: #BABABA;
+	border-radius: 5px;
+	cursor: pointer;
+	display: inline-block;
+	margin: 10px 5px 10px 5px;
+}
+
+.grey_mini_btn:hover {
+	background: #8A8A8A;
+}
+
+.grey_sq_medium_btn {
+	color: #fff;
+	font-size: 14px;
+	width: auto;
+	background: #BABABA;
+	border-radius: 25px;
+	cursor: pointer;
+	display: block;
+	margin: 10px auto 10px auto;
+	padding: 10px;
+}
+
+.grey_sq_medium_btn:hover {
+	background: #8A8A8A;
+}
+
+.red_medium_btn {
+	color: #fff;
+	font-size: 12px;
+	height: 25px;
+	width: 220px;
+	background: #F01313;
+	border-radius: 5px;
+	display: inline-block;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.red_medium_btn:hover {
+	background: #B50B0B;
+}
+
+@keyframes visibleAnimation {
+	from {opacity: 0;}
+	to {opacity: 1;}
 }

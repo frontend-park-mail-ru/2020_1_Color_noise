@@ -4,7 +4,6 @@
 	width: 100%;
 	text-align: center;
 	display: table;
-	margin-bottom: 10px;
 }
 
 .menu img {
@@ -22,15 +21,7 @@
 	vertical-align: middle;
 	width: 100%;
 	text-align: center;
-	min-width: 120px;
-}
-
-.menu .find .findPin {
-	min-width: 100px;
-	background: #f2f3f2;
-	border: #8A8A8A thin;
-	height: 40px;
-	border-radius: 5px;
+	min-width: 200px;
 }
 
 .menu .thirdpart {
@@ -43,13 +34,19 @@
 	 min-width: 160px;
  }
 
+.icons img{
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
 .menu .thirdpart .buttons {
 	min-width: 270px;
 }
 
 .menu .thirdpart .buttons button {
-	background: linear-gradient(90deg, rgba(214,39,5,1) 0%, rgba(207,35,8,1) 50%);
-	border-radius: 10px;
+	background: #ff4f4a;
+	border-radius: 5px;
 	border: none;
 	color: white;
 	font-size: 13px;
@@ -67,31 +64,225 @@
 	background: #B50B0B;
 }
 
-@media (max-device-width: 400px) and (orientation: portrait) {
+@media (max-width: 700px) {
 	.menu .logo {
 		display: inline-block;
 	}
 
 	.menu .find {
 		display: inline-block;
-		width: 80%;
+		width: 90%;
+		background: #e4e4e4;
 	}
 
 	.menu .thirdpart {
 		display: inline-block;
 	}
-
-	.menu .logo img {
-		width: 400px;
-	}
-
-	.menu .find .findPin {
-		height: 80px;
-	}
-
-	.menu .thirdpart .icons img {
-		width: 80px;
-		height: 80px;
-	 }
 }
+
+/*@media (max-device-width: 400px) and (orientation: portrait) {*/
+/*	.menu .logo {*/
+/*		display: inline-block;*/
+/*	}*/
+
+/*	.menu .find {*/
+/*		display: inline-block;*/
+/*		width: 80%;*/
+/*	}*/
+
+/*	.menu .thirdpart {*/
+/*		display: inline-block;*/
+/*	}*/
+
+/*	.menu .logo img {*/
+/*		width: 400px;*/
+/*	}*/
+
+/*	.menu .find .findPin {*/
+/*		height: 80px;*/
+/*	}*/
+
+/*	.menu .thirdpart .icons img {*/
+/*		width: 80px;*/
+/*		height: 80px;*/
+/*	 }*/
+/*}*/
+
+.menu .find .find_pin {
+	background: #e4e4e4;
+	border: #8A8A8A thin;
+	height: 40px;
+	border-radius: 5px;
+	margin-top: 7px;
+}
+
+
+
+.find_pin {
+
+
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+
+
+}
+
+
+
+
+.find_pin img {
+	width: 2%;
+	cursor: pointer;
+	margin-top: 5px;
+	margin-right: 20px;
+	float: right;
+	margin-left: auto;
+
+}
+
+
+
+.find_user {
+	max-width: 500px;
+	margin: 0 auto 30px;
+
+	border-radius: 30px;
+	border-color: black;
+	border-style: double;
+	border-width: 1px;
+}
+
+.find_pin select {
+	width: 10%;
+	margin-left: 10px;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.find_user_avatar {
+	display: inline;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	border-radius: 50%;
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+.find_user_user_info {
+	display: inline;
+}
+
+
+
+.search_input {
+	padding-right: 10px;
+	padding-left:10px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	border-radius: 5px;
+	font-size: 18px;
+	display: inline-block;
+	margin-left: 5px;
+	background: white;
+	max-width: 40%;
+	margin-top: 8px;
+	vertical-align: top;
+}
+
+
+
+.search_filter_section {
+	margin-left: 10px;
+	margin-right: 10px;
+	display: inline-block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.find_pin ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
+.find_pin a {
+	display: block;
+	text-decoration: none;
+	outline: none;
+	transition: .4s ease-in-out;
+}
+.search_menu {
+	backface-visibility: hidden;
+
+}
+.search_menu > li {
+	display: inline-block;
+	position: relative;
+}
+.search_menu > li > a {
+	height: 50px;
+	margin-top: 10px;
+	padding-left: 10px;
+	padding-right: 5px;
+	vertical-align: top;
+	font-weight: bold;
+	color: #000000;
+}
+
+.down:after {
+	content: "\f107";
+	margin-left: 8px;
+
+}
+.search_menu li a:hover { color: #d74343; }
+
+.search_submenu {
+	background: white;
+	border: 2px solid #745f5f;
+	border-radius: 5px;
+	position: absolute;
+	left: 0;
+	visibility: hidden;
+	opacity: 0;
+	z-index: 5;
+	width: 150px;
+	transform: perspective(600px) rotateX(-90deg);
+	transform-origin: 0% 0%;
+	transition: .6s ease-in-out;
+}
+.search_menu > li:hover .search_submenu{
+	visibility: visible;
+	opacity: 1;
+	transform: perspective(600px) rotateX(0deg);
+}
+.search_submenu li a {
+	color: #7f7f7f;
+	font-size: 13px;
+	line-height: 36px;
+	padding: 0 25px;
+}
+
 

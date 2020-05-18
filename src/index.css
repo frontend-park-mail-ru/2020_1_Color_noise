@@ -3,10 +3,18 @@
 @import './components/Menu/menu.css';
 @import './components/Modal/modal.css';
 @import './components/Modal/components.css';
-
+@import './components/Content/content.css';
+@import './components/Page/page.css';
 @import './components/Card/card.css';
-@import './components/Comment/comment.css';
+
+@import './components/CreatePin/createPin.css';
+@import './components/Card/card.css';
+@import './components/Notif/notif.css';
+
+
 @import './components/Desk/desk.css';
+
+@import './components/Comment/comment.css';
 @import './components/Pin/pin.css';
-@import './components/Profile/profile.css';
-@import './components/ProfileSettings/profileSettings.css';
+@import './components/User/user.css';
+@import './components/Settings/settings.css';

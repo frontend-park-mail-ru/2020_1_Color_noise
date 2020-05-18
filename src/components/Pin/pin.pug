@@ -2,15 +2,23 @@ div.pin
     img(src=image alt="icon" id = PinId class="one_pin_image")
     div(class = "pinInfo")
         button(id="savePinBtn" class="add_pin_btn") Сохранить
+        div.share
+            a(href=link1 target="_blank")
+                img(src=linkImage1)
+            a(href=link2 target="_blank")
+                img(src=linkImage2)
+            a(href=link3 target="_blank")
+                img(src=linkImage3)
         div(class="pinInfo_pin_name" ) #{pinName}
         div(class="pinInfo_pin_meta") #{pinMeta}
 
-        div(class="comments_title" )    Комментарии 123
+        div(class="comments_title" )    Комментарии
         div(class="pinInfo_pin_comment_section" id="OnePinComments")
 
         div(id="addCommentMsg" class="add_comment_msg")
         textarea( id="addCommentInput" class="comment_input" placeholder="Ваш комментарий" maxlength="512" rows="2" cols=28)
         button( id="addCommentBtn" class="add_comment_btn") Отправить
+
 
 
         <!-- Full Img-->
@@ -35,4 +43,4 @@ div.pin
                     div(class="save_pin_create_desk")
                         textarea( id="savePinNameBoard" class="save_pin_board_input" placeholder="Название доски" maxlength="64" rows="2" cols=30)
                         textarea( id="savePinAboutBoard" class="save_pin_board_input" placeholder="Описание доски" maxlength="512" rows="4" cols=30)
-                        button(id="createNewBoardBtn" class="save-create_board_btn") Создать доску
+                        button(id="createNewBoardBtn" class="save-create_board_btn") Создать доску и сохранить

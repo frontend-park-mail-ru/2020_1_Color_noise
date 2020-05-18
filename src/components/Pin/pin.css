@@ -45,6 +45,7 @@
     display: block;
     margin-top: 20px;
     margin-left: auto;
+    cursor: pointer;
 }
 
 .pinInfo_pin_name {
@@ -94,6 +95,7 @@
     border-radius: 12px;
     margin: 10px 10px 10px 10px;
     vertical-align: top;
+    cursor: pointer;
 }
 
 
@@ -241,4 +243,10 @@
 
 .save_form_msg {
     text-align: center;
+}
+
+.share img {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
 }

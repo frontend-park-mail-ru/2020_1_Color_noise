@@ -1,13 +1,42 @@
 div(class="chat_header chat_clearfix")
+    btn(class="chat_return_btn" id="chat_return_btn_id") Выйти из чата
     div(class="chat-about")
         img(class="chat_img" src=avatarSrc alt="avatar" id="IdUserWithChat" + nameWith )
         div(class="chat_with") #{nameWith}
         div(class="chat_num_messages")
     i(class="fa chat_fa_star")
 
+
 div(class="chat_history")
     ul(class="chat_ul" id="chat_history")
 
-div(class="chat_message")
-    textarea(class="chat_textarea" name="message-to-send" id="message_to_send" placeholder ="Type your message" rows="3" cols="1")
-    button(class="chat_button" id="chat_send_message_btn") Отправить
+div(class="chat_message_write")
+    div(class="chat_message_input_area")
+        textarea(class="chat_textarea" name="message-to-send" id="message_to_send" placeholder ="Type your message" rows="2" cols="1")
+        div(class="emoji_selector_menu" id="emoji_selector_menu")
+            div(class="one_emoji" id="emojiId_1") &#128293;
+            div(class="one_emoji" id="emojiId_2") &#129321;
+            div(class="one_emoji" id="emojiId_3") &#129312;
+            div(class="one_emoji" id="emojiId_4") &#128077;
+            div(class="one_emoji" id="emojiId_5") &#128580;
+            div(class="one_emoji" id="emojiId_6") &#128577;
+            div(class="one_emoji" id="emojiId_7") &#127829;
+            div(class="one_emoji" id="emojiId_8") &#127988;&#8205;&#9760;&#65039;
+            div(class="one_emoji" id="emojiId_9") &#127479;&#127482;
+            div(class="one_emoji" id="emojiId_10") &#128164;
+            div(class="one_emoji" id="emojiId_11") &#129418;
+            div(class="one_emoji" id="emojiId_12") &#129409;
+
+    div(class="chat_message_btn_area")
+        button(class="chat_button" id="chat_send_sticker") Стикеры
+        button(class="chat_button" id="chat_send_message_btn") Отправить
+
+
+
+
+
+
+div(id="sticker_select_menu" class="sticker_select")
+    button(id="sticker_select_back_btn" class="sticker_select_back_btn") Назад
+    div(id="sticker_select" )
+

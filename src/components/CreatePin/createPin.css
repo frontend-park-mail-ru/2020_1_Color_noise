@@ -1,0 +1,51 @@
+.page_content .pin_block {
+    vertical-align: top;
+    text-align: center;
+    display: inline-block;
+    width: 50%;
+    animation: visibleAnimation .5s 1 ease-in-out;
+}
+
+.page_content .pin_block .line:first-child {
+    margin-top: 0px;
+}
+
+.page_content .pin_block select {
+    width: 320px;
+}
+
+.page_content .pin_block img {
+    border-radius: 18px;
+    box-shadow: 0 0 50px 0 rgba(0,0,0,0.20);
+    width: 320px;
+    height: 400px;
+    object-fit: cover;
+}
+
+@media (max-width: 810px) {
+    .page_content .pin_block {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .page_content .pin_block select {
+        width: 100%;
+    }
+
+    .page_content .pin_block img {
+        width: 100%;
+    }
+
+    .page_content .pin_block .red_btn {
+        width: 100%;
+    }
+
+    .page_content .pin_block .line {
+        width: 100%;
+    }
+
+    .page_content .pin_block .line_area {
+        width: 100%;
+    }
+}

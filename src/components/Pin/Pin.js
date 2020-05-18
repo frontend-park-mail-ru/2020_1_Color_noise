@@ -1,13 +1,17 @@
 import PinTemplate from "./pin.pug";
-import { FetchModule  } from '../Network/Network.js'
+import FetchModule from '../Network/Network.js'
 import { serverLocate } from '../../utils/constants.js'
 import { default as CurrentUser } from '../../utils/userDataSingl.js';
-import { validateCreateBoard, validateAddPinComment } from '../Validation/Validation.js'
+import { validateCreateBoard, validateAddPinComment } from '../../utils/validation.js'
 import { createPinComments } from '../Comment/Comment.js'
 import { default as Router} from "../../utils/router.js"
 import {default as CurrentComments} from "../Comment/CurrentComments.js";
 import { showComment } from '../Comment/Comment'
 import { unSetScroll } from "../Desk/Desk";
+
+import linkImage1 from '../../images/share/whatsapp.svg'
+import linkImage2 from '../../images/share/twitter.svg'
+import linkImage3 from '../../images/share/facebook.svg'
 
 /**
  * addPinOnBoard
@@ -18,13 +22,8 @@ import { unSetScroll } from "../Desk/Desk";
  */
 function addPinOnBoard(target, boardId) {
     FetchModule.fetchRequest({
-        url: serverLocate + '/api/pin', method: 'post', body: {
-            name: target.name,
-            description: target.about,
+        url: serverLocate + '/api/pin/saving/' + target.id, method: 'post', body: {
             board_id: Number(boardId),
-            image: target.image // send src NOT REAL IMG
-            // @todo зачем отправлять изображение, если оно уже есть на сервере
-            // изображение весит примерно 90% запроса
         }
     })
         .then((response) => {
@@ -35,16 +34,17 @@ function addPinOnBoard(target, boardId) {
         })
         .then((jsonAns) => {
 
-            if (jsonAns.status !== 200)
-                throw Error("not 200: /api/pin" + CurrentUser.Data.id);
-            // можно отобразить доску куда он добавился
-            // но мне кажется лучше просто вернуть пользователя к пину
+            if (jsonAns.status !== 201) {
+                throw Error("not 200: api/pin/saving/" + target.id);
+            }
+
+            showAddPinMsg('Пин добавлен на доску', "savePinMsg");
 
         })
 
         .catch((error) => {
             console.log('Что-то пошло не так с добавлением пина на доску:', error);
-            showAddPinMsg('Сохранение будет доступно в следующей версии', "savePinMsg");
+            showAddPinMsg('Ошибка сохранения пина', "savePinMsg");
         });
 
 }
@@ -77,6 +77,22 @@ function getUserBoards(target) {
             jsonAns = jsonAns.body;
 
             // real work here
+            jsonAns.forEach((item) => {
+                let board = document.createElement('option');
+                board.className = "boardName";
+                board.innerText = item.name;
+                board.id = 'boardID:' + item.id;
+                chooseBoards.append(board);
+            });
+
+            const saveSelectedPinBtn = document.getElementById("saveSelectedPinBtn");
+            saveSelectedPinBtn.addEventListener('click', (evt) => {
+                // board id after 8 symbols 'boardID:'
+                const boardId = chooseBoards.options[chooseBoards.selectedIndex].id.slice(8,
+                    chooseBoards.options[chooseBoards.selectedIndex].id.length);
+                addPinOnBoard(target, boardId);
+            });
+
 
         })
 
@@ -90,21 +106,7 @@ function getUserBoards(target) {
             let jsonAns = [{name:"boardName1", id: 1}, {name:"boardName2", id: 2},
                 {name:"boardName3", id: 3}, {name:"boardName4", id: 4}];
 
-            jsonAns.forEach((item) => {
-                let board = document.createElement('option');
-                board.className = "boardName";
-                board.innerText = item.name;
-                board.id = 'boardID:' + item.id; // not use id like [1,2,3,4...] !
-                chooseBoards.append(board);
-            });
 
-            const saveSelectedPinBtn = document.getElementById("saveSelectedPinBtn");
-            saveSelectedPinBtn.addEventListener('click', (evt) => {
-                // board id after 8 symbols 'boardID:'
-                const boardId = chooseBoards.options[chooseBoards.selectedIndex].id.slice(8,
-                    chooseBoards.options[chooseBoards.selectedIndex].id.length);
-                addPinOnBoard(target, boardId);
-            });
         });
 }
 
@@ -144,10 +146,10 @@ function setCreateNewBoardRequest(target) {
             )
             .then((jsonAns) => {
 
-                if (jsonAns.status !== 200)
+                if (jsonAns.status !== 201)
                     throw Error("not 200: /api/board");
 
-                const boardId = jsonAns.id;
+                const boardId = jsonAns.body.id;
 
                 addPinOnBoard(target, boardId)
 
@@ -155,7 +157,7 @@ function setCreateNewBoardRequest(target) {
 
             .catch( (error) => {
                 showAddPinMsg("Ошибка создания доски", "createBoardMsg");
-                console.log('Что-то пошло не так с созданием доски');
+                console.log('Что-то пошло не так с созданием доски :', error);
             });
 
     });
@@ -290,7 +292,7 @@ function setAddPinComment(PinId) {
             })
 
             .catch((error) => {
-                showAddPinMsg("Ошибка добавления комментария", "addCommentMsg");
+                showAddPinMsg("Ошибка добавления, авторизируйтесь", "addCommentMsg");
             });
     })
 }
@@ -307,11 +309,18 @@ export function createPinPage(target) {
 
     document.title = "Pin " + target.name;
     const pin = PinTemplate({image:  serverLocate + "/" + target.image, PinId: target.id, pinName: target.name,
-
-    pinMeta:target.about});
+    pinMeta:target.about,
+        link1 : 'https://web.whatsapp.com/send?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + target.id,
+        link2 : 'http://twitter.com/share?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + target.id,
+        link3 : 'http://www.facebook.com/sharer.php?s=100&p[url]=https://zinterest.ru/pin/' + target.id,
+        linkImage1 : linkImage1, linkImage2 : linkImage2, linkImage3 : linkImage3
+    });
     const content = document.getElementById('content');
     content.innerHTML = pin;
     content.className = "comments_section";
+
+
+
     createPinComments(target.id);
     setAddPinComment(target.id);
     setShowFullPinImage(target.id);
