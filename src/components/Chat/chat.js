@@ -646,3 +646,37 @@ export function setBackImg() {
 
 
 }
+
+export function setSupportBtn() {
+
+    const chatSupportBtn = document.getElementById("chat_support_btn")
+    chatSupportBtn.addEventListener("click", evt=>{
+
+        FetchModule.fetchRequest({url: serverLocate + "/api/suuport", method:"get"})
+            .then((res) => {
+                return res.ok ? res : Promise.reject(res);
+            })
+            .then((response) => {
+                return response.json();
+            })
+            .then((result) => {
+                console.log("stickers:", result);
+                if (result.status !== 200) {
+                    console.log("ERR : result.status !== 200");
+                    console.log("ERR get support:", result);
+                    return
+                } else {
+
+                    addNewContact(result.body)
+                }
+                console.log("stickers:",result.body)
+                chatStorage.addStickers(result.body);
+
+            })
+            .catch(function(error) {
+                console.log("ERR get support:", error);
+            });
+
+
+    })
+}
