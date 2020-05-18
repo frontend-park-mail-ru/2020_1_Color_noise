@@ -1,6 +1,6 @@
 import Router from "../../utils/router.js"
 import offlinePageTemplate from "./offlinePage.pug"
-import "./offlinePage.css"
+
 import {createContent} from "../Content/Content.js";
 import {Requests} from "../Network/Requests.js";
 import {createMenu} from "../Menu/Menu.js";

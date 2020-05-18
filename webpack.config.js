@@ -11,6 +11,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'public'),
     filename: '[name].js',//.[contenthash]
+    publicPath: '/'
   },
   devServer: {
     before: (app, server) => {
@@ -71,7 +72,7 @@ module.exports = {
         loader: 'file-loader',
         options: {
           name(resourcePath, resourceQuery) {
-              return '/images/' + '[name].[ext]';
+              return 'images/' + '[name].[ext]';
             //[contenthash].[ext]
           },
         },

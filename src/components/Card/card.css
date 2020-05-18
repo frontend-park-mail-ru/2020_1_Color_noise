@@ -49,7 +49,7 @@
 @media (max-width: 580px) {
     .card {
         width: 165px;
-        border-radius: calc(175px * 16px/240px);
+        border-radius: calc(175px * 16px/240);
         margin: 8px;
     }
 }

@@ -22,7 +22,7 @@ export class Requests {
             )
             .then((result) => {
                 if (result.status === 401) {
-                    Router.go("/", "Zinterest", null, needPush);
+                    Router.go("/", "Zinterest", null, true);
                     throw new Error("No auth");
                     return false;
                 } else {
