@@ -67,7 +67,7 @@ input:focus {
 	height: 25px;
 	width: 105px;
 	background: #BABABA;
-	border-radius: 7px;
+	border-radius: 5px;
 	cursor: pointer;
 	display: inline-block;
 	margin: 10px 5px 10px 5px;
@@ -99,7 +99,7 @@ input:focus {
 	height: 25px;
 	width: 220px;
 	background: #F01313;
-	border-radius: 7px;
+	border-radius: 5px;
 	display: inline-block;
 	margin: 5px;
 	cursor: pointer;

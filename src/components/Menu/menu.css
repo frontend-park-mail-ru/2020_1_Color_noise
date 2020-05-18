@@ -24,8 +24,6 @@
 	min-width: 200px;
 }
 
-
-
 .menu .thirdpart {
 	display: table-cell;
 	vertical-align: middle;
@@ -47,8 +45,8 @@
 }
 
 .menu .thirdpart .buttons button {
-	background: linear-gradient(90deg, rgba(214,39,5,1) 0%, rgba(207,35,8,1) 50%);
-	border-radius: 10px;
+	background: #ff4f4a;
+	border-radius: 5px;
 	border: none;
 	color: white;
 	font-size: 13px;
