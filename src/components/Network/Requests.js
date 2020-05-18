@@ -1,7 +1,7 @@
-import { default as CurrentUser } from '../../utils/userDataSingl.js';
+import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import FetchModule from './Network.js'
-import { serverLocate } from '../../utils/constants.js'
-import { default as Router} from "../../utils/router.js"
+import {serverLocate} from '../../utils/constants.js'
+import {default as Router} from "../../utils/router.js"
 import {showInfoModal} from "../Modal/modal";
 
 /**

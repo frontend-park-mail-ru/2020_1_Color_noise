@@ -1,13 +1,13 @@
 import {Requests} from '../components/Network/Requests'
 import {createMenu} from '../components/Menu/Menu'
 import {createContent} from "../components/Content/Content";
-import {CreateChatView} from "../views/createChat"
+import {createChatsView} from "../views/createChat"
 import {createUserView} from "../views/createUser";
 import {createSettingsView} from "../views/createSettings";
 import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk";
 import {createNotificationsView} from "../views/createNotifications"
 import {createNewPinView} from "../views/createNewPin";
-import {createPinPageFromRequest} from "../components/Pin/Pin"
+import {createPinView} from "../views/createPin"
 import {createLogoutView} from "../views/createLogout";
 import {createOfflinePage} from "../components/OfflinePage/OfflinePage.js"
 import {validators} from "./validation";
@@ -19,7 +19,7 @@ class Router {
             "/subs": createSubDeskView,
             "/newpin": createNewPinView,
             "/settings": createSettingsView,
-            "/chats": CreateChatView,
+            "/chats": createChatsView,
             "/notifications":  createNotificationsView,
             "/logout": createLogoutView
         };
@@ -60,16 +60,18 @@ class Router {
         if (func === undefined) {
             if (validators.pinLink(path)) {
                 const pinId = path.substring("/pin/".length, path.length);
-                createPinPageFromRequest(pinId);
+                const state = {};
+                state.id = pinId;
+                createPinView(state);
             } else if (validators.pinsUserLink(path)) {
                 const userId = path.substring("/pins/user/".length, path.length);
                 const state = {};
-                state.userId = userId;
+                state.id = userId;
                 createUserPinsDeskView(state);
             } else if (validators.deskUserLink(path)) {
                 const boardId = path.substring("/desk/".length, path.length);
                 const state = {};
-                state.deskId = boardId;
+                state.id = boardId;
                 createBoardDeskView(state);
             } else if (validators.userLink(path)) {
                 const userId = path.substring("/user/".length, path.length);
@@ -80,7 +82,7 @@ class Router {
                 const userId = path.substring("/chats/user/".length, path.length);
                 const state = {};
                 state.id = userId;
-                CreateChatView(userId);
+                createChatsView(state);
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();

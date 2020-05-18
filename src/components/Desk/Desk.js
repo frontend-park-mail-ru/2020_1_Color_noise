@@ -87,7 +87,6 @@ export function getUserPins() {
                 setInfoDesk("Нет пинов у данного пользователя");
                 return;
             }
-            //document.title += username;
             console.log("GOOD REQUEST ");
             showPins(result.body)
         })
@@ -122,9 +121,8 @@ export function getBoardPins() {
                 setInfoDesk("Нет пинов на этой доске");
                 return;
             }
-            //document.title += result.body.name;
-            console.log("BOARD PINS body:", result.body)
-            showPins(result.body.pins)
+            console.log("BOARD PINS body:", result.body);
+            showPins(result.body.pins);
 
         })
         .catch(function(error) {

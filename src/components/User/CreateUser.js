@@ -7,7 +7,7 @@ import plusImage from "../../images/user/plusPinIcon.svg";
 import logoutImage from "../../images/user/logoutIcon.svg";
 import pinDefaultSmall from "../../images/pinDefaultSmall.jpg";
 import CurrentUser from "../../utils/userDataSingl";
-import { serverLocate } from "../../utils/constants";
+import {serverLocate} from "../../utils/constants";
 import {showChooseModal} from "../Modal/modal";
 import Router from "../../utils/router";
 import deskItemTemplate from "./deskItem.pug";
@@ -74,11 +74,6 @@ const addUserIcons = () => {
 
     const subsUserLink = document.getElementById('subsUserLink');
     subsUserLink.addEventListener('click', goSubs);
-};
-
-const goSubs = (evt) => {
-    evt.preventDefault();
-    Router.go("/subs","Subs");
 };
 
 const addOneDesk = (evt) => {
@@ -220,4 +215,9 @@ const goDesk = (evt) => {
 const goAllUserPins = (evt) => {
     evt.preventDefault();
     Router.go("/pins/user/" + evt.currentTarget.getAttribute('user_id'),"Settings");
+};
+
+const goSubs = (evt) => {
+    evt.preventDefault();
+    Router.go("/subs","Subscriptions");
 };
