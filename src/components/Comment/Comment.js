@@ -2,8 +2,6 @@ import FetchModule from "../../components/Network/Network.js";
 import {serverLocate} from "../../utils/constants.js";
 import CommentTemplate from "./comment.pug";
 
-import '../Comment/comment.css'
-
 import {default as CurrentComments} from './CurrentComments.js';
 import { default as Router} from "../../utils/router.js"
 

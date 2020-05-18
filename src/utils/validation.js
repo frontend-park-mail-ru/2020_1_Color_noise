@@ -4,6 +4,7 @@ const regExpressions = {
     // ASCII chars from ! to ~
     password: /[!-~]{6,}/,
     userLink: /^\/user\/[\d-.]{1,}$/,
+    pinLink: /^\/pin\/[\d-.]{1,}$/,
     pinsUserLink: /^\/pins\/user\/[\d-.]{1,}$/,
     deskUserLink: /^\/desk\/[\d-.]{1,}$/,
     chatUserLink: /^\/chats\/user\/[\d-.]{1,}$/
@@ -14,6 +15,7 @@ export const validators = {
     username: (username) => validateField(username, regExpressions.username),
     password: (password) => validateField(password, regExpressions.password),
     userLink: (userLink) => validateField(userLink, regExpressions.userLink),
+    pinLink: (pinLink) => validateField(pinLink, regExpressions.pinLink),
     pinsUserLink: (pinsUserLink) => validateField(pinsUserLink, regExpressions.pinsUserLink),
     deskUserLink: (deskUserLink) => validateField(deskUserLink, regExpressions.deskUserLink),
     chatUserLink: (chatUserLink) => validateField(chatUserLink, regExpressions.chatUserLink)
