@@ -71,6 +71,14 @@ const addUserIcons = () => {
     const deskBlock = document.getElementById('deskBlock');
     deskBlock.setAttribute('mine', "");
     deskBlock.addEventListener('newDesk', addOneDesk);
+
+    const subsUserLink = document.getElementById('subsUserLink');
+    subsUserLink.addEventListener('click', goSubs);
+};
+
+const goSubs = (evt) => {
+    evt.preventDefault();
+    Router.go("/subs","Subs");
 };
 
 const addOneDesk = (evt) => {

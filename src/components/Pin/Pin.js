@@ -9,6 +9,10 @@ import {default as CurrentComments} from "../Comment/CurrentComments.js";
 import { showComment } from '../Comment/Comment'
 import { unSetScroll } from "../Desk/Desk";
 
+import linkImage1 from '../../images/share/whatsapp.svg'
+import linkImage2 from '../../images/share/twitter.svg'
+import linkImage3 from '../../images/share/facebook.svg'
+
 /**
  * addPinOnBoard
  * Сохраняет пин (информация о пине в target) на доску с id = boardId
@@ -305,7 +309,12 @@ export function createPinPage(target) {
 
     document.title = "Pin " + target.name;
     const pin = PinTemplate({image:  serverLocate + "/" + target.image, PinId: target.id, pinName: target.name,
-    pinMeta:target.about});
+    pinMeta:target.about,
+        link1 : 'https://web.whatsapp.com/send?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + target.id,
+        link2 : 'http://twitter.com/share?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + target.id,
+        link3 : 'http://www.facebook.com/sharer.php?s=100&p[url]=https://zinterest.ru/pin/' + target.id,
+        linkImage1 : linkImage1, linkImage2 : linkImage2, linkImage3 : linkImage3
+    });
     const content = document.getElementById('content');
     content.innerHTML = pin;
     content.className = "comments_section";

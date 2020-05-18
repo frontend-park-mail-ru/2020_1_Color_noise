@@ -142,7 +142,6 @@ class Router {
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
         createContent(); // структура
         Requests.getUserProfile(false).then((result) => {
-            console.log("создаю смтраницу по умолчанию")
             createMenu(result);
         });
         // if (Requests.getUserProfile(false)) {
