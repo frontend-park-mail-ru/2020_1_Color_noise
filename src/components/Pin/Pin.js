@@ -145,7 +145,7 @@ function setCreateNewBoardRequest(target) {
                 if (jsonAns.status !== 201)
                     throw Error("not 200: /api/board");
 
-                const boardId = jsonAns.id;
+                const boardId = jsonAns.body.id;
 
                 addPinOnBoard(target, boardId)
 
