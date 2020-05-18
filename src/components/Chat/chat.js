@@ -335,6 +335,10 @@ export function addNewContact(newUser) {
         chatStorage.addUser(newUser);
     }
 
+    if (newUser.avatarPath === undefined) {
+        newUser.avatarPath = newUser.avatar
+    }
+
     const chatUserList = document.getElementById("chat_user_list")
     const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ newUser.avatarPath,
         AuthorName:newUser.login, onlineStatus:""});
@@ -651,6 +655,12 @@ export function setSupportBtn() {
 
     const chatSupportBtn = document.getElementById("chat_support_btn")
     chatSupportBtn.addEventListener("click", evt=>{
+
+        if (chatStorage.isAlredyCallSupport) {
+            return
+        }
+        chatStorage.isAlredyCallSupport = true
+
 
         FetchModule.fetchRequest({url: serverLocate + "/api/support", method:"get"})
             .then((res) => {
