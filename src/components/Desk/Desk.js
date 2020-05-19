@@ -14,7 +14,7 @@ import Router from "../../utils/router.js"
  */
 export function getMainPins() {
     FetchModule.fetchRequest({ url: serverLocate + '/api/list?start=' + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15', method:'get', body:null})
+            + '&limit=25', method:'get', body:null})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -40,7 +40,7 @@ export function getMainPins() {
  */
 export function getSubPins() {
     FetchModule.fetchRequest({ url: serverLocate + '/api/list/sub?start=' + ( CurrentDesk.State.numberOfPins )
-            + '&limit=15', method:'get',})
+            + '&limit=20', method:'get',})
         .then((res) => {
             return res.ok ? res : Promise.reject(res);
         })
@@ -148,8 +148,16 @@ export function showPins(pinsArr) {
     CurrentDesk.State.numberOfPins += pinsArr.length;
     let columnArr = document.getElementById('columns');
 
+    // пользователь уже перешел на другу страницу
+    // запрос на пины был долгий
+    if (columnArr === null) {
+        console.log("пользователь уже перешел на другу страницу запрос на пины был долгий unSetScroll")
+        unSetScroll()
+        return
+    }
+
     pinsArr.forEach((item) => {
-        addCard(item, columnArr.id); // @todo fakeImages only on deBug mod !!!
+        addCard(item, columnArr.id);
     });
 }
 
@@ -183,7 +191,6 @@ function scroll() {
  *
  * @return {void}
  */
-
 export function setScroll(getSomePinsFuncInPut) {
     //console.log("set SCROLLL:", getSomePinsFuncInPut);
     CurrentDesk.getSomePinsFunc = getSomePinsFuncInPut;
@@ -220,8 +227,6 @@ export function clearColumns() {
            mainDesk.appendChild(columnsDiv)
        }
 }
-
-
 
 
 

@@ -1,6 +1,6 @@
 import searchDateDetailsTemplate from "./searchDateDetails.pug";
 import {default as CurrentDesk} from "../Desk/CurrentDesk";
-import {clearColumns, setScroll, unSetScroll, showPins} from "../Desk/Desk";
+import {clearColumns, setScroll, unSetScroll, showPins, getUserPins} from "../Desk/Desk";
 import FetchModule from "../Network/Network";
 import {serverLocate} from "../../utils/constants";
 import findUserTemplate from "../Desk/findUser.pug";
@@ -51,10 +51,12 @@ function searchEvent() {
         searchUrl += "&desc=true"
     }
 
-
     CurrentDesk.State.searchUrl = searchUrl
     getSearchFilter();
-    setScroll(getSearchFilter)
+
+    setTimeout(() => {
+        setScroll(getSearchFilter)
+    }, 1000);
 
 }
 

@@ -18,9 +18,14 @@ export function createDeskView() {
     unSetScroll();
     clearColumns();
     CurrentDesk.State.numberOfPins = 0;
-
     getMainPins();
-    setScroll(getMainPins);
+
+
+    setTimeout(() => {
+        setScroll(getMainPins);
+    }, 1000);
+
+
    // setSearch();
 
 }
@@ -42,6 +47,10 @@ export function createSubDeskView() {
     getSubPins();
     //CurrentDesk.getSomePinsFunc = getMainPins;
     setScroll(getSubPins);
+    setTimeout(() => {
+        setScroll(getSubPins);
+    }, 1000);
+
 
    // setSearch();
 
@@ -65,7 +74,9 @@ export function createUserPinsDeskView(state) {
 
     getUserPins();
     //CurrentDesk.getSomePinsFunc = getUserPins;
-    setScroll(getUserPins);
+    setTimeout(() => {
+        setScroll(getUserPins);
+    }, 1000);
 
    // setSearch();
 

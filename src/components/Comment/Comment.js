@@ -28,6 +28,8 @@ export function showComment(comment) {
 
 
     //console.log("LOAD DATA FOR COMMENT:", comment);
+    const OnePinComments =  document.getElementById("OnePinComments");
+
 
     FetchModule.fetchRequest({url:serverLocate + '/api/user/'+ comment.user_id, method:'get'})
         .then((response) => {
@@ -42,7 +44,7 @@ export function showComment(comment) {
             return responseJson.status !== 404 ? responseJson.body : responseJson.body //Promise.reject(responseJson);
         })
         .then((commentAuthorInfo) => {
-            const OnePinComments =  document.getElementById("OnePinComments");
+
 
             const oneComment = document.createElement('div');
             const AvatarClass = " avtarId" + comment.user_id;

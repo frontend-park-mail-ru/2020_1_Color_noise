@@ -11,6 +11,8 @@ import { createPinPageFromRequest } from "../components/Pin/Pin"
 import {createLogoutView} from "../views/createLogout";
 import {createOfflinePage} from "../components/OfflinePage/OfflinePage.js"
 import {validators} from "./validation";
+import {default as CurrentDesk} from "../components/Desk/CurrentDesk";
+import {unSetScroll} from "../components/Desk/Desk";
 
 class Router {
     constructor() {
@@ -32,6 +34,7 @@ class Router {
 
         window.addEventListener('popstate', evt => {
             //Если зашли первый раз только на страницу и браузер сохранил уже ее себе в стек
+
            if (evt.state === null) {
                 this.go('/', null, evt.state, false);
             } else {
@@ -47,6 +50,9 @@ class Router {
             return;
         }
 
+
+        //console.log("path:", path, "   title:", title, " state:", state, "  needPush:", needPush)
+
         if (needPush === true) {
             console.log("GO path:" + path);
             if (state == null)
@@ -60,6 +66,9 @@ class Router {
             );
         }
         //alert("Go : path:" + path);
+
+
+
 
         document.title = title;
         const func = this.routs[path];
@@ -132,6 +141,11 @@ class Router {
 
     }
 
+
+
+
+
+
     start() {
 
         if (!navigator.onLine) {
@@ -139,17 +153,24 @@ class Router {
             return;
         }
 
+
+
+
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
         createContent(); // структура
-        Requests.getUserProfile(false).then((result) => {
+
+        /*
+        Requests.getUserProfile(false)
+            .then((result) => {
             console.log("создаю смтраницу по умолчанию")
             createMenu(result);
         });
-        // if (Requests.getUserProfile(false)) {
-        //
-        //     createMenu(true);
-        // } else {
-        //     createMenu(false);
-        // }
+         */
+
+        if (Requests.getUserProfile(false)) {
+            createMenu(true);
+        } else {
+            createMenu(false);
+        }
     }
 } export default  new Router();

@@ -102,7 +102,7 @@ class chatStorage {
     getMessagesFromStorage(SenderId){
 
         if (this.MessageData[SenderId] === undefined) {
-            console.log("getMessagesFromStorage: еще нет сообщений с этим пользователем")
+            //console.log("getMessagesFromStorage: еще нет сообщений с этим пользователем")
             return
         }
 
@@ -111,7 +111,7 @@ class chatStorage {
             result.push(element)
         })
 
-        console.log("result messages:", result)
+        //console.log("result messages:", result)
         this.MessageData = {} // todo сделать без запроса всех при переключении чата
     return result
     }
@@ -119,9 +119,9 @@ class chatStorage {
 
     addStickers(stickerArr) {
         stickerArr.forEach( (stickerNew) => {
-            console.log("sticker add:", serverLocate + "/" + stickerNew)
+            //console.log("sticker add:", serverLocate + "/" + stickerNew)
             this.stickersMap.set(stickerNew, serverLocate + "/" + stickerNew);
-            console.log("STICKER ADEED:", this.stickersMap[stickerNew])
+            //console.log("STICKER ADEED:", this.stickersMap[stickerNew])
 
         });
     }
