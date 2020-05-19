@@ -166,11 +166,8 @@ class Router {
             createMenu(result);
         });
          */
+        // сreate menu in .then
+        Requests.getUserProfile(false)
 
-        if (Requests.getUserProfile(false)) {
-            createMenu(true);
-        } else {
-            createMenu(false);
-        }
     }
 } export default  new Router();
