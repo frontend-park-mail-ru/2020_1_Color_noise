@@ -1,8 +1,8 @@
 import SettingsTemplate from './settings.pug';
-import { validators } from '../../utils/validation';
+import {validators} from '../../utils/validation';
 import FetchModule from  '../Network/Network'
-import { serverLocate } from '../../utils/constants'
-import { default as CurrentUser } from '../../utils/userDataSingl';
+import {serverLocate} from '../../utils/constants'
+import {default as CurrentUser} from '../../utils/userDataSingl';
 import backBtn from "../../images/backBtn.svg";
 import {setInfoModal, setInfoPage, showInfoModal} from "../Modal/modal";
 

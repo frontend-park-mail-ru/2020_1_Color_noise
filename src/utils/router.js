@@ -1,13 +1,13 @@
-import { Requests } from '../components/Network/Requests'
-import { createMenu } from '../components/Menu/Menu'
-import { createContent } from "../components/Content/Content";
-import { CreateChatView } from "../views/createChat"
-import { createUserView } from "../views/createUser";
-import { createSettingsView } from "../views/createSettings";
-import { createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView } from "../views/createDesk";
-import { createNotificationsView } from "../views/createNotifications"
-import { createNewPinView} from "../views/createNewPin";
-import { createPinPageFromRequest } from "../components/Pin/Pin"
+import {Requests} from '../components/Network/Requests'
+import {createMenu} from '../components/Menu/Menu'
+import {createContent} from "../components/Content/Content";
+import {createChatsView} from "../views/createChat"
+import {createUserView} from "../views/createUser";
+import {createSettingsView} from "../views/createSettings";
+import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk";
+import {createNotificationsView} from "../views/createNotifications"
+import {createNewPinView} from "../views/createNewPin";
+import {createPinView} from "../views/createPin"
 import {createLogoutView} from "../views/createLogout";
 import {createOfflinePage} from "../components/OfflinePage/OfflinePage.js"
 import {validators} from "./validation";
@@ -21,15 +21,9 @@ class Router {
             "/subs": createSubDeskView,
             "/newpin": createNewPinView,
             "/settings": createSettingsView,
-            "/chats": CreateChatView,
+            "/chats": createChatsView,
             "/notifications":  createNotificationsView,
             "/logout": createLogoutView
-
-            // пути ниже буду проверяться в методе go(), если не будет совпадения с путями, обозначенными выше
-            // проверяются в (func === undefined)
-            //"/board/id": createBoardDeskView,
-            // "/userPins": createUserPinsDeskView,
-            // pin/pinID - будет проверяться, если ничего не подойдет
         };
 
         window.addEventListener('popstate', evt => {
@@ -74,61 +68,32 @@ class Router {
 
         document.title = title;
         const func = this.routs[path];
-
         if (func === undefined) {
-            // createPinPageFromRequest (pin/{pinID})
-            if (path.includes("/pin/")) { // если находится на странице пина
+            if (validators.pinLink(path)) {
                 const pinId = path.substring("/pin/".length, path.length);
-                const isInt = Number.isInteger(Number(pinId));
-                if (!isInt) {
-                    console.log("error get pinID from url");
-                    createDeskView();
-                    return;
-                }
-                // если url корректный, то запросим инфу о пине и отобразим его
-                createPinPageFromRequest(pinId);
-                return;
-            } else if (validators.pinsUserLink(path)) {// если находится на странице пинов одного пользователя
+                const state = {};
+                state.id = pinId;
+                createPinView(state);
+            } else if (validators.pinsUserLink(path)) {
                 const userId = path.substring("/pins/user/".length, path.length);
-                const isInt = Number.isInteger(Number(userId));
-                if (!isInt) {
-                    console.log("error get userID from url");
-                    createDeskView();
-                    return;
-                }
-                console.log("createUserPinsDeskView userid:",userId );
-                // если url корректный, то отобразим пины пользователя
                 const state = {};
-                state.userId = userId;
+                state.id = userId;
                 createUserPinsDeskView(state);
-            } else
-            //createBoardDeskView
-            if (validators.deskUserLink(path)) { // если находится на странице пинов одного пользователя
+            } else if (validators.deskUserLink(path)) {
                 const boardId = path.substring("/desk/".length, path.length);
-                const isInt = Number.isInteger(Number(boardId));
-                if (!isInt) {
-                    console.log("error get boardID from url");
-                    createDeskView();
-                    return;
-                }
-                console.log("createBoardDeskView boardid:", boardId);
-                // если url корректный, то отобразим пины пользователя
                 const state = {};
-                state.deskId = boardId;
+                state.id = boardId;
                 createBoardDeskView(state);
-                return;
             } else if (validators.userLink(path)) {
                 const userId = path.substring("/user/".length, path.length);
                 const state = {};
                 state.id = userId;
-                console.log("createUserView!!!!")
                 createUserView(state);
             }  else if (validators.chatUserLink(path)) {
                 const userId = path.substring("/chats/user/".length, path.length);
                 const state = {};
                 state.id = userId;
-                console.log("CreateChatView with contact person Id:", userId)
-                CreateChatView(userId) //Только ID человека
+                createChatsView(state);
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();
@@ -149,13 +114,10 @@ class Router {
 
 
     start() {
-
         if (!navigator.onLine) {
             createOfflinePage("createMenu");
             return;
         }
-
-
 
 
         // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
@@ -170,6 +132,5 @@ class Router {
          */
         // сreate menu in .then
         Requests.getUserProfile(false)
-
     }
 } export default  new Router();

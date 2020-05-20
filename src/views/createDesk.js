@@ -8,9 +8,6 @@ import {serverLocate} from "../utils/constants";
 
 
 export function createDeskView() {
-
-    //console.log("createDeskView()");
-    document.title = "Main";
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
 
@@ -35,7 +32,6 @@ export function createDeskView() {
 export function createSubDeskView() {
 
     const followsOrMainLink = document.getElementById('followsOrMainLink');
-    document.title = "Subscriptions";
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
 
@@ -61,10 +57,7 @@ export function createSubDeskView() {
 
 
 export function createUserPinsDeskView(state) {
-
-    CurrentDesk.State.userId = state.userId;
-
-    document.title = "User Pins";
+    CurrentDesk.State.userId = state.id;
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
 
@@ -85,7 +78,7 @@ export function createUserPinsDeskView(state) {
 
 export function createBoardDeskView(state) {
 
-    CurrentDesk.State.boardId = state.deskId;
+    CurrentDesk.State.boardId = state.id;
     //CurrentDesk.State.username = state.username;
     const root = document.getElementById('content');
     root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});

@@ -1,6 +1,6 @@
 import createPinTemplate from './createPin.pug';
 import pinDefaultImage from '../../images/pinDefault.jpg';
-import { showInfoModal, setInfoPage } from "../Modal/modal"
+import {showInfoModal, setInfoPage} from "../Modal/modal"
 
 import Router from '../../utils/router'
 import FetchModule from "../Network/Network";

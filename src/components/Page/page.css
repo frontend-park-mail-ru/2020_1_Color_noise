@@ -4,6 +4,7 @@
     width: 100%;
     min-width: 210px;
     min-height: calc(100vh - 63px);
+    box-sizing: border-box;
 }
 
 .page_content {
@@ -13,6 +14,7 @@
     width: 100%;
     max-width: 880px;
     border-radius: 15px;
+    box-sizing: border-box;
 }
 
 @media (max-width: 475px) {

@@ -1,7 +1,7 @@
 import FetchModule from "../components/Network/Network";
-import { createPageUser } from "../components/User/CreateUser";
-import { setInfoContent } from "../components/Modal/modal";
-import { serverLocate } from "../utils/constants";
+import {createPageUser} from "../components/User/CreateUser";
+import {setInfoContent} from "../components/Modal/modal";
+import {serverLocate} from "../utils/constants";
 
 export const createUserView = (state) => {
     FetchModule.fetchRequest({

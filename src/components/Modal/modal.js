@@ -9,10 +9,10 @@ import followItemTemplate from './followItem.pug';
 import logoImage from '../../images/logo.svg';
 
 import FetchModule from "../Network/Network";
-import { serverLocate } from "../../utils/constants";
-import { validators } from '../../utils/validation';
+import {serverLocate} from "../../utils/constants";
+import {validators} from '../../utils/validation';
 import Router from "../../utils/router";
-import { setDataUser } from "../Network/Requests"
+import {setDataUser} from "../Network/Requests"
 
 export const showLoginModal = () => {
     const modal = document.getElementById('modal');

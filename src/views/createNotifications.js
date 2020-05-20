@@ -1,7 +1,7 @@
 import FetchModule from "../components/Network/Network.js";
 import {serverLocate} from "../utils/constants.js";
-import { createPageNotif } from "../components/Notif/Notif";
-import { setInfoContent } from "../components/Modal/modal";
+import {createPageNotif} from "../components/Notif/Notif";
+import {setInfoContent} from "../components/Modal/modal";
 
 export const createNotificationsView = () => {
     FetchModule.fetchRequest({

@@ -1,11 +1,11 @@
 import {serverLocateWebSocket, serverLocate, chatSupportLogin} from  '../../utils/constants.js'
 import FetchModule from '../Network/Network.js'
-import {default as chatStorage } from "./currentChat.js"
+import {default as chatStorage} from "./currentChat.js"
 import {default as WebSocketSingl} from "./webSocket.js"
 import oneUserTemplate from "./oneUserInContactList.pug"
 import chatTemplate from "./chatSection.pug"
 import chatNoSelectedTemplate from "./noSelectedUser.pug";
-import { default as CurrentUser } from '../../utils/userDataSingl.js';
+import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import chatMessageTemplate from "./message.pug"
 import {createPageUser} from "../User/CreateUser";
 import {setInfoContent} from "../Modal/modal";
