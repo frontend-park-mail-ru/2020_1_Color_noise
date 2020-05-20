@@ -116,6 +116,7 @@
 .chat_img {
     float: left;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .chat_about {

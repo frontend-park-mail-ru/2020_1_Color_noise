@@ -5,12 +5,15 @@ import {default as chatStorage} from "../components/Chat/currentChat.js";
 import {serverLocate} from "../utils/constants";
 import backBtn from "../images/backBtn.svg";
 
-export function createChatsView(state = null) {
-    const userID = (state)? state.id : null;
+
+export function CreateChatView(userID = null) {
+    unSetScroll();
+    document.title = "Chats";
     const backImage = serverLocate + backBtn;
     const chats = ChatsTemplate({backImage:backImage});
     const content = document.getElementById('content');
     content.innerHTML = chats;
+
     setBackImg();
 
     chatStorage.Data.idSelectedUser = -1

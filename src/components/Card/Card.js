@@ -25,6 +25,9 @@ export const addCard = (pin, idColumn) => {
     const addedCard = document.getElementById(pin.id);
 
     const pinClickFunc = (evt) => {
+
+        console.log("GO TO PIN:", pin.id.toString())
+
         const data = [];
         data.id = pin.id;
         data.name = pin.name;
@@ -38,7 +41,7 @@ export const addCard = (pin, idColumn) => {
         //console.log("клик на пин (ниже тут unSetScroll())")
         unSetScroll();
         //console.log("го роут")
-        Router.go("/pin/" + pin.id.toString(), pin.name);
+        Router.go("/pin/" + pin.id.toString(), pin.name, null, true);
         // createPinPage(data);
 
     };

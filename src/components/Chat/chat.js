@@ -1,4 +1,4 @@
-import {serverLocateWebSocket, serverLocate} from  '../../utils/constants.js'
+import {serverLocateWebSocket, serverLocate, chatSupportLogin} from  '../../utils/constants.js'
 import FetchModule from '../Network/Network.js'
 import {default as chatStorage} from "./currentChat.js"
 import {default as WebSocketSingl} from "./webSocket.js"
@@ -9,6 +9,7 @@ import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import chatMessageTemplate from "./message.pug"
 import {createPageUser} from "../User/CreateUser";
 import {setInfoContent} from "../Modal/modal";
+import { default as Router} from "../../utils/router.js"
 
 
 
@@ -132,8 +133,7 @@ export function createDialog(user) {
         User.avatarPath = user.avatar; // тут проверить какие поля будут у юзера после того как все заработает !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         User.login = user.login;
         User.id = user.id;
-
-        Router.go("/profile", "Profile", User)
+        Router.go("/user/" + User.id, "Profile", User, true)
     })
 
 
@@ -220,7 +220,6 @@ function showMessages(messageArr) {
     console.log("showMessages ARR:", messageArr);
 
 
-
     messageArr.forEach( (element)=> {
 
 
@@ -286,6 +285,9 @@ function showMessages(messageArr) {
 
 
 export function addNewContact(newUser) {
+
+
+
     console.log("сообщения от пользователя что не в контактах или новый(если undefined, то newUser== id кому писать):",
         newUser.login)
 
@@ -328,6 +330,17 @@ export function addNewContact(newUser) {
 
         return;
     }
+
+
+
+    if (newUser.login === chatSupportLogin && chatStorage.isAlredyCallSupport === true) {
+        return;
+    }
+
+    if (newUser.login === chatSupportLogin) {
+        chatStorage.isAlredyCallSupport = true
+    }
+
 
 
 
