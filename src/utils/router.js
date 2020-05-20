@@ -53,7 +53,9 @@ class Router {
 
         //console.log("path:", path, "   title:", title, " state:", state, "  needPush:", needPush)
 
-        if (needPush === true) {
+
+        // не надо сохранять состояние, если уже на нужной странице
+        if (needPush === true && path !== window.location.pathname) {
             console.log("GO path:" + path);
             if (state == null)
                 state = {};
