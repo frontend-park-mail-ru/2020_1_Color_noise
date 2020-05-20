@@ -287,13 +287,11 @@ function showMessages(messageArr) {
 export function addNewContact(newUser) {
 
 
-
     console.log("сообщения от пользователя что не в контактах или новый(если undefined, то newUser== id кому писать):",
         newUser.login)
 
     // случай когда newUser - это айди (новый вызов "написать")
     if (newUser.login === undefined) {
-
         FetchModule.fetchRequest({
             url:serverLocate + '/api/user/' + newUser,
             method: 'get',
@@ -305,12 +303,14 @@ export function addNewContact(newUser) {
             if (result.status === 200) {
                 newUser = result.body
 
-
-                // дублирование логики из кода ниже
-                // где не надо делать запрос на собеседника
+                // дублирование логики
                 if (!chatStorage.containsId(newUser.id)) {
                     chatStorage.addUser(newUser);
+                } else {
+                    console.log("он уже есть!")
+                    return;
                 }
+
                 const chatUserList = document.getElementById("chat_user_list")
                 const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ newUser.avatar,
                     AuthorName:newUser.login, onlineStatus:""});
@@ -336,7 +336,6 @@ export function addNewContact(newUser) {
     if (newUser.login === chatSupportLogin && chatStorage.isAlredyCallSupport === true) {
         return;
     }
-
     if (newUser.login === chatSupportLogin) {
         chatStorage.isAlredyCallSupport = true
     }

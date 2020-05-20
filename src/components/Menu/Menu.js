@@ -12,6 +12,7 @@ import {showLoginModal, showRegModal, showChooseModal, showInfoModal} from "../M
 import Router from "../../utils/router"
 import {Requests} from '../Network/Requests'
 import CurrentUser from "../../utils/userDataSingl";
+import {setSearch} from "./search";
 
 export const createMenu = (login = false) => {
     const template = MenuTemplate({ logoImage : logoImage });
@@ -28,6 +29,9 @@ export const createMenu = (login = false) => {
     const loginPart = document.getElementById('loginPart');
     loginPart.addEventListener('login', addLogin);
     loginPart.addEventListener('reg', addReg);
+
+    setSearch();
+
 };
 
 

@@ -1,7 +1,7 @@
 import {Requests} from '../components/Network/Requests'
 import {createMenu} from '../components/Menu/Menu'
 import {createContent} from "../components/Content/Content";
-import {createChatsView} from "../views/createChat"
+import {CreateChatView} from "../views/createChat"
 import {createUserView} from "../views/createUser";
 import {createSettingsView} from "../views/createSettings";
 import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk";
@@ -21,7 +21,7 @@ class Router {
             "/subs": createSubDeskView,
             "/newpin": createNewPinView,
             "/settings": createSettingsView,
-            "/chats": createChatsView,
+            "/chats": CreateChatView,
             "/notifications":  createNotificationsView,
             "/logout": createLogoutView
         };
@@ -29,7 +29,7 @@ class Router {
         window.addEventListener('popstate', evt => {
             //Если зашли первый раз только на страницу и браузер сохранил уже ее себе в стек
 
-           if (evt.state === null) {
+            if (evt.state === null) {
                 this.go('/', null, evt.state, false);
             } else {
                 let path = evt.state.path;
@@ -93,7 +93,7 @@ class Router {
                 const userId = path.substring("/chats/user/".length, path.length);
                 const state = {};
                 state.id = userId;
-                createChatsView(state);
+                CreateChatView(userId);
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();
@@ -109,28 +109,12 @@ class Router {
     }
 
 
-
-
-
-
     start() {
         if (!navigator.onLine) {
             createOfflinePage("createMenu");
             return;
         }
-
-
-        // получает пользователя в синглтон currenUser и вызывает go(текущий путь)
         createContent(); // структура
-
-        /*
-        Requests.getUserProfile(false)
-            .then((result) => {
-            console.log("создаю смтраницу по умолчанию")
-            createMenu(result);
-        });
-         */
-        // сreate menu in .then
         Requests.getUserProfile(false)
     }
 } export default  new Router();

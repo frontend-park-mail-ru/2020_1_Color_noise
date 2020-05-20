@@ -211,7 +211,6 @@ function setSelectedVars() {
     // Выбор объекта поиска
     const searchSelectedObj = document.getElementById("search_selected_obj")
 
-
     const searchSelectPinVars = document.getElementById("search_select_pin_vars")
     searchSelectPinVars.addEventListener("click", (evt)=>{
         evt.preventDefault();
@@ -225,7 +224,7 @@ function setSelectedVars() {
     })
     const searchSelectUserVars = document.getElementById("search_select_user_vars")
     searchSelectUserVars.addEventListener("click", evt=>{
-        event.preventDefault();
+        evt.preventDefault();
         console.log("searchSelectedObj.innerText = \"Пользователь\"")
         searchSelectedObj.innerText = "Пользователь"
         CurrentDesk.State.searchObj = "user"

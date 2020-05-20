@@ -4,6 +4,8 @@ import  {getUsersForChat, createWebSocket, addNewContact, getStickersForChat, se
 import {default as chatStorage} from "../components/Chat/currentChat.js";
 import {serverLocate} from "../utils/constants";
 import backBtn from "../images/backBtn.svg";
+import {unSetScroll} from  "../components/Desk/Desk.js"
+
 
 
 export function CreateChatView(userID = null) {
