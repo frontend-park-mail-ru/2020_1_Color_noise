@@ -24,6 +24,7 @@ export function createChatView(userID = null) {
     unSetScroll();
     document.title = "Chats";
 
+    chatStorage.isAlreadyAddEvent = false
     getStickersForChat();
     getUsersForChat(userID);
 
