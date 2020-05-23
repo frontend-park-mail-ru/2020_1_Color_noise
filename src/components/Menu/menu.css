@@ -80,33 +80,6 @@
 	}
 }
 
-/*@media (max-device-width: 400px) and (orientation: portrait) {*/
-/*	.menu .logo {*/
-/*		display: inline-block;*/
-/*	}*/
-
-/*	.menu .find {*/
-/*		display: inline-block;*/
-/*		width: 80%;*/
-/*	}*/
-
-/*	.menu .thirdpart {*/
-/*		display: inline-block;*/
-/*	}*/
-
-/*	.menu .logo img {*/
-/*		width: 400px;*/
-/*	}*/
-
-/*	.menu .find .findPin {*/
-/*		height: 80px;*/
-/*	}*/
-
-/*	.menu .thirdpart .icons img {*/
-/*		width: 80px;*/
-/*		height: 80px;*/
-/*	 }*/
-/*}*/
 
 .menu .find .find_pin {
 	background: #e4e4e4;
@@ -132,7 +105,7 @@
 
 
 .find_pin img {
-	width: 2%;
+	width: 30px;
 	cursor: pointer;
 	margin-top: 5px;
 	margin-right: 20px;
@@ -188,9 +161,10 @@
 	display: inline-block;
 	margin-left: 5px;
 	background: white;
-	max-width: 40%;
+	max-width: 92%;
 	margin-top: 8px;
 	vertical-align: top;
+	margin-left: 10px;
 }
 
 
@@ -226,7 +200,6 @@
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	display: inline-block;
 }
 .find_pin a {
 	display: block;
@@ -241,6 +214,7 @@
 .search_menu > li {
 	display: inline-block;
 	position: relative;
+
 }
 .search_menu > li > a {
 	height: 50px;
@@ -250,6 +224,7 @@
 	vertical-align: top;
 	font-weight: bold;
 	color: #000000;
+	text-decoration: underline;
 }
 
 .down:after {
@@ -272,17 +247,20 @@
 	transform: perspective(600px) rotateX(-90deg);
 	transform-origin: 0% 0%;
 	transition: .6s ease-in-out;
+
 }
 .search_menu > li:hover .search_submenu{
 	visibility: visible;
 	opacity: 1;
 	transform: perspective(600px) rotateX(0deg);
+
 }
 .search_submenu li a {
 	color: #7f7f7f;
 	font-size: 13px;
 	line-height: 36px;
 	padding: 0 25px;
+
 }
 
 

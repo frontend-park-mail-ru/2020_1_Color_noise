@@ -7,6 +7,7 @@ import chatsImage from '../../images/chatsIcon.svg';
 import notifImage from '../../images/notifIcon.svg';
 import profileImage from '../../images/profileIcon.svg';
 import plusImage from '../../images/plusIcon.svg';
+import lupaImage from '../../images/find.svg'
 
 import {showLoginModal, showRegModal, showChooseModal, showInfoModal} from "../Modal/modal"
 import Router from "../../utils/router"
@@ -15,7 +16,7 @@ import CurrentUser from "../../utils/userDataSingl";
 import {setSearch} from "./search";
 
 export const createMenu = (login = false) => {
-    const template = MenuTemplate({ logoImage : logoImage });
+    const template = MenuTemplate({ logoImage : logoImage, lupaImage:lupaImage });
 
     const menu = document.getElementById('menu');
     menu.innerHTML = template;

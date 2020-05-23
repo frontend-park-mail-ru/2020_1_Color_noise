@@ -4,6 +4,8 @@ div.menu
             img(src=logoImage width="190px")
     div.find
         div.find_pin
+            input(id="search_main_input" type="text" class="search_input")
+            img(id="search_main_img" src=lupaImage)
             ul(class="search_menu search_select")
                 li
                     a( href="" id="search_selected_obj" onclick="event.preventDefault()") Пин
@@ -40,13 +42,6 @@ div.menu
                                 a( href="" id="search_order_norm") Обычный
                             li
                                 a( href="" id="search_order_reverse") Обратный
-
-
-
-
-
-            input(id="search_main_input" type="text" class="search_input")
-            img(id="search_main_img" src=image)
 
 
     div.thirdpart#loginPart
