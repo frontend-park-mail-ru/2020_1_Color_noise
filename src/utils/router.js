@@ -1,7 +1,7 @@
 import {Requests} from '../components/Network/Requests'
 import {createMenu} from '../components/Menu/Menu'
 import {createContent} from "../components/Content/Content";
-import {CreateChatView} from "../views/createChat"
+import {createChatView} from "../views/createChat"
 import {createUserView} from "../views/createUser";
 import {createSettingsView} from "../views/createSettings";
 import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk";
@@ -21,7 +21,7 @@ class Router {
             "/subs": createSubDeskView,
             "/newpin": createNewPinView,
             "/settings": createSettingsView,
-            "/chats": CreateChatView,
+            "/chats": createChatView,
             "/notifications":  createNotificationsView,
             "/logout": createLogoutView
         };
@@ -43,6 +43,9 @@ class Router {
             createOfflinePage(path, title, state=null, needPush)
             return;
         }
+
+
+        unSetScroll()
 
 
         //console.log("path:", path, "   title:", title, " state:", state, "  needPush:", needPush)
@@ -93,7 +96,7 @@ class Router {
                 const userId = path.substring("/chats/user/".length, path.length);
                 const state = {};
                 state.id = userId;
-                CreateChatView(userId);
+                createChatView(userId);
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();

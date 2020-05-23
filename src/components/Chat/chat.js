@@ -7,19 +7,22 @@ import chatTemplate from "./chatSection.pug"
 import chatNoSelectedTemplate from "./noSelectedUser.pug";
 import {default as CurrentUser} from '../../utils/userDataSingl.js';
 import chatMessageTemplate from "./message.pug"
-import {createPageUser} from "../User/CreateUser";
-import {setInfoContent} from "../Modal/modal";
 import { default as Router} from "../../utils/router.js"
 
 
+import contactsImage from '../../images/chat/chatContacts.svg';
+import closeContentImage from  "../../images/closeContent.svg"
+import emojiImage from "../../images/chat/chatEmoji.svg"
+import backBtn from "../../images/backBtn.svg";
+import stickerImage from  "../../images/chat/stickerImg.svg"
+import sendMessageImg from "../../images/chat/sendIcon.svg"
+import ChatsTemplate from "./chats.pug";
 
 
-export function getUsersForChat() {
+export function getUsersForChat(userID = null) {
 
     chatStorage.Data.idSelectedUser = -1
     chatStorage.Data.userContactsList = []
-
-
 
     FetchModule.fetchRequest({url: serverLocate + "/api/chat/users?start=0&limit=100", method:"get"})
         .then((response) => {
@@ -30,12 +33,39 @@ export function getUsersForChat() {
         })
         .then((jsonAns) => {
 
-            if (jsonAns.status !== 200)
+            if (jsonAns.status !== 200) {
                 throw Error("not 200: api/chat/users?start=0&limit=100");
-
-            if (jsonAns.body.length !== 0) {
-                showContacts(jsonAns.body)
             }
+
+
+            createContactPageAfterGetUsers()
+
+            chatStorage.usersArr = jsonAns.body
+            showContacts(chatStorage.usersArr)
+
+            // если пришли сюда от нажатия "написать" на странице профиля (прокидываем это через view create Chat)
+            console.log("itIsNumber(userID):", itIsNumber(userID) , "\t userID:", userID)
+            if (userID !== null && Number.isInteger(Number(userID))) {
+
+                console.log("ДОБАВЛЯЕТСЯ КОНТАКТ userID:", userID)
+                // проверка user.login !== undefined из-за того что state
+                // сюда проходит из роутера
+                addNewContact(userID);
+
+                FetchModule.fetchRequest({url: serverLocate + "/api/user/" + userID, method:"get", body:null})
+                    .then((res) => res.ok ? res : Promise.reject(res))
+                    .then( (response) =>
+                        response.json(),
+                    )
+                    .then((result) => {
+                        chatStorage.addUser(result.body)
+                        createDialog(result.body)
+                    })
+                    .catch((error) => {
+                        console.log("getUserProfile for create Dialog ERROR:", error);
+                    });
+            }
+
 
 
         })
@@ -44,11 +74,29 @@ export function getUsersForChat() {
             console.log('Что-то пошло не так с получением контактов в чате:', error);
         });
 
+    //createStartDialogScreen();
 
-    createStartDialogScreen();
+}
 
 
+function itIsNumber(value) {
+    if ( value == null )
+        return false;
+    if(value instanceof Number)
+        value = value.valueOf();
+    return  isFinite(value) && value === parseInt(value, 10);
+}
 
+
+function createContactPageAfterGetUsers() {
+    const backImage = serverLocate + backBtn;
+    const chats = ChatsTemplate({backImage:backImage});
+    const content = document.getElementById('content');
+    content.innerHTML = chats;
+    setBackImg();
+    chatStorage.Data.idSelectedUser = -1
+    createWebSocket();
+    setSupportBtn();
 }
 
 
@@ -57,13 +105,17 @@ function showContacts(UserContactsArr) {
 
 
     const chatUserList = document.getElementById("chat_user_list")
-    UserContactsArr.forEach( function(element)  {
 
+    if (UserContactsArr.length === 0) {
+        console.log("zero contacts msg")
+        chatUserList.innerHTML = "<h3 class='chat_no_contact_msg'> У Вас еще нет собеседников, но Вы можете найти их через поиск. </h3>"
+        return
+    }
+
+    UserContactsArr.forEach( function(element)  {
         if (element.id === CurrentUser.Data.id) {
             return;
         }
-
-
         console.log("ADD USER FROM ARR: element:", element)
         if (!chatStorage.containsId(element.id)) {
             chatStorage.addUser(element);
@@ -72,8 +124,7 @@ function showContacts(UserContactsArr) {
             return;
         }
 
-        console.log("showContacts: element avatar:", serverLocate +"/"+ element.avatar)
-
+        //console.log("showContacts: element avatar:", serverLocate +"/"+ element.avatar)
 
 
         const user = oneUserTemplate({ avatarScr: serverLocate +"/"+ element.avatar,
@@ -90,18 +141,16 @@ function showContacts(UserContactsArr) {
     })
 
 
+
+
 }
+
 
 function createStartDialogScreen() {
     const chatChatSection = document.getElementById("chat_chat_section")
     chatChatSection.innerHTML = chatNoSelectedTemplate()
-
     setReturnBtn();
-
 }
-
-
-
 
 
 
@@ -112,18 +161,19 @@ export function createDialog(user) {
     console.log("createDialog:: user:", user)
 
 
-
     var avatarFile = user.avatarPath
     if (avatarFile === undefined) {
         avatarFile = user.avatar
     }
 
+    //serverLocate + "/images/chat_contacts.svg"
 
     // установка шапки чата
-    const chatChatSection = document.getElementById("chat_chat_section")
+    const chatMessages = document.getElementById("chat_contacts_or_messages")
     const headerHtml = chatTemplate({avatarSrc: serverLocate + "/" + avatarFile,
-        nameWith:user.login, emojiImgSrc: serverLocate + "/images/chat_emoji.png"})
-    chatChatSection.innerHTML = headerHtml
+        nameWith:user.login, emojiImgSrc: serverLocate + "/images/chat_emoji.png", contactsImage:contactsImage,
+        closeContentImage:closeContentImage, emojiImage:emojiImage, stickerImage:stickerImage, sendMessageImg:sendMessageImg})
+    chatMessages.innerHTML = headerHtml
 
 
     // при клике на изображения собеседника в шапке чата мы переходим в его профиль
@@ -137,24 +187,26 @@ export function createDialog(user) {
     })
 
 
-
     const inputMessage =  document.getElementById("message_to_send")
     // активируем кнопку отправки
     const sendMessageBtn = document.getElementById("chat_send_message_btn")
     sendMessageBtn.addEventListener("click", (evt)=>{
-        if (inputMessage.value !== "") {
+        console.log("inputMessage.value:", inputMessage.value.length)
+        if (inputMessage.value !== "" && inputMessage.value !== "\n") {
             sendMessage(inputMessage.value,"", user.id)
-            inputMessage.value = ""
+
         }
+        inputMessage.value = ""
     })
 
     // активируем отпарвку через enter
     inputMessage.addEventListener('keypress',  (e) =>{
         if (e.key === 'Enter') {
-            if (inputMessage.value !== "") {
+            console.log("inputMessage.value:", inputMessage.value.length)
+            if (inputMessage.value !== "" && inputMessage.value !== "\n") {
                 sendMessage(inputMessage.value, "", user.id)
-                inputMessage.value = ""
             }
+            inputMessage.value = ""
         }
     });
 
@@ -182,7 +234,6 @@ export function createDialog(user) {
                 // показываем сообщения из хранилища
                 const messages = chatStorage.getMessagesFromStorage(user.id)
                 if (messages !== undefined ) {
-
                     showMessages(messages)
                 } else {
                     console.log("createDialog: нет сообщений с этим пользователем:", user.login)
@@ -200,7 +251,27 @@ export function createDialog(user) {
 
     setReturnBtn();
     setEventShowStickers();
-    setClickOnEmoji();
+    setEventShowEmoji();
+
+    const chatShowContactsBtn =  document.getElementById("chat_show_contacts_img")
+    chatShowContactsBtn.addEventListener("click", evt=>{
+
+        Router.go("/chats","Chats");
+        return
+
+        /* хотел без лишних запросов
+        const backImage = serverLocate + backBtn;
+        const chats = ChatsTemplate({backImage:backImage});
+        const content = document.getElementById('content');
+        content.innerHTML = chats;
+        chatStorage.Data.idSelectedUser = -1
+        chatStorage.isAlredyCallSupport = false
+        setSupportBtn();
+
+        chatStorage.Data.userContactsList = []
+        showContacts(chatStorage.usersArr)
+         */
+    })
 
 }
 
@@ -277,7 +348,7 @@ function showMessages(messageArr) {
 
 
     // скрол по истории вниз
-    const chatHistoryClassForScroll = document.getElementsByClassName("chat_history")[0]
+    const chatHistoryClassForScroll = document.getElementById("chat_history")
     chatHistoryClassForScroll.scrollTop = chatHistoryClassForScroll.scrollHeight;
 
 }
@@ -412,12 +483,9 @@ function addNewMessage(newMessageData) {
        sticker
        */
 
+    //console.log("newMessageData:", newMessageData)
 
-    console.log("newMessageData:", newMessageData)
-
-
-
-    console.log("Этот ли даилог:", chatStorage.Data.idSelectedUser , " = message sender", newMessageData.user_send.id)
+    //console.log("Этот ли даилог:", chatStorage.Data.idSelectedUser , " = message sender", newMessageData.user_send.id)
 
     if (chatStorage.Data.idSelectedUser === newMessageData.user_send.id ||
         chatStorage.Data.idSelectedUser === newMessageData.user_rec.id ||
@@ -447,7 +515,6 @@ function addNewMessage(newMessageData) {
         let chatMessageHiddenCssClass = " "
         if (newMessageData.stickers === "") {
             stickerCssNotHiddenClass = " chat_sticker_hidden"
-
         }
         if (newMessageData.message === ""){
             chatMessageHiddenCssClass = " chat_message_hidden"
@@ -468,7 +535,7 @@ function addNewMessage(newMessageData) {
 
 
         // скрол по истории вниз
-        const chatHistoryClassForScroll = document.getElementsByClassName("chat_history")[0]
+        const chatHistoryClassForScroll = document.getElementById("chat_history")
         chatHistoryClassForScroll.scrollTop = chatHistoryClassForScroll.scrollHeight;
 
 
@@ -542,7 +609,7 @@ function sendMessage(message, sticker, userId) {
 
 function setReturnBtn() {
 
-    const returnBtnId = document.getElementById("chat_return_btn_id")
+    const returnBtnId = document.getElementById("chat_return_img")
 
     returnBtnId.addEventListener("click", (evt)=>{
         window.history.back();
@@ -571,7 +638,7 @@ export function getStickersForChat() {
                 console.log("no stickers in response")
                 return;
             }
-            console.log("stickers:",result.body)
+            //console.log("stickers:",result.body)
             chatStorage.addStickers(result.body);
 
         })
@@ -589,7 +656,7 @@ function setEventShowStickers() {
 
 
         const darkLayer = document.createElement('div');
-        darkLayer.id = 'shadow';
+        darkLayer.className = 'shadowChat';
         document.body.appendChild(darkLayer);
 
         const showBlock = document.getElementById('sticker_select_menu');
@@ -607,26 +674,26 @@ function setEventShowStickers() {
 
         stickerSelect.innerHTML = "";
         // add stickers images
-            console.log("chatStorage.stickersArr:", chatStorage.stickersMap)
+        console.log("chatStorage.stickersArr:", chatStorage.stickersMap)
 
-            chatStorage.stickersMap.forEach((sticker) => {
-                const stickerHtml = document.createElement("img")
-                stickerHtml.className = "one_sticker"
-                stickerHtml.setAttribute("src", sticker)
+        chatStorage.stickersMap.forEach((sticker) => {
+            const stickerHtml = document.createElement("img")
+            stickerHtml.className = "one_sticker"
+            stickerHtml.setAttribute("src", sticker)
 
-                stickerHtml.addEventListener("click", evt => {
+            stickerHtml.addEventListener("click", evt => {
 
-                    // send
-                    sendMessage("", sticker, chatStorage.Data.idSelectedUser );
-                    //console.log("send sticker:", sticker)
-                    darkLayer.parentNode.removeChild(darkLayer);
-                    showBlock.style.display = 'none';
+                // send
+                sendMessage("", sticker, chatStorage.Data.idSelectedUser );
+                //console.log("send sticker:", sticker)
+                darkLayer.parentNode.removeChild(darkLayer);
+                showBlock.style.display = 'none';
 
-                })
+            })
 
-                console.log("try add img:", stickerHtml)
-                stickerSelect.appendChild(stickerHtml)
-            });
+            console.log("try add img:", stickerHtml)
+            stickerSelect.appendChild(stickerHtml)
+        });
 
 
 
@@ -641,15 +708,61 @@ function setEventShowStickers() {
 
 
 
-function setClickOnEmoji() {
-    const emojiCount  = 12
+function setEventShowEmoji() {
+    /*
+
     const messageToSend = document.getElementById("message_to_send")
     for (let i = 1; i <= emojiCount; i++) {
         const oneEmoji = document.getElementById("emojiId_" + i.toString());
         oneEmoji.addEventListener("click", evt=>{
             messageToSend.value += oneEmoji.innerText
         })
-    }
+    }*/
+
+    // chat_emoji_img
+
+    const chatSendEmoji = document.getElementById("chat_emoji_img")
+    chatSendEmoji.addEventListener("click", (evt) => {
+
+        chatStorage.darkLayer = document.createElement('div');
+        chatStorage.darkLayer.className = 'shadowChat';
+        document.body.appendChild(chatStorage.darkLayer);
+
+        const showBlock = document.getElementById('emoji_select_menu');
+        showBlock.style.display = 'block';
+
+        chatStorage.darkLayer.onclick = () => {
+            chatStorage.darkLayer.parentNode.removeChild(chatStorage.darkLayer);
+            showBlock.style.display = 'none';
+            return false;
+        };
+
+        if (chatStorage.isAlreadyAddEvent === false) {
+            chatStorage.isAlreadyAddEvent = true
+            const messageToSend = document.getElementById("message_to_send")
+            const emojiCount = 12
+            for (let i = 1; i <= emojiCount; i++) {
+                const oneEmoji = document.getElementById("emojiId_" + i.toString());
+                oneEmoji.addEventListener("click", evt => {
+                    messageToSend.value += oneEmoji.innerText
+                    chatStorage.darkLayer.parentNode.removeChild(chatStorage.darkLayer);
+                    showBlock.style.display = 'none';
+                })
+            }
+        }
+
+
+
+
+        // кнопочка НАЗАД в emoji
+        const emojiSelectBackBtn = document.getElementById("emoji_select_back_btn")
+        emojiSelectBackBtn.addEventListener("click", (evt)=>{
+            chatStorage.darkLayer.parentNode.removeChild(chatStorage.darkLayer);
+            showBlock.style.display = 'none';
+        })
+    })
+
+
 }
 
 
@@ -688,8 +801,8 @@ export function setSupportBtn() {
                     console.log("ERR get support:", result);
                     return
                 } else {
-
-                    addNewContact(result.body)
+                    //addNewContact(result.body)
+                    createDialog(result.body)
                 }
                 console.log("stickers:",result.body)
                 chatStorage.addStickers(result.body);
