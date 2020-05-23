@@ -13,6 +13,8 @@ class chatStorage {
         this.MessageData = {}; // сообщения
         this.stickersMap = new Map();
         this.isAlreadyAddStickersInStickersSelect = false;
+        this.usersArr = null;
+        this.isAlreadyAddEvent = false;
     }
 
     containsId(id) {

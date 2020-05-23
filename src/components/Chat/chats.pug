@@ -3,10 +3,9 @@ div.chat_global
     div.chatG(class="chat_content")
         h1.title Мои чаты
         div(id="chat_sections")
-            div(class="chat_container chat_clearfix")
+            div(class="chat_container chat_clearfix" id="chat_contacts_or_messages")
+                h3(class="chat_contacts_title") Ваши контакты
                 div(class="chat_people_list" id="chat_people-list")
-                    ul(class="list chat_ul" id="chat_user_list")
-                    button(class="chat_support_btn" id="chat_support_btn")  Написать в поддержку
-
-                div(class="chat_messages" id="chat_chat_section")
+                    ul(class="chat_contact_list chat_ul" id="chat_user_list")
+                    button(class="chat_support_btn" id="chat_support_btn")  Связь с поддержкой
 

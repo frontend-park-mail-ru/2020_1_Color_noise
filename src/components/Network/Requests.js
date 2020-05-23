@@ -44,8 +44,6 @@ export class Requests {
             });
     }
 
-
-
 }
 
 export const setDataUser = (user) => {
