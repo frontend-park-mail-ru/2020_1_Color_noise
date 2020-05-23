@@ -1,6 +1,27 @@
 div.page
     div(class="page_content_pin page_content")
+        div.backProfileLink(id="backProfileLink")
+            img(src=backBtn)
         div(id="infoPageMessage")
-        div(class="pin_page pin_block")
+        div(class="pin_img")
             img(src=pinImage id="pinImage")
-        div.pin_block
+        div(class="pin_info")
+            div(class="block")
+                div(class="header")
+                    div(class="up")
+                        a(id="authorLink" class="authorLink" href=authorLink)
+                            div.author
+                                img(src=avatarImage)
+                                div.nick= authorName
+                        a(id="sharePinModal" class="sharePinModal" pin_id=pinID)
+                            img(src=shareImage)
+                        div(class="saveBtn")
+                            input(type="submit" class="red_save_btn" value="Сохранить")
+                    h1= namePin
+                    div.pinDesc= descPin
+
+                div(class="content" id="commentBlock")
+                div(class="footer")
+                    input#commentUser(type="text" placeholder="Ваш комментарий")
+                    a(id="sendComment" pin_id=pinID)
+                        img(src=sendImage)

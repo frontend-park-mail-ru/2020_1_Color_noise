@@ -292,6 +292,11 @@ const hideModal = (evt) => {
     modal.innerHTML = "";
 };
 
+export const showShareModal = (evt) => {
+    const pinID = evt.currentTarget.getAttribute('pin_id');
+    alert(pinID);
+};
+
 export const showInfoModal = (info) => {
     const modal = document.getElementById('modal');
     modal.innerHTML = showInfoTemplate({ logoImage : logoImage, infoModalMessage : info });

@@ -4,13 +4,11 @@ import  {getUsersForChat, createWebSocket, addNewContact, getStickersForChat, se
 import {default as chatStorage} from "../components/Chat/currentChat.js";
 import {serverLocate} from "../utils/constants";
 import backBtn from "../images/backBtn.svg";
-import {unSetScroll} from  "../components/Desk/Desk.js"
 
 
 
-export function CreateChatView(userID = null) {
-    unSetScroll();
-    document.title = "Chats";
+export function createChatsView(state = null) {
+    const userID = (state)? state.id : null;
     const backImage = serverLocate + backBtn;
     const chats = ChatsTemplate({backImage:backImage});
     const content = document.getElementById('content');
@@ -18,7 +16,7 @@ export function CreateChatView(userID = null) {
 
     setBackImg();
 
-    chatStorage.Data.idSelectedUser = -1
+    chatStorage.Data.idSelectedUser = -1;
 
     getUsersForChat();
 

@@ -22,30 +22,22 @@ export class Requests {
                 response.json(),
             )
             .then((result) => {
-
-                //console.log("USER REQUEST:", result)
-
                 if (result.status === 401) {
-                    //Router.go("/", "Zinterest", null, needPush);
-                    createMenu(false);
                     Router.go("/", "Zinterest", null, true);
-
+                    throw new Error("No auth");
+                    return false;
                 } else {
                     setDataUser(result.body);
-                    createMenu(true);
                     let url = window.location.pathname;
                     Router.go(url, "", null, needPush);
+                    return true;
                 }
             })
-
             .catch((error) => {
                 console.log("getUserProfile ERROR:", error);
                 return false;
             });
     }
-
-
-
 }
 
 export const setDataUser = (user) => {

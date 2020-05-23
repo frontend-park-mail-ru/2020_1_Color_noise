@@ -2,17 +2,17 @@
 	animation: visibleAnimation .5s 1 ease-in-out;
 }
 
-.backProfileLink {
-	position: relative;
-}
+/*.backProfileLink {*/
+/*	position: relative;*/
+/*}*/
 
-.backProfileLink img{
-	width: 40px;
-	height: 40px;
-	position: absolute;
-	left: 5%;
-	cursor: pointer;
-}
+/*.backProfileLink img{*/
+/*	width: 40px;*/
+/*	height: 40px;*/
+/*	position: absolute;*/
+/*	left: 5%;*/
+/*	cursor: pointer;*/
+/*}*/
 
 .settings .avatar img {
 	display: block;

@@ -1,15 +1,224 @@
-.page_content .pin_page {
-    width: 480px;
-}
-
-.page_content .pin_page img {
-    width: 480px;
-    height: 600px;
-    border-radius: 15px 0 0 15px;
-}
-
 .page_content_pin {
-    padding-left: 0;
-    padding-top: 0;
-    height: 600px;
+    padding: 0;
+    box-shadow: 0 0 50px 0 rgba(0,0,0,0.20);
+}
+
+.page_content .pin_img {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    animation: visibleAnimation .5s 1 ease-in-out;
+}
+
+.page_content .pin_img img {
+    width: 100%;
+    height: 680px;
+    border-radius: 15px 0 0 15px;
+    display: block;
+    box-shadow: none;
+    /*cursor: zoom-in;*/
+    object-fit: cover;
+}
+
+.page_content .pin_info {
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    height: 680px;
+}
+
+.page_content .pin_info .block {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.page_content .pin_info .block .header {
+    flex: 0 1 auto;
+    padding: 20px 20px 0 20px;
+}
+
+.page_content .pin_info .block .header .saveBtn {
+    flex: none;
+}
+
+.page_content .pin_info .header .sharePinModal img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.page_content .pin_info .block .content {
+    flex: 1 1 auto;
+    padding: 0 15px;
+}
+
+.page_content .pin_info .block .footer {
+    flex: 0 0 60px;
+    padding: 0 20px;
+    border-radius: 0 0 15px 0;
+
+    border-top: 2px solid #c2c2c2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.page_content .pin_info h1 {
+    text-transform: capitalize;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    font-size: 25px;
+    margin: 10px 0;
+}
+
+.page_content .pin_info .pinDesc {
+    overflow: hidden;
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 10px;
+    /*line-height: 16px;*/
+    /*max-height: 80px;*/
+}
+
+.page_content .pin_info .block .header .up {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.page_content .pin_info .block .header .authorLink {
+     flex: 1 0 auto;
+}
+
+.page_content .pin_info .block .header .sharePinModal {
+    flex: none;
+    margin-right: 20px;
+}
+
+.page_content .pin_info .block .header .author {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.page_content .pin_info .block .header .author img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex: none;
+}
+
+.page_content .pin_info .block a {
+    text-decoration: none;
+    color: black;
+}
+
+.page_content .pin_info .block .header .author .nick {
+    font-weight: bold;
+    flex: none;
+    text-decoration: none;
+}
+
+.page_content .pin_info .block .content {
+    overflow-y: scroll;
+    overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
+}
+
+.page_content .pin_info .block .footer img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+@media (max-width: 880px) {
+    .page_content_pin {
+        max-width: 475px;
+    }
+
+    .page_content .pin_img {
+        width: 100%;
+    }
+
+    .page_content .pin_img img {
+        border-radius: 15px 15px 0 0;
+        height: 570px;
+        /*height: 618px;*/
+    }
+
+    .page_content .pin_info {
+        width: 100%;
+        height: auto;
+    }
+
+    .page_content .pin_info .content {
+        min-height: 200px;
+        max-height: 400px;
+    }
+
+    .page_content .pin_info h1 {
+        font-size: 20px;
+        margin: 6px 0;
+    }
+
+    .page_content .pin_info .block .footer {
+        border-radius: 0 0 15px 15px;
+    }
+}
+
+@media (max-width: 475px) {
+    .page_content .pin_img img {
+        border-radius: 0;
+    }
+
+    .page_content .pin_info .block .footer {
+        border-radius: 0;
+    }
+}
+
+.comment_item {
+    border-radius: 15px;
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 18px;
+    border: 2px solid #E9E7E7;
+    display: flex;
+    align-items: center;
+    animation: visibleAnimation .5s 1 ease-in-out;
+}
+
+.comment_item:hover {
+    background: #E9E7E7;
+}
+
+.comment_item:first-child {
+    margin-top: 0;
+}
+
+.comment_item .avatar_img {
+    flex: none;
+}
+
+.comment_item .avatar_img img {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+
+    margin-right: 10px;
+}
+
+.comment_item .comment_content {
+    flex: 1 0 auto;
+    font-size: 14px;
+}
+
+.comment_item .nick {
+   font-weight: bold;
 }
