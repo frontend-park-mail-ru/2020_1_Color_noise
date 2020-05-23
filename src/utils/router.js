@@ -1,7 +1,7 @@
 import {Requests} from '../components/Network/Requests'
 import {createMenu} from '../components/Menu/Menu'
 import {createContent} from "../components/Content/Content";
-import {createChatView} from "../views/createChat"
+import {createChatsView} from "../views/createChat"
 import {createUserView} from "../views/createUser";
 import {createSettingsView} from "../views/createSettings";
 import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk";
@@ -11,8 +11,6 @@ import {createPinView} from "../views/createPin"
 import {createLogoutView} from "../views/createLogout";
 import {createOfflinePage} from "../components/OfflinePage/OfflinePage.js"
 import {validators} from "./validation";
-import {default as CurrentDesk} from "../components/Desk/CurrentDesk";
-import {unSetScroll} from "../components/Desk/Desk";
 
 class Router {
     constructor() {
@@ -21,14 +19,13 @@ class Router {
             "/subs": createSubDeskView,
             "/newpin": createNewPinView,
             "/settings": createSettingsView,
-            "/chats": createChatView,
+            "/chats": createChatsView,
             "/notifications":  createNotificationsView,
             "/logout": createLogoutView
         };
 
         window.addEventListener('popstate', evt => {
             //Если зашли первый раз только на страницу и браузер сохранил уже ее себе в стек
-
             if (evt.state === null) {
                 this.go('/', null, evt.state, false);
             } else {
@@ -43,11 +40,6 @@ class Router {
             createOfflinePage(path, title, state=null, needPush)
             return;
         }
-
-
-        unSetScroll()
-
-
         //console.log("path:", path, "   title:", title, " state:", state, "  needPush:", needPush)
 
 
@@ -65,9 +57,6 @@ class Router {
             );
         }
         //alert("Go : path:" + path);
-
-
-
 
         document.title = title;
         const func = this.routs[path];
@@ -96,7 +85,7 @@ class Router {
                 const userId = path.substring("/chats/user/".length, path.length);
                 const state = {};
                 state.id = userId;
-                createChatView(userId);
+                createChatsView(state);
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();
@@ -108,16 +97,16 @@ class Router {
             console.log("ROUTE state:",state);
             func(state);
         }
-
     }
-
 
     start() {
         if (!navigator.onLine) {
             createOfflinePage("createMenu");
             return;
         }
-        createContent(); // структура
-        Requests.getUserProfile(false)
+        createContent();
+        Requests.getUserProfile(false).then((result) => {
+            createMenu(result);
+        });
     }
-} export default  new Router();
+} export default new Router();

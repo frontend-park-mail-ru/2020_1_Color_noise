@@ -13,9 +13,11 @@ import Router from "../../utils/router";
 import deskItemTemplate from "./deskItem.pug";
 import FetchModule from "../Network/Network";
 import {showFollowersModal, showFollowingModal, setInfoPage} from "../Modal/modal";
+import backBtn from "../../images/backBtn.svg";
 
 export const createPageUser = (userInfo) => {
     const template = userPageTemplate({
+        backBtn : backBtn,
         avatarImage : serverLocate + '/' + userInfo.avatar,
         login : userInfo.login,
         userFollowers : 'Подписчики: ' + userInfo.subscribers, numFollowers : userInfo.subscribers,
@@ -30,7 +32,22 @@ export const createPageUser = (userInfo) => {
     if (userInfo.id === CurrentUser.Data.id) {
         addUserIcons();
     } else {
-        addAlienButtons(userInfo);
+        // FetchModule.fetchRequest({
+        //     url:serverLocate + '/api/user/following/' + userInfo.id + "/status",
+        //     method: 'get',
+        // }).then((res) => {
+        //     return res.ok ? res : Promise.reject(res);
+        // }).then((response) => {
+        //     return response.json();
+        // }).then((result) => {
+        //     if (result.status === 200) {
+                addAlienButtons(userInfo);
+        //     } else {
+        //         //setInfoContent('Ошибка обработки запроса');
+        //     }
+        // }).catch(function(error) {
+        //     //setInfoContent('Ошибка отправки запроса');
+        // });
     }
 
     if (userInfo.subscribers > 0) {
@@ -48,6 +65,13 @@ export const createPageUser = (userInfo) => {
     const allUserPinsLink = document.getElementById('allUserPinsLink');
     allUserPinsLink.addEventListener('click', goAllUserPins);
     getDeskItems(userInfo.id);
+
+    const backProfileLink = document.getElementById('backProfileLink');
+    backProfileLink.addEventListener('click', goBack);
+};
+
+const goBack = () => {
+    window.history.back();
 };
 
 const addUserIcons = () => {
@@ -120,7 +144,7 @@ const followUser = (evt) => {
             if (result.status === 200) {
                 btnTarget.value = 'Подписаться';
                 btnTarget.removeAttribute('is_follow');
-            } else {
+            } else if (result.status !== 400) {
                 setInfoPage('Ошибка обработки запроса');
             }
         }).catch(function(error) {
@@ -138,7 +162,7 @@ const followUser = (evt) => {
             if (result.status === 201) {
                 btnTarget.value = 'Отписаться';
                 btnTarget.setAttribute('is_follow', "");
-            } else {
+            } else if (result.status !== 400) {
                 setInfoPage('Ошибка обработки запроса');
             }
         }).catch(function(error) {

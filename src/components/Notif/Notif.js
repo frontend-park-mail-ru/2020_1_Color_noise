@@ -3,14 +3,21 @@ import notifItemTemplate from './notifItem.pug';
 import {setInfoPage} from "../Modal/modal";
 import {serverLocate} from "../../utils/constants";
 import Router from "../../utils/router";
+import backBtn from "../../images/backBtn.svg";
 
 export const createPageNotif = (notifs) => {
-    const template = notifPageTemplate();
+    const template = notifPageTemplate({ backBtn : backBtn });
 
     const content = document.getElementById('content');
     content.innerHTML = template;
 
     addNotifItems(notifs);
+    const backProfileLink = document.getElementById('backProfileLink');
+    backProfileLink.addEventListener('click', goBack);
+};
+
+const goBack = () => {
+    window.history.back();
 };
 
 const addNotifItems = (notifs) => {

@@ -5,9 +5,10 @@ import {showInfoModal, setInfoPage} from "../Modal/modal"
 import Router from '../../utils/router'
 import FetchModule from "../Network/Network";
 import {serverLocate} from "../../utils/constants";
+import backBtn from "../../images/backBtn.svg";
 
 export const createPageNewPin = (desks) => {
-    const template = createPinTemplate({ pinDefaultImage : pinDefaultImage });
+    const template = createPinTemplate({ pinDefaultImage : pinDefaultImage, backBtn : backBtn });
 
     const content = document.getElementById('content');
     content.innerHTML = template;
@@ -19,6 +20,12 @@ export const createPageNewPin = (desks) => {
 
     const sendNewPin = document.getElementById('sendNewPin');
     sendNewPin.addEventListener('click', sendNewPinFunc);
+    const backProfileLink = document.getElementById('backProfileLink');
+    backProfileLink.addEventListener('click', goBack);
+};
+
+const goBack = () => {
+    window.history.back();
 };
 
 const addDesksChoose = (desks) => {
@@ -41,6 +48,7 @@ const chooseImageFunc = (evt) => {
 
 const chooseChoiceImageFunc = (evt) => {
     const pinImage = document.getElementById('pinImage');
+    const chooseImage = document.getElementById('chooseImage');
     const target = evt.target;
     if (target.value !== '') {
         if (target.files && target.files[0]) {
@@ -48,6 +56,7 @@ const chooseChoiceImageFunc = (evt) => {
             reader.onload = function (e) {
                 pinImage.src = e.target.result;
                 pinImage.setAttribute('loaded', 'true');
+                chooseImage.value = "Изменить изображение"
             };
             reader.readAsDataURL(target.files[0]);
         }

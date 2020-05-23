@@ -3,15 +3,15 @@ import MenuLoginTemplate from './menuLogin.pug';
 import MenuAlienTemplate from './menuAlien.pug';
 
 import logoImage from '../../images/logo.svg';
-import chatsImage from '../../images/chatsIcon.svg';
-import notifImage from '../../images/notifIcon.svg';
-import profileImage from '../../images/profileIcon.svg';
-import plusImage from '../../images/plusIcon.svg';
 import lupaImage from '../../images/find.svg'
 
-import {showLoginModal, showRegModal, showChooseModal, showInfoModal} from "../Modal/modal"
+import chatsImage from '../../images/menu/chatsIcon.svg';
+import notifImage from '../../images/menu/notifIcon.svg';
+import profileImage from '../../images/menu/profileIcon.svg';
+import plusImage from '../../images/menu/plusIcon.svg';
+
+import {showLoginModal, showRegModal, showChooseModal} from "../Modal/modal"
 import Router from "../../utils/router"
-import {Requests} from '../Network/Requests'
 import CurrentUser from "../../utils/userDataSingl";
 import {setSearch} from "./search";
 

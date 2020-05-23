@@ -12,17 +12,17 @@ import {
 import {default as chatStorage} from "../components/Chat/currentChat.js";
 import {serverLocate} from "../utils/constants";
 import backBtn from "../images/backBtn.svg";
-import {unSetScroll} from  "../components/Desk/Desk.js"
-import FetchModule from "../components/Network/Network";
-import {createMenu} from "../components/Menu/Menu";
-import {default as Router} from "../utils/router";
-import {setDataUser} from "../components/Network/Requests";
 
+export function createChatsView(state = null) {
+    const userID = (state)? state.id : null;
+    const backImage = serverLocate + backBtn;
+    const chats = ChatsTemplate({backImage:backImage});
+    const content = document.getElementById('content');
+    content.innerHTML = chats;
 
+    setBackImg();
 
-export function createChatView(userID = null) {
-    unSetScroll();
-    document.title = "Chats";
+    chatStorage.Data.idSelectedUser = -1;
 
     chatStorage.isAlreadyAddEvent = false
     getStickersForChat();

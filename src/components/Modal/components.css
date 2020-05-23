@@ -8,11 +8,10 @@
 	text-align: center;
 }
 
-/*.line input {*/
 input {
 	border: none;
 	background: none;
-	margin-top: 10px;
+	height: 100%;
 	width: 95%;
 	font-size: 13px;
 	font-weight: bold;
@@ -106,6 +105,20 @@ input:focus {
 }
 
 .red_medium_btn:hover {
+	background: #B50B0B;
+}
+
+.red_save_btn {
+	color: #fff;
+	font-size: 14px;
+	background: #F01313;
+	border-radius: 5px;
+	padding: 7px;
+	cursor: pointer;
+	width: auto;
+}
+
+.red_save_btn:hover {
 	background: #B50B0B;
 }
 
