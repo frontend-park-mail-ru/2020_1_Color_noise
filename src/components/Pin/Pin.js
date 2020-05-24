@@ -17,9 +17,10 @@ export const createPagePin = (pin) => {
         pinID : pin.id,
         namePin : pin.name,
         descPin : pin.description,
-        avatarImage : 'https://zinterest.ru/SHiihlz0QlEe8Vv5eMv6sajCMScikh.jpg',
-        authorName : 'Slava',
-        authorLink : '/user/3',
+        avatarImage : serverLocate + '/' + pin.user.avatar,
+        authorName : pin.user.login,
+        authorLink : '/user/' + pin.user.id,
+        userID: pin.user.id,
         sendImage : sendImage
     });
 
@@ -54,10 +55,20 @@ export const createPagePin = (pin) => {
 
     const backProfileLink = document.getElementById('backProfileLink');
     backProfileLink.addEventListener('click', goBack);
+
+
+    const authorLink = document.getElementById('authorLink');
+    authorLink.addEventListener('click', goAuthor);
 };
 
 const goBack = () => {
     window.history.back();
+};
+
+const goAuthor = (evt) => {
+    evt.preventDefault();
+    const userID = evt.currentTarget.getAttribute('user_id');
+    Router.go("/user/" + userID,"User");
 };
 
 const sendCommentFuncKey = (evt) => {
@@ -89,10 +100,12 @@ const sendCommentFunc = (evt) => {
         }).then((result) => {
             if (result.status === 201) {
                 let item = {};
-                item.user_id = CurrentUser.Data.id;
-                item.avatar = CurrentUser.Data.avatarPath;
-                item.nick =  CurrentUser.Data.login;
                 item.comment = commentUser.value;
+                item.user = { };
+                item.user.id = CurrentUser.Data.id;
+                item.user.avatar = CurrentUser.Data.avatarPath;
+                item.user.login =  CurrentUser.Data.login;
+
                 commentUser.value = '';
                 addComment(commentBlock, item, comments.length);
                 commentBlock.scrollTo( 0, commentBlock.scrollHeight );
@@ -121,18 +134,18 @@ const addCommentItems = (comments) => {
 
 const addComment = (commentBlock, item, count) => {
     const template = commentItemTemplate({ commentText : item.comment,
-        commentLink : "/user/" + item.user_id,
-        commentAttrId : 'comment_' + count + '_' + item.user_id,
-        commentAttrId2 : 'commentNick_' + count + '_' + item.user_id,
-        avatarImage : serverLocate + '/' + 'SHiihlz0QlEe8Vv5eMv6sajCMScikh.jpg',
-        authorName : 'slava'
+        commentLink : "/user/" + item.user.id,
+        commentAttrId : 'comment_' + count + '_' + item.user.id,
+        commentAttrId2 : 'commentNick_' + count + '_' + item.user.id,
+        avatarImage : serverLocate + '/' + item.user.avatar,
+        authorName : item.user.login
     });
     commentBlock.insertAdjacentHTML('beforeend', template);
 
-    const comment = document.getElementById('comment_' + count + '_' + item.user_id);
+    const comment = document.getElementById('comment_' + count + '_' + item.user.id);
     comment.addEventListener('click', goUser);
 
-    const comment_nick = document.getElementById('commentNick_' + count + '_' + item.user_id);
+    const comment_nick = document.getElementById('commentNick_' + count + '_' + item.user.id);
     comment_nick.addEventListener('click', goUser);
 };
 

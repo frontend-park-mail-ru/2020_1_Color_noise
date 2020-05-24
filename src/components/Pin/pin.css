@@ -41,12 +41,14 @@
 
 .page_content .pin_info .block .header .saveBtn {
     flex: none;
+    display: none;
 }
 
 .page_content .pin_info .header .sharePinModal img {
     width: 25px;
     height: 25px;
     cursor: pointer;
+    display: none;
 }
 
 .page_content .pin_info .block .content {
@@ -112,6 +114,7 @@
     border-radius: 50%;
     margin-right: 10px;
     flex: none;
+    object-fit: cover;
 }
 
 .page_content .pin_info .block a {

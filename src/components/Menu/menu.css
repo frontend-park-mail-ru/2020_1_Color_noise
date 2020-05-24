@@ -72,7 +72,6 @@
 	.menu .find {
 		display: inline-block;
 		width: 90%;
-		background: #e4e4e4;
 	}
 
 	.menu .thirdpart {
@@ -80,10 +79,8 @@
 	}
 }
 
-
 .menu .find .find_pin {
 	background: #e4e4e4;
-	border: #8A8A8A thin;
 	height: 40px;
 	border-radius: 5px;
 	margin-top: 7px;
@@ -191,10 +188,10 @@
 
 }
 .search_menu > li > a {
-	height: 50px;
+	height: 25px;
 	margin-top: 10px;
-	padding-left: 10px;
-	padding-right: 5px;
+	padding-left: 6px;
+	padding-right: 6px;
 	vertical-align: top;
 	font-weight: bold;
 	color: #000000;
@@ -218,15 +215,16 @@
 	opacity: 0;
 	z-index: 5;
 	width: 150px;
-	transform: perspective(600px) rotateX(-90deg);
+	/*transform: perspective(600px) rotateX(-90deg);*/
 	transform-origin: 0% 0%;
-	transition: .6s ease-in-out;
+
+	transition: .3s ease-in-out;
 
 }
 .search_menu > li:hover .search_submenu{
 	visibility: visible;
 	opacity: 1;
-	transform: perspective(600px) rotateX(0deg);
+	/*transform: perspective(600px) rotateX(0deg);*/
 
 }
 .search_submenu li a {
@@ -234,7 +232,6 @@
 	font-size: 13px;
 	line-height: 36px;
 	padding: 0 25px;
-
 }
 
 

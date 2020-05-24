@@ -24,9 +24,8 @@ const addNotifItems = (notifs) => {
     if (notifs.length) {
         const notifBlock = document.getElementById('notifBlock');
         notifBlock.innerHTML = '';
-
+        let count = 0;
         notifs.forEach((item) => {
-            let count = 0;
             const template = notifItemTemplate({ notifText : item.message,
                 notifLink : "/user/" + item.user.id,
                 notifAttrId : 'notif_' + count + '_' + item.user.id,
