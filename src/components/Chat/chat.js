@@ -19,7 +19,7 @@ import sendMessageImg from "../../images/chat/sendIcon.svg"
 import ChatsTemplate from "./chats.pug";
 
 
-export function getUsersForChat(userID = null) {
+export function getUsersForChat(userID = {id:null}) {
 
     chatStorage.Data.idSelectedUser = -1
     chatStorage.Data.userContactsList = []
@@ -37,22 +37,26 @@ export function getUsersForChat(userID = null) {
                 throw Error("not 200: api/chat/users?start=0&limit=100");
             }
 
-
             createContactPageAfterGetUsers()
+
+            if ( jsonAns.body.length === 0 && !( userID === null ||userID.id !== null && Number.isInteger(Number(userID.id))) ) {
+                const chatPeopleList = document.getElementById("chat_people-list")
+                chatPeopleList.innerHTML = '<h3 class="chat_no_contact_msg"> У Вас еще нет собеседников, Вы можете найти их через поиск.</h3>'
+            }
 
             chatStorage.usersArr = jsonAns.body
             showContacts(chatStorage.usersArr)
 
             // если пришли сюда от нажатия "написать" на странице профиля (прокидываем это через view create Chat)
-            console.log("itIsNumber(userID):", itIsNumber(userID) , "\t userID:", userID)
-            if (userID !== null && Number.isInteger(Number(userID))) {
+            //console.log("itIsNumber(userID):", itIsNumber(userID.id) , "\t userID:", userID)
+            if (userID !== null && userID.id !== null && Number.isInteger(Number(userID.id))) {
 
-                console.log("ДОБАВЛЯЕТСЯ КОНТАКТ userID:", userID)
+                //console.log("ДОБАВЛЯЕТСЯ КОНТАКТ userID:", userID.id)
                 // проверка user.login !== undefined из-за того что state
                 // сюда проходит из роутера
-                addNewContact(userID);
+                addNewContact(userID.id);
 
-                FetchModule.fetchRequest({url: serverLocate + "/api/user/" + userID, method:"get", body:null})
+                FetchModule.fetchRequest({url: serverLocate + "/api/user/" + userID.id, method:"get", body:null})
                     .then((res) => res.ok ? res : Promise.reject(res))
                     .then( (response) =>
                         response.json(),
@@ -65,8 +69,6 @@ export function getUsersForChat(userID = null) {
                         console.log("getUserProfile for create Dialog ERROR:", error);
                     });
             }
-
-
 
         })
 
@@ -158,8 +160,11 @@ export function createDialog(user) {
 
     chatStorage.Data.idSelectedUser = user.id
 
-    console.log("createDialog:: user:", user)
+    //console.log("createDialog:: user:", user)
 
+    // todo Если менять -> перезагрузка страницы (будет бесконечный цикл - роутеро снова приведет сюда)
+    //window.location.pathname = "/chats/user/" + user.id.toString()
+   // console.log("SET:", window.location.pathname)
 
     var avatarFile = user.avatarPath
     if (avatarFile === undefined) {
@@ -191,7 +196,7 @@ export function createDialog(user) {
     // активируем кнопку отправки
     const sendMessageBtn = document.getElementById("chat_send_message_btn")
     sendMessageBtn.addEventListener("click", (evt)=>{
-        console.log("inputMessage.value:", inputMessage.value.length)
+        //console.log("inputMessage.value:", inputMessage.value.length)
         if (inputMessage.value !== "" && inputMessage.value !== "\n") {
             sendMessage(inputMessage.value,"", user.id)
 
@@ -202,7 +207,7 @@ export function createDialog(user) {
     // активируем отпарвку через enter
     inputMessage.addEventListener('keypress',  (e) =>{
         if (e.key === 'Enter') {
-            console.log("inputMessage.value:", inputMessage.value.length)
+            //console.log("inputMessage.value:", inputMessage.value.length)
             if (inputMessage.value !== "" && inputMessage.value !== "\n") {
                 sendMessage(inputMessage.value, "", user.id)
             }
@@ -288,7 +293,7 @@ function showMessages(messageArr) {
 
     const chatHistory = document.getElementById("chat_history")
 
-    console.log("showMessages ARR:", messageArr);
+    //console.log("showMessages ARR:", messageArr);
 
 
     messageArr.forEach( (element)=> {
@@ -297,7 +302,7 @@ function showMessages(messageArr) {
         //console.log("chatStorage.containsId(element.user_send.id):", chatStorage.containsId(element.user_send.id))
 
         if (!chatStorage.containsId(element.user_send.id) && element.user_send.id !== CurrentUser.Data.id) {
-            console.log("ADD NEW CONTACT:", element.user_send.login)
+            //console.log("ADD NEW CONTACT:", element.user_send.login)
             chatStorage.addUser(element.user_send);
             addNewContact(element.user_send);
             return // не надо добавлять так как сейчас открыт другой чат
