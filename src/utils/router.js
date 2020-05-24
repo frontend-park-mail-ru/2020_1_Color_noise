@@ -1,7 +1,7 @@
 import {Requests} from '../components/Network/Requests'
 import {createMenu} from '../components/Menu/Menu'
 import {createContent} from "../components/Content/Content";
-import {createChatsView} from "../views/createChat"
+import {createChatView} from "../views/createChat"
 import {createUserView} from "../views/createUser";
 import {createSettingsView} from "../views/createSettings";
 import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk";
@@ -11,6 +11,7 @@ import {createPinView} from "../views/createPin"
 import {createLogoutView} from "../views/createLogout";
 import {createOfflinePage} from "../components/OfflinePage/OfflinePage.js"
 import {validators} from "./validation";
+import {default as CurrentUser} from "../utils/userDataSingl";
 
 class Router {
     constructor() {
@@ -19,7 +20,7 @@ class Router {
             "/subs": createSubDeskView,
             "/newpin": createNewPinView,
             "/settings": createSettingsView,
-            "/chats": createChatsView,
+            "/chats": createChatView,
             "/notifications":  createNotificationsView,
             "/logout": createLogoutView
         };
@@ -85,7 +86,7 @@ class Router {
                 const userId = path.substring("/chats/user/".length, path.length);
                 const state = {};
                 state.id = userId;
-                createChatsView(state);
+                createChatView(state);
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();
@@ -98,6 +99,7 @@ class Router {
             func(state);
         }
     }
+
 
     start() {
         if (!navigator.onLine) {
