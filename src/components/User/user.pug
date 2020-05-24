@@ -8,10 +8,7 @@ div.page
             div(class="avatar")
                 img(src=avatarImage)
             div.nickname= login
-            a(id="followersModal" user_id=userID)
-                div.follow(id="followersLabel" num=numFollowers)= userFollowers
-            a(id="followingModal" user_id=userID)
-                div.follow(id="followingLabel" num=numFollowings)= userFollowing
+            div(id="followBlock")
             div#userThirdPart
             div(class="userCentralBtn")
                 a(href=pinsLink id= "allUserPinsLink" user_id=userID)

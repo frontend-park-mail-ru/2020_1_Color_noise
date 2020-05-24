@@ -11,6 +11,7 @@ import {serverLocate} from "../../utils/constants";
 import {showChooseModal} from "../Modal/modal";
 import Router from "../../utils/router";
 import deskItemTemplate from "./deskItem.pug";
+import followBlockTemplate from "./followBlock.pug";
 import FetchModule from "../Network/Network";
 import {showFollowersModal, showFollowingModal, setInfoPage} from "../Modal/modal";
 import backBtn from "../../images/backBtn.svg";
@@ -20,8 +21,6 @@ export const createPageUser = (userInfo) => {
         backBtn : backBtn,
         avatarImage : serverLocate + '/' + userInfo.avatar,
         login : userInfo.login,
-        userFollowers : 'Подписчики: ' + userInfo.subscribers, numFollowers : userInfo.subscribers,
-        userFollowing : 'Подписки: ' + userInfo.subscriptions, numFollowings : userInfo.subscriptions,
         pinsLink : '/pins/user/' + userInfo.id,
         userID : userInfo.id
     });
@@ -29,37 +28,27 @@ export const createPageUser = (userInfo) => {
     const content = document.getElementById('content');
     content.innerHTML = template;
 
+    addFollowBlock(userInfo.subscribers, userInfo.subscriptions, userInfo.id);
+
     if (userInfo.id === CurrentUser.Data.id) {
         addUserIcons();
     } else {
-        // FetchModule.fetchRequest({
-        //     url:serverLocate + '/api/user/following/' + userInfo.id + "/status",
-        //     method: 'get',
-        // }).then((res) => {
-        //     return res.ok ? res : Promise.reject(res);
-        // }).then((response) => {
-        //     return response.json();
-        // }).then((result) => {
-        //     if (result.status === 200) {
-                addAlienButtons(userInfo);
-        //     } else {
-        //         //setInfoContent('Ошибка обработки запроса');
-        //     }
-        // }).catch(function(error) {
-        //     //setInfoContent('Ошибка отправки запроса');
-        // });
-    }
-
-    if (userInfo.subscribers > 0) {
-        const followersModal = document.getElementById('followersModal');
-        followersModal.addEventListener('click', showFollowersModal);
-        followersModal.style.cursor = 'pointer';
-    }
-
-    if (userInfo.subscriptions > 0) {
-        const followingModal = document.getElementById('followingModal');
-        followingModal.addEventListener('click', showFollowingModal);
-        followingModal.style.cursor = 'pointer';
+        FetchModule.fetchRequest({
+            url:serverLocate + '/api/user/following/' + userInfo.id + "/status",
+            method: 'get',
+        }).then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        }).then((response) => {
+            return response.json();
+        }).then((result) => {
+            if (result.status === 201) {
+                addAlienButtons(userInfo, result.body.is_followed);
+            } else {
+                //setInfoContent('Ошибка обработки запроса');
+            }
+        }).catch(function(error) {
+            //setInfoContent('Ошибка отправки запроса');
+        });
     }
 
     const allUserPinsLink = document.getElementById('allUserPinsLink');
@@ -72,6 +61,29 @@ export const createPageUser = (userInfo) => {
 
 const goBack = () => {
     window.history.back();
+};
+
+const addFollowBlock = (followers, followings, userID) => {
+    const followTemplate = followBlockTemplate({
+        userFollowers : 'Подписчики: ' + followers, numFollowers : followers,
+        userFollowing : 'Подписки: ' + followings, numFollowings : followings,
+        userID : userID
+    });
+
+    const followBlock = document.getElementById('followBlock');
+    followBlock.innerHTML = followTemplate;
+
+    if (followers > 0) {
+        const followersModal = document.getElementById('followersModal');
+        followersModal.addEventListener('click', showFollowersModal);
+        followersModal.style.cursor = 'pointer';
+    }
+
+    if (followings > 0) {
+        const followingModal = document.getElementById('followingModal');
+        followingModal.addEventListener('click', showFollowingModal);
+        followingModal.style.cursor = 'pointer';
+    }
 };
 
 const addUserIcons = () => {
@@ -112,11 +124,11 @@ const addOneDesk = (evt) => {
     desk.addEventListener('click', goDesk);
 };
 
-const addAlienButtons = (userInfo) => {
+const addAlienButtons = (userInfo, isFollow) => {
     const template = alienButtonsTemplate({
         userChatsLink : '/chats/user/' + userInfo.id,
         userID : userInfo.id,
-        //isFollow: true
+        isFollow: isFollow
     });
 
     const content = document.getElementById('userThirdPart');
@@ -127,12 +139,16 @@ const addAlienButtons = (userInfo) => {
 
     const followingUser = document.getElementById('followingUser');
     followingUser.addEventListener('click', followUser);
+
+    if (isFollow === 'true') {
+        followingUser.value = 'Отписаться';
+    }
 };
 
 const followUser = (evt) => {
     const userID = evt.currentTarget.getAttribute('user_id');
     const btnTarget = evt.currentTarget;
-    if (btnTarget.hasAttribute('is_follow')) {
+    if (btnTarget.getAttribute('is_follow') === 'true') {
         FetchModule.fetchRequest({
             url:serverLocate + '/api/user/following/' + userID,
             method: 'delete',
@@ -143,7 +159,11 @@ const followUser = (evt) => {
         }).then((result) => {
             if (result.status === 200) {
                 btnTarget.value = 'Подписаться';
-                btnTarget.removeAttribute('is_follow');
+                btnTarget.setAttribute('is_follow', 'false');
+                const followersModal = document.getElementById('followersModal');
+                const followingModal = document.getElementById('followingModal');
+                addFollowBlock(Number(followersModal.getAttribute('num')) - 1,
+                    followingModal.getAttribute('num'), userID);
             } else if (result.status !== 400) {
                 setInfoPage('Ошибка обработки запроса');
             }
@@ -161,7 +181,11 @@ const followUser = (evt) => {
         }).then((result) => {
             if (result.status === 201) {
                 btnTarget.value = 'Отписаться';
-                btnTarget.setAttribute('is_follow', "");
+                btnTarget.setAttribute('is_follow', 'true');
+                const followersModal = document.getElementById('followersModal');
+                const followingModal = document.getElementById('followingModal');
+                addFollowBlock(Number(followersModal.getAttribute('num')) + 1,
+                    followingModal.getAttribute('num'), userID);
             } else if (result.status !== 400) {
                 setInfoPage('Ошибка обработки запроса');
             }

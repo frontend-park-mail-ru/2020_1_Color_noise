@@ -16,7 +16,7 @@ import {setDataUser} from "../Network/Requests"
 
 export const showLoginModal = () => {
     const modal = document.getElementById('modal');
-    modal.innerHTML = loginTemplate({ logoImage : logoImage });
+    modal.innerHTML = loginTemplate({logoImage: logoImage});
 
     const backModal = document.getElementById('backModal');
     backModal.addEventListener('click', hideModal);
@@ -26,6 +26,18 @@ export const showLoginModal = () => {
 
     const regModal = document.getElementById('textRegModal');
     regModal.addEventListener('click', showRegModal);
+
+    const loginUser = document.getElementById('loginUser');
+    loginUser.addEventListener('keypress', sendLoginFuncKey);
+
+    const passUser = document.getElementById('passUser');
+    passUser.addEventListener('keypress', sendLoginFuncKey);
+};
+
+const sendLoginFuncKey = (evt) => {
+    if (evt.key === 'Enter') {
+        sendLoginFunc();
+    }
 };
 
 export const showRegModal = () => {
@@ -40,6 +52,15 @@ export const showRegModal = () => {
 
     const loginModal = document.getElementById('textLoginModal');
     loginModal.addEventListener('click', showLoginModal);
+
+    const passUser = document.getElementById('passUser');
+    passUser.addEventListener('keypress', sendRegFuncKey);
+};
+
+const sendRegFuncKey = (evt) => {
+    if (evt.key === 'Enter') {
+        sendRegFunc();
+    }
 };
 
 export const showChooseModal = () => {

@@ -46,6 +46,9 @@ export const createPagePin = (pin) => {
     const sendComment = document.getElementById('sendComment');
     sendComment.addEventListener('click', sendCommentFunc);
 
+    const commentUser = document.getElementById('commentUser');
+    commentUser.addEventListener('keypress', sendCommentFuncKey);
+
     const sharePinModal = document.getElementById('sharePinModal');
     sharePinModal.addEventListener('click', showShareModal);
 
@@ -55,6 +58,14 @@ export const createPagePin = (pin) => {
 
 const goBack = () => {
     window.history.back();
+};
+
+const sendCommentFuncKey = (evt) => {
+    if (evt.key === 'Enter') {
+        let evtFunc = {};
+        evtFunc.currentTarget = document.getElementById('sendComment');
+        sendCommentFunc(evtFunc);
+    }
 };
 
 const sendCommentFunc = (evt) => {

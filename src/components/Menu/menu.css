@@ -89,32 +89,19 @@
 	margin-top: 7px;
 }
 
-
-
 .find_pin {
-
-
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
-
-
 }
-
-
-
 
 .find_pin img {
 	width: 30px;
 	cursor: pointer;
 	margin-top: 5px;
-	margin-right: 20px;
 	float: right;
 	margin-left: auto;
-
 }
-
-
 
 .find_user {
 	max-width: 500px;
@@ -149,25 +136,12 @@
 	display: inline;
 }
 
-
-
 .search_input {
-	padding-right: 10px;
-	padding-left:10px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-	border-radius: 5px;
 	font-size: 18px;
-	display: inline-block;
-	margin-left: 5px;
-	background: white;
-	max-width: 92%;
-	margin-top: 8px;
-	vertical-align: top;
-	margin-left: 10px;
+	padding: 0 5px;
+	width: 90%;
+	font-weight: normal;
 }
-
-
 
 .search_filter_section {
 	margin-left: 10px;
