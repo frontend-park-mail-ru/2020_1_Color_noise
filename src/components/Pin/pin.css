@@ -213,12 +213,11 @@
     width: 45px;
     height: 45px;
     object-fit: cover;
-
     margin-right: 10px;
 }
 
 .comment_item .comment_content {
-    flex: 1 0 auto;
+    flex: 1 0 0;
     font-size: 14px;
 }
 

@@ -36,6 +36,7 @@
     }
     .page_content {
         border-radius: 0px;
+        min-height: calc(100vh - 147px);
     }
 }
 
