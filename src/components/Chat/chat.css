@@ -447,7 +447,7 @@
     padding-top: 15px;
     margin-bottom: 0px;
     display: inline-block;
-    margin-left: 37%;
+    margin-left: 26%;
 }
 
 .chat_contacts_img {
@@ -462,9 +462,10 @@
 .chat_close_content_img {
     height: 40px;
     width: 40px;
-    padding-left: 25px;
-    padding-right: 5px;
-    float: right;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 25px;
+    float: left;
     cursor: pointer;
 }
 
@@ -536,10 +537,14 @@
 .chat_close_content_img_contacts {
     height: 40px;
     width: 40px;
-    float: right;
+    float: left;
     padding-top: 15px;
-    padding-right: 15px;
+    padding-left: 15px;
     display: inline;
     cursor: pointer;
 
+}
+
+#chat_user_list {
+    height: 335px;
 }
