@@ -69,11 +69,25 @@
 }
 
 .chat_separate_users_in_contact {
-    border-bottom: 1px double black;
+    border: 5px solid #E9E7E7;
     cursor: pointer;
     padding-top: 10px;
     padding-bottom: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
 }
+
+.chat_separate_users_in_contact:hover {
+    border: 5px solid #E9E7E7;
+    cursor: pointer;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: #E9E7E7;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+
 
 
 .chat_img {
@@ -113,12 +127,13 @@
     float: left;
     margin-right: 10px;
     cursor: pointer;
+    margin-left: 10px;
 }
 
 .chat_about {
     float: left;
     padding-left: 10px;
-    margin-top: 6px;
+    margin-top: 11px;
 }
 
 .chat_with {
@@ -142,7 +157,7 @@
 .chat_history {
     padding: 0px;
     border-bottom: 2px solid rgba(68, 57, 57, 0.57);
-
+    min-height: 300px;
 }
 
 .message_data {
@@ -376,12 +391,6 @@
     padding-top: 15px;
 }
 
-.chat_back_img_div {
-    width: 60px;
-    display: inline;
-    float: left;
-    cursor: pointer;
-}
 
 
 .chatG {
@@ -414,6 +423,12 @@
 }
 
 
+.chat_support_btn:hover {
+    background: #a10e0e;
+}
+
+
+
 
 
 .chat_contact_list {
@@ -431,6 +446,8 @@
     text-align: center;
     padding-top: 15px;
     margin-bottom: 0px;
+    display: inline-block;
+    margin-left: 37%;
 }
 
 .chat_contacts_img {
@@ -469,15 +486,15 @@
 }
 
 .chat_emoji_img {
-    height: 35px;
-    width: 35px;
+    height: 30px;
+    width: 30px;
     cursor: pointer;
     margin: 10px;
     margin-top: 0px;
 }
 .chat_sticker_img {
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
     cursor: pointer;
     margin: 10px;
     margin-top: 0px;
@@ -495,9 +512,34 @@
 }
 
 .chat_send_message_img {
-    height: 35px;
-    width: 35px;
+    height: 30px;
+    width: 30px;
     cursor: pointer;
     display: block;
     margin-left: 10px;
+}
+
+
+#chat_sections {
+    display: inline-block;
+    min-width: 600px;
+}
+
+
+
+
+.chat_back_img_div {
+    display: inline;
+}
+
+
+.chat_close_content_img_contacts {
+    height: 40px;
+    width: 40px;
+    float: right;
+    padding-top: 15px;
+    padding-right: 15px;
+    display: inline;
+    cursor: pointer;
+
 }
