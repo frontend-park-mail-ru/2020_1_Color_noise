@@ -101,6 +101,10 @@
 	flex: 0 0 20px
 }
 
+.find_pin input {
+	width: auto;
+}
+
 .find_user {
 	max-width: 500px;
 	margin: 0 auto 30px;
