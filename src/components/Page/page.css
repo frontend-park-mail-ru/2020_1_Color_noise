@@ -5,7 +5,6 @@
     min-width: 210px;
     min-height: calc(100vh - 63px);
     box-sizing: border-box;
-    margin-top: 25px; /*TMP!*/
 }
 
 .page_content {

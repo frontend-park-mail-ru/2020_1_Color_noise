@@ -83,21 +83,22 @@
 	background: #e4e4e4;
 	height: 40px;
 	border-radius: 5px;
-	margin-top: 7px;
 }
 
 .find_pin {
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
+	display: flex;
+	align-items: center;
 }
 
 .find_pin img {
-	width: 30px;
+	width: 20px;
+	height: 20px;
 	cursor: pointer;
-	margin-top: 5px;
-	float: right;
-	margin-left: auto;
+	margin: 0 10px;
+	flex: 0 0 20px
 }
 
 .find_user {
@@ -135,9 +136,8 @@
 
 .search_input {
 	font-size: 18px;
-	padding: 0 5px;
-	width: 90%;
 	font-weight: normal;
+	flex: 1 0 auto;
 }
 
 .search_filter_section {
@@ -180,7 +180,7 @@
 }
 .search_menu {
 	backface-visibility: hidden;
-
+	display: none;
 }
 .search_menu > li {
 	display: inline-block;
@@ -201,7 +201,6 @@
 .down:after {
 	content: "\f107";
 	margin-left: 8px;
-
 }
 .search_menu li a:hover { color: #d74343; }
 
