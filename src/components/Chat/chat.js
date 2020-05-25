@@ -40,7 +40,7 @@ export function getUsersForChat(userID = {id:null}) {
             createContactPageAfterGetUsers()
 
             if ( jsonAns.body.length === 0 && !( userID === null ||userID.id !== null && Number.isInteger(Number(userID.id))) ) {
-                const chatPeopleList = document.getElementById("chat_people-list")
+                const chatPeopleList = document.getElementById("chat_msg_no_contacts")
                 chatPeopleList.innerHTML = '<h3 class="chat_no_contact_msg"> У Вас еще нет собеседников, Вы можете найти их через поиск.</h3>'
             }
 
