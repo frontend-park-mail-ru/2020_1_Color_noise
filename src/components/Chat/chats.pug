@@ -1,10 +1,11 @@
 div.chat_global
-    img(src=backImage class="chat_back_img_div" id="chat_back_img")
     div.chatG(class="chat_content")
         h1.title Мои чаты
+        div(class="chat_back_img_div")
         div(id="chat_sections")
             div(class="chat_container chat_clearfix" id="chat_contacts_or_messages")
                 h3(class="chat_contacts_title") Ваши контакты
+                img(class="chat_close_content_img_contacts" id="chat_return_img_contacts" src=closeContentImage)
                 div(class="chat_people_list" id="chat_people-list")
                     ul(class="chat_contact_list chat_ul" id="chat_user_list")
                     button(class="chat_support_btn" id="chat_support_btn")  Связь с поддержкой

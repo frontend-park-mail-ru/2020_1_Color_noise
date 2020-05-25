@@ -91,8 +91,8 @@ function itIsNumber(value) {
 
 
 function createContactPageAfterGetUsers() {
-    const backImage = serverLocate + backBtn;
-    const chats = ChatsTemplate({backImage:backImage});
+    const backImage = serverLocate + closeContentImage;
+    const chats = ChatsTemplate({closeContentImage:backImage});
     const content = document.getElementById('content');
     content.innerHTML = chats;
     setBackImg();
@@ -773,7 +773,7 @@ function setEventShowEmoji() {
 
 export function setBackImg() {
 
-    const chatBackImg = document.getElementById("chat_back_img")
+    const chatBackImg = document.getElementById("chat_return_img_contacts")
     chatBackImg.addEventListener("click", evt =>{
         window.history.back();
     })
@@ -786,9 +786,7 @@ export function setSupportBtn() {
     const chatSupportBtn = document.getElementById("chat_support_btn")
     chatSupportBtn.addEventListener("click", evt=>{
 
-        if (chatStorage.isAlredyCallSupport) {
-            return
-        }
+
         chatStorage.isAlredyCallSupport = true
 
 
