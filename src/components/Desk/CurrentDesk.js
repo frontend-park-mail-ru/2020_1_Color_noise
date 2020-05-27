@@ -12,6 +12,7 @@ class CurrentDesk {
             searchTime: null,
             searchOrderDesc: 0,
             searchUrl : "",
+            SearchIsActiv :true,
         };
     }
 }

@@ -79,9 +79,15 @@ function getSearchFilter() {
             return response.json();
         })
         .then((result) => {
+
+
+            CurrentDesk.State.SearchIsActiv = true
+
             if (result.status !== 200) {
                 setInfoDesk("Ошибка сервера");
             } else {
+
+
                 if (result.body.length === 0) {
                     if (CurrentDesk.State.searchObj === "user") {
                         setInfoDesk("Пользователи не найдены");
@@ -341,9 +347,17 @@ export function setSearch() {
     })
 
     searchInput.addEventListener('keypress',  (e) =>{
+
         if (e.key === 'Enter') {
+
+            if (CurrentDesk.State.SearchIsActiv) {
+                CurrentDesk.State.SearchIsActiv = false
             searchEvent()
+            }
+
         }
+
+
     });
 
 
