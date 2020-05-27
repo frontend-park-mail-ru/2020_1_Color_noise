@@ -93,7 +93,7 @@ function itIsNumber(value) {
 }
 
 
-function createContactPageAfterGetUsers() {
+export function createContactPageAfterGetUsers() {
     const backImageSrc = serverLocate + backImage;
     const chats = ChatsTemplate({closeContentImage:backImageSrc});
     const content = document.getElementById('content');
@@ -160,6 +160,13 @@ function createStartDialogScreen() {
 
 
 export function createDialog(user) {
+
+    window.history.pushState(
+        null,         // объект состояния
+        "Chats",  // заголовок состояния
+        "/chats/user/" + user.id  // URL новой записи (same origin)
+    );
+
 
     chatStorage.Data.idSelectedUser = user.id
 
@@ -770,18 +777,14 @@ function setEventShowEmoji() {
         })
     })
 
-
 }
 
 
 export function setBackImg() {
-
     const chatBackImg = document.getElementById("chat_return_img_contacts")
     chatBackImg.addEventListener("click", evt =>{
         window.history.back();
     })
-
-
 }
 
 export function setSupportBtn() {

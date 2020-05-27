@@ -43,6 +43,7 @@ class Router {
         }
         //console.log("path:", path, "   title:", title, " state:", state, "  needPush:", needPush)
 
+        //console.log("go start! 333", CurrentUser.Data)
 
         // не надо сохранять состояние, если уже на нужной странице
         if (needPush === true && path !== window.location.pathname) {
@@ -86,12 +87,13 @@ class Router {
                 const userId = path.substring("/chats/user/".length, path.length);
                 const state = {};
                 state.id = userId;
+                //console.log("go start! 444", CurrentUser.Data)
                 createChatView(state);
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();
                 document.title = 'Bug route!';
-                alert('Bug route, сообщите отделу фротенда об этом!\n' + path);
+                alert('Bug route, сообщите отделу фротенда об этом!\n' + path); /* на защите убрать */
             }
         } else {
             console.log("ROUTE FUNC:",func);
