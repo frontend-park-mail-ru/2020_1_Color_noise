@@ -11,9 +11,9 @@ import { default as Router} from "../../utils/router.js"
 
 
 import contactsImage from '../../images/chat/chatContacts.svg';
-import closeContentImage from  "../../images/closeContent.svg"
+
 import emojiImage from "../../images/chat/chatEmoji.svg"
-import backBtn from "../../images/backBtn.svg";
+import backImage from "../../images/backBtn.svg";
 import stickerImage from  "../../images/chat/stickerImg.svg"
 import sendMessageImg from "../../images/chat/sendIcon.svg"
 import ChatsTemplate from "./chats.pug";
@@ -40,8 +40,11 @@ export function getUsersForChat(userID = {id:null}) {
             createContactPageAfterGetUsers()
 
             if ( jsonAns.body.length === 0 && !( userID === null ||userID.id !== null && Number.isInteger(Number(userID.id))) ) {
-                const chatPeopleList = document.getElementById("chat_msg_no_contacts")
-                chatPeopleList.innerHTML = '<h3 class="chat_no_contact_msg"> У Вас еще нет собеседников, Вы можете найти их через поиск.</h3>'
+                if (chatStorage.Data.isAlreadyShowNoContactMsg === false) {
+                    const chatPeopleList = document.getElementById("chat_msg_no_contacts")
+                    chatPeopleList.innerHTML = '<h3 class="chat_no_contact_msg"> У Вас еще нет собеседников, Вы можете найти их через поиск.</h3>'
+                    chatStorage.Data.isAlreadyShowNoContactMsg = true
+                }
             }
 
             chatStorage.usersArr = jsonAns.body
@@ -91,8 +94,8 @@ function itIsNumber(value) {
 
 
 function createContactPageAfterGetUsers() {
-    const backImage = serverLocate + closeContentImage;
-    const chats = ChatsTemplate({closeContentImage:backImage});
+    const backImageSrc = serverLocate + backImage;
+    const chats = ChatsTemplate({closeContentImage:backImageSrc});
     const content = document.getElementById('content');
     content.innerHTML = chats;
     setBackImg();
@@ -177,7 +180,7 @@ export function createDialog(user) {
     const chatMessages = document.getElementById("chat_contacts_or_messages")
     const headerHtml = chatTemplate({avatarSrc: serverLocate + "/" + avatarFile,
         nameWith:user.login, emojiImgSrc: serverLocate + "/images/chat_emoji.png", contactsImage:contactsImage,
-        closeContentImage:closeContentImage, emojiImage:emojiImage, stickerImage:stickerImage, sendMessageImg:sendMessageImg})
+         emojiImage:emojiImage, stickerImage:stickerImage, sendMessageImg:sendMessageImg})
     chatMessages.innerHTML = headerHtml
 
 
@@ -254,7 +257,7 @@ export function createDialog(user) {
 
 
 
-    setReturnBtn();
+    //setReturnBtn(); img(class="chat_close_content_img" id="chat_return_img" src=closeContentImage)
     setEventShowStickers();
     setEventShowEmoji();
 

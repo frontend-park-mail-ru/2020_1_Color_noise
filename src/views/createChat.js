@@ -7,7 +7,7 @@ import {
 import {default as chatStorage} from "../components/Chat/currentChat.js";
 import {unSetScroll} from "../components/Desk/Desk";
 import {serverLocate} from "../utils/constants";
-import backBtn from "../images/backBtn.svg";
+import backImage from "../images/backBtn.svg"
 import closeContentImage from "../images/closeContent.svg"
 
 export function createChatView(userID = null) {
@@ -17,7 +17,7 @@ export function createChatView(userID = null) {
    // console.log("chat view CurrentUser.data:", CurrentUser.data)
 
     if ( CurrentUser.Data === undefined || CurrentUser.Data.login === "null" || CurrentUser.Data.login === null ) {
-        const backImage = serverLocate + closeContentImage;
+        const backImage = serverLocate + backImage;
         const chats = ChatsTemplate({closeContentImage:backImage});
         const content = document.getElementById('content');
         content.innerHTML = chats;
