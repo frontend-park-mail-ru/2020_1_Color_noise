@@ -29,8 +29,8 @@ workbox.routing.registerRoute(
         cacheName: 'My-awesome-cache-imgs-css-spa',
         plugins: [
             new workbox.expiration.Plugin({
-                maxAgeSeconds: 60 * 60 * 24 * 7,
-                maxEntries: 50,
+                maxAgeSeconds: 60 * 5, // 5 минут
+                maxEntries: 60,
                 purgeOnQuotaError: true
             })
         ]
