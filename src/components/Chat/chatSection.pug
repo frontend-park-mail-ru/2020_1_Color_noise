@@ -15,13 +15,14 @@ div(class="chat_messages" id="chat_chat_section")
 
     div(class="chat_message_write")
         div(class="chat_message_input_area")
-            textarea(class="chat_textarea" name="message-to-send" id="message_to_send" placeholder ="Введите Ваше сообщение" rows="3" cols="1")
+            textarea(class="chat_textarea" maxlength="40" name="message-to-send" id="message_to_send" placeholder ="Введите Ваше сообщение" rows="3" cols="1")
 
 
         div(class="chat_message_btn_area")
-            img(class="chat_emoji_img" id="chat_emoji_img" src=emojiImage)
-            img(class="chat_sticker_img" id="chat_send_sticker" src=stickerImage)
-            img(class="chat_send_message_img" id="chat_send_message_btn" src=sendMessageImg)
+            img(id="chat_send_message_btn" src=sendMessageImg)
+            img(id="chat_emoji_img" src=emojiImage)
+            img(id="chat_send_sticker" src=stickerImage)
+
 
 
 

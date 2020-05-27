@@ -204,7 +204,7 @@
     margin-bottom: 30px;
     width: 50%;
 
-    display: inline-block;
+    /*display: inline-block;*/
 }
 
 .chat_my_message {
@@ -217,27 +217,24 @@
 .chat_other_message {
     background: rgba(98, 98, 175, 0.37);
     border-radius: 5px;
-    padding: 5px;
-
+    padding: 15px;
 }
 
 .chat_message {
     padding: 0px; /* переопределение */
     margin: 5px;
-
 }
 
 .chat_textarea {
     width: 96%;
     border: none;
-    margin-left: 4%;
-    padding-left: 3px;
+    line-height: 40px;
+    height: 40px;
     font-size: 20px;
-    margin-bottom: 0px;
     border-radius: 5px;
     resize: none;
     vertical-align: sub;
-
+    outline: none;
 }
 
 .chat_fa_file_o, .chat_fa_file_image_o {
@@ -258,7 +255,7 @@
 
 
 .chat_align-left {
-    text-align: left;
+    /*text-align: left;*/
 
 }
 
@@ -397,7 +394,14 @@
     padding-top: 15px;
 }
 
-
+.chat_message_btn_area img {
+    display: inline-block;
+    width: 32%;
+    margin: 5px;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
 
 
 
@@ -516,8 +520,6 @@
     height: 30px;
     width: 30px;
     cursor: pointer;
-    display: block;
-    margin-left: 10px;
 }
 
 
