@@ -257,7 +257,7 @@ const addDeskItems = (desks) => {
 const goDesk = (evt) => {
     evt.preventDefault();
     const deskID = evt.currentTarget.getAttribute('id').split('_', 2)[1];
-    Router.go("/desk/" + deskID,"Desk");
+    Router.go("/desk/" + deskID,"Desk", {id:"not null"}, true);
 };
 
 const goAllUserPins = (evt) => {

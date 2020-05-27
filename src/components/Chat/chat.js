@@ -161,12 +161,15 @@ function createStartDialogScreen() {
 
 export function createDialog(user) {
 
-    window.history.pushState(
-        null,         // объект состояния
-        "Chats",  // заголовок состояния
-        "/chats/user/" + user.id  // URL новой записи (same origin)
-    );
 
+    console.log("push history: ", "/chats/user/" + user.id)
+    if (window.location.pathname !== "/chats/user/" + user.id) {
+        window.history.pushState(
+            {path: "/chats/user/" + user.id},         // объект состояния
+            "Chats",  // заголовок состояния
+            "/chats/user/" + user.id  // URL новой записи (same origin)
+        );
+    }
 
     chatStorage.Data.idSelectedUser = user.id
 
