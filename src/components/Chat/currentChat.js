@@ -15,6 +15,7 @@ class chatStorage {
         this.isAlreadyAddStickersInStickersSelect = false;
         this.usersArr = null;
         this.isAlreadyAddEvent = false;
+        chatStorage.isAlreadyShowNoContactMsg = false;
     }
 
     containsId(id) {
