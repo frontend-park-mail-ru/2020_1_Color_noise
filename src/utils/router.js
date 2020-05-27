@@ -27,12 +27,25 @@ class Router {
 
         window.addEventListener('popstate', evt => {
             //Если зашли первый раз только на страницу и браузер сохранил уже ее себе в стек
+
+            console.log("evt.state:",evt)
+            /*
             if (evt.state === null) {
                 this.go('/', null, evt.state, false);
             } else {
-                let path = evt.state.path;
+
+             */
+                let path = window.location.pathname ;
+                if (evt.state === null) {
+                    let state = {}
+                    state.path =  window.location.pathname;
+                    state.title = document.title
+                    state.path = window.location.pathname
+                    this.go(path, state.title, state, false);
+                    return
+                }
                 this.go(path, evt.state.title, evt.state, false);
-            }
+           // }
         });
     }
 
@@ -43,11 +56,13 @@ class Router {
         }
         //console.log("path:", path, "   title:", title, " state:", state, "  needPush:", needPush)
 
-        //console.log("go start! 333", CurrentUser.Data)
+        console.log("go:", path)
+        console.log("window.location.pathname:", window.location.pathname)
+
 
         // не надо сохранять состояние, если уже на нужной странице
         if (needPush === true && path !== window.location.pathname) {
-            console.log("GO path:" + path);
+            console.log("333 GO push:" + path);
             if (state == null)
                 state = {};
             state.path = path;
@@ -74,6 +89,7 @@ class Router {
                 state.id = userId;
                 createUserPinsDeskView(state);
             } else if (validators.deskUserLink(path)) {
+                console.log("нужная отрисовка доски")
                 const boardId = path.substring("/desk/".length, path.length);
                 const state = {};
                 state.id = boardId;
@@ -109,8 +125,23 @@ class Router {
             return;
         }
         createContent();
+
+        /*
+        let state = {}
+        state.path = window.location.pathname
+        window.history.pushState(
+            state,         // объект состояния
+            state.title = document.title,  // заголовок состояния
+            window.location.pathname  // URL новой записи (same origin)
+        );
+
+         */
+
         Requests.getUserProfile(false).then((result) => {
             createMenu(result);
+
+
+
         });
     }
 } export default new Router();
