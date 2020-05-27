@@ -134,7 +134,6 @@ class Router {
             state.title = document.title,  // заголовок состояния
             window.location.pathname  // URL новой записи (same origin)
         );
-
          */
 
         Requests.getUserProfile(false).then((result) => {
