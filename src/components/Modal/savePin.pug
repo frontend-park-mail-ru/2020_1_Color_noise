@@ -1,0 +1,9 @@
+div.modal
+    div.background(id="backModal")
+    div.window
+        img(src=logoImage alt="Zinterest" width="140px")
+        div.great_title Выберите доску, куда Вы хотите<br>сохранить выбранный пин
+        div(id="infoModalMessage")
+        div.line
+            select#deskSelect(class="selectDesk")
+        input(type="submit" class="red_btn" id="saveChoosePin" value="Сохранить" pin_id=pinID)

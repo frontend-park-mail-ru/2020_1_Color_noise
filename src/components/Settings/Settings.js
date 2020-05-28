@@ -4,7 +4,7 @@ import FetchModule from  '../Network/Network'
 import {serverLocate} from '../../utils/constants'
 import {default as CurrentUser} from '../../utils/userDataSingl';
 import backBtn from "../../images/backBtn.svg";
-import {setInfoModal, setInfoPage, showInfoModal} from "../Modal/modal";
+import {setInfoPage, showInfoModal} from "../Modal/modal";
 
 export const createPageSettings = () => {
     const template = SettingsTemplate({

@@ -6,7 +6,7 @@ import {serverLocate} from "../../utils/constants";
 import Router from "../../utils/router";
 import FetchModule from "../Network/Network";
 import CurrentUser from "../../utils/userDataSingl";
-import {showShareModal} from "../Modal/modal";
+import {savePinModal, showLoginModal, showSavePinModal, showShareModal} from "../Modal/modal";
 import backBtn from "../../images/backBtn.svg";
 
 export const createPagePin = (pin) => {
@@ -53,12 +53,22 @@ export const createPagePin = (pin) => {
     const sharePinModal = document.getElementById('sharePinModal');
     sharePinModal.addEventListener('click', showShareModal);
 
+    const saveBtnModal = document.getElementById('saveBtnModal');
+    saveBtnModal.addEventListener('click', savePin);
+
     const backProfileLink = document.getElementById('backProfileLink');
     backProfileLink.addEventListener('click', goBack);
 
-
     const authorLink = document.getElementById('authorLink');
     authorLink.addEventListener('click', goAuthor);
+};
+
+const savePin = () => {
+    if (CurrentUser.Data.id === -1)  {
+        showLoginModal();
+    } else {
+        showSavePinModal();
+    }
 };
 
 const goBack = () => {
@@ -80,6 +90,10 @@ const sendCommentFuncKey = (evt) => {
 };
 
 const sendCommentFunc = (evt) => {
+    if (CurrentUser.Data.id === -1)  {
+        showLoginModal();
+        return;
+    }
     const commentUser = document.getElementById('commentUser');
 
     if (commentUser.value.length > 0) {

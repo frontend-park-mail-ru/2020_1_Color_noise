@@ -6,6 +6,8 @@ import Router from '../../utils/router'
 import FetchModule from "../Network/Network";
 import {serverLocate} from "../../utils/constants";
 import backBtn from "../../images/backBtn.svg";
+import {addDesksChoose} from "../Modal/modal";
+import {default as CurrentUser} from "../../utils/userDataSingl";
 
 export const createPageNewPin = (desks) => {
     const template = createPinTemplate({ pinDefaultImage : pinDefaultImage, backBtn : backBtn });
@@ -28,16 +30,6 @@ const goBack = () => {
     window.history.back();
 };
 
-const addDesksChoose = (desks) => {
-    const deskSelect = document.getElementById('deskSelect');
-    desks.forEach((item) => {
-        const option = document.createElement('option');
-        option.text = item.name;
-        option.setAttribute('id', item.id);
-        deskSelect.add(option);
-    });
-};
-
 const chooseImageFunc = (evt) => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -54,6 +46,32 @@ const chooseChoiceImageFunc = (evt) => {
         if (target.files && target.files[0]) {
             const reader = new FileReader();
             reader.onload = function (e) {
+                // const formData = new FormData();
+                //                 // formData.append('image', target.files[0]);
+                //                 //
+                //                 // FetchModule.fetchRequestSendImage({
+                //                 //     url:serverLocate + '/api/pin/image',
+                //                 //     method: 'post',
+                //                 //     body: formData
+                //                 // }).then((res) => {
+                //                 //     return res.ok ? res : Promise.reject(res);
+                //                 // }).then((response) => {
+                //                 //     return response.json();
+                //                 // }).then((result) => {
+                //                 //     if (result.status === 201) {
+                //                 //
+                //                 //
+                //                 //     } else {
+                //                 //         setInfoPage('Ошибка обработки запроса');
+                //                 //     }
+                //                 // }).catch(function(error) {
+                //                 //     setInfoPage('Ошибка отправки запроса');
+                //                 // });
+
+
+
+
+
                 pinImage.src = e.target.result;
                 pinImage.setAttribute('loaded', 'true');
                 chooseImage.value = "Изменить изображение"
