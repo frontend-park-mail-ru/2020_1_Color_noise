@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -134,8 +134,32 @@ module.exports = {
 
     })
 
+  ],
 
 
 
-  ]
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          mangle: true,
+          output: {
+            comments: false
+          },
+          compress: {
+            sequences: true,
+            dead_code: true,
+            conditionals: true,
+            booleans: true,
+            unused: true,
+            if_return: true,
+            join_vars: true,
+            drop_console: true
+          }
+        }
+      }),
+    ],
+  },
+
 };
