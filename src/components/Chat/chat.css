@@ -8,17 +8,17 @@
     width: 40%;
     height: 60%;
     */
-    max-width: 700px; /*не 600 ибо кнопка сбоку*/
+    max-width: 600px; /*не 600 ибо кнопка сбоку*/
     margin-left: auto;
     margin-right: auto;
-
+    margin-top: 70px;
     position: relative;
 }
 
 .chatG {
 
-
-    background: #FFF;
+    /*background: #FFF; */
+    background: white;
     min-height: 320px;
     width: 100%;
     border-radius: 5px;
@@ -40,7 +40,7 @@
 .chat_container {
     margin: 0 auto;
     width: 100%;
-    height: 100%;
+    height: 600px;
     box-shadow: 0 0 50px 0 rgba(0,0,0,0.30);
     border-radius: 5px;
 }
@@ -83,6 +83,9 @@
     color: black;
     overflow-y: scroll;
     max-height: 500px;
+    text-align: left;
+
+    scrollbar-color: #dcdbdb white;
 }
 
 
@@ -133,11 +136,13 @@
 
 .chat_messages {
     width: 100%;
-    background: #F2F5F8;
+   /* background: #F2F5F8; */
+    background: white;
     margin-bottom: 0px;
     border-radius: 5px;
     color: #07070a;
     display: grid; /* без этого кнопка назад уходит вниз*/
+
 }
 
 .chat_header {
@@ -163,11 +168,10 @@
     font-weight: bold;
     font-size: 16px;
     padding-top: 2%;
+    text-align: left;
 }
 
-.chat_num_messages {
-    color: #6A6C75;
-}
+
 
 .chat_fa_star {
     float: right;
@@ -180,7 +184,7 @@
 .chat_history {
     padding: 0px;
     border-bottom: 2px solid rgba(68, 57, 57, 0.57);
-    min-height: 300px;
+    height: 475px;
 }
 
 .message_data {
@@ -190,7 +194,6 @@
 
 .message_data_time {
     color: #000000;
-
     font-size: 12px;
     display: block;
 }
@@ -198,13 +201,12 @@
 .chat_message {
     color: #050202;
     padding: 18px 20px;
-
     font-size: 16px;
     border-radius: 7px;
     margin-bottom: 30px;
-    width: 50%;
+    width: 60%;
 
-    /*display: inline-block;*/
+    display: inline-block;
 }
 
 .chat_my_message {
@@ -228,13 +230,14 @@
 .chat_textarea {
     width: 96%;
     border: none;
-    line-height: 40px;
-    height: 40px;
-    font-size: 20px;
+    line-height: 30px;
+    font-size: 18px;
     border-radius: 5px;
-    resize: none;
-    vertical-align: sub;
+
     outline: none;
+    margin-left: 10px;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.20);
+    padding: 5px;
 }
 
 .chat_fa_file_o, .chat_fa_file_image_o {
@@ -305,7 +308,7 @@
     text-align: center;
     background-color: #fdecec;
     height: 70%;
-    width: 50%;
+    width: 70%;
     top: 10%;
     bottom: 10%;
     right: 0;
@@ -374,9 +377,8 @@
 
 
 .chat_message_input_area{
-    display: inline-block;
-    width: 70%;
-    margin-top: 15px;
+    display: flex;
+    margin-top: 10px;
     margin-bottom: 15px;
 }
 
@@ -387,29 +389,61 @@
     object-fit: cover;
 }
 
+
+
+
+
 .chat_message_btn_area {
-    width: 30%;
     display: inline-block;
     vertical-align: top;
-    padding-top: 15px;
+    padding-top: 2px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.chat_btns_second_area {
+    margin-left: auto;
+    margin-right: auto;
+    width: 110px;
 }
 
 .chat_message_btn_area img {
     display: inline-block;
-    width: 32%;
-    margin: 5px;
-    height: 30px;
-    width: 30px;
+    margin-left: 5px;
+    height: 26px;
+    width: 26px;
     cursor: pointer;
+    text-align: left;
+}
+
+#chat_send_message_btn {
+    margin-left: 9px;
+    margin-top: 6px;
+    float: left;
+}
+
+#chat_send_sticker {
+    margin-top: 5px;
+    width: 28px;
+    height: 28px;
+    float: left;
+
+}
+
+#chat_emoji_img{
+    margin-top: 5px;
+    float: left;
+
 }
 
 
 
+
+
 .chat_support_btn{
-    margin-bottom: 10px;
-    margin-left: 30%;
-    margin-right: 30%;
-    margin-top: 15px;
+
+    margin-left: auto;
+    margin-right: auto;
     background: linear-gradient(90deg, rgba(214,39,5,1) 0%, rgba(207,35,8,1) 50%);
     border-radius: 5px;
     border: none;
@@ -418,10 +452,12 @@
     font-size: 18px;
     cursor: pointer;
     padding: 10px 10px 10px 10px;
-    width: 40%;
+    width: 50%;
     vertical-align: sub;
     text-align: center;
     float: bottom;
+    margin-bottom: 20px;
+
 }
 
 
@@ -477,8 +513,8 @@
 .emoji_select {
     text-align: center;
     background-color: #fdecec;
-    height: 50%;
-    width: 50%;
+    height: 60%;
+    width: 70%;
     top: 10%;
     right: 0;
     left: 0;
@@ -531,9 +567,7 @@
 
 
 
-#chat_user_list {
-    height: 335px;
-}
+
 
 
 
@@ -542,7 +576,7 @@
 .chat_back_img_div {
     display: inline-block;
     margin-right: auto;
-    top: 71px;
+    top: 12px;
     position: absolute;
     left: -40px;
 }
@@ -555,3 +589,4 @@
     margin-bottom: -12px;
 
 }
+
