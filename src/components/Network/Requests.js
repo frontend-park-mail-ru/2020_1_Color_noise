@@ -21,12 +21,12 @@ export class Requests {
             )
             .then((result) => {
                 if (result.status === 401) {
-                    Router.go("/", "Zinterest", null, true);
+                    Router.go( window.location.pathname, document.title, null, needPush);
+                    //Router.go("/", "Zinterest", null, true);
                     return false;
                 } else {
                     setDataUser(result.body);
-                    let url = window.location.pathname;
-                    Router.go(url, "", null, needPush);
+                    Router.go(window.location.pathname, document.title, null, needPush);
                     return true;
                 }
             })
