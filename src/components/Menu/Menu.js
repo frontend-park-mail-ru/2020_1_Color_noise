@@ -9,6 +9,7 @@ import chatsImage from '../../images/menu/chatsIcon.svg';
 import notifImage from '../../images/menu/notifIcon.svg';
 import profileImage from '../../images/menu/profileIcon.svg';
 import plusImage from '../../images/menu/plusIcon.svg';
+import searchFilter from  '../../images/menu/searchFilter.svg'
 
 import {showLoginModal, showRegModal, showChooseModal} from "../Modal/modal"
 import Router from "../../utils/router"
@@ -16,7 +17,7 @@ import CurrentUser from "../../utils/userDataSingl";
 import {setSearch} from "./search";
 
 export const createMenu = (login = false) => {
-    const template = MenuTemplate({ logoImage : logoImage, lupaImage:lupaImage });
+    const template = MenuTemplate({ logoImage : logoImage, lupaImage:lupaImage, searchFilter:searchFilter });
 
     const menu = document.getElementById('menu');
     menu.innerHTML = template;
@@ -36,16 +37,7 @@ export const createMenu = (login = false) => {
 };
 
 
-// will be deleted
-// const addLogin2 = () => {
-//     Requests.getUserProfile(false).then((result) => {
-//         if (result) {
-//             addLogin();
-//         } else {
-//             showInfoModal('Login auth error');
-//         }
-//         });
-// };
+
 
 const addLogin = () => {
     const menuLoginTemplate = MenuLoginTemplate({

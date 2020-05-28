@@ -77,14 +77,15 @@
 .chat_ul {
     padding-left: 20px;
     padding-right: 20px;
-    padding-bottom: 20px;
-    padding-top: 5px;
-    height: 80%;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    height: 100%;
     color: black;
     overflow-y: scroll;
     max-height: 500px;
     text-align: left;
-
+    margin-top: 0px;
+    margin-bottom: 0px;
     scrollbar-color: #dcdbdb white;
 }
 
@@ -483,11 +484,11 @@
 .chat_contacts_title {
     text-align: center;
     padding-top: 15px;
-    margin-bottom: 0px;
     margin-top: 0px;
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 20px;
 }
 
 .chat_contacts_img {

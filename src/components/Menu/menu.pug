@@ -4,29 +4,34 @@ div.menu
             img(src=logoImage width="190px")
     div.find
         div.find_pin
-            img(id="search_main_img" src=lupaImage)
-            input(id="search_main_input" type="text" class="search_input")
             ul(class="search_menu search_select")
                 li
-                    a( href="" id="search_selected_obj" onclick="event.preventDefault()") Пин
+                    a(  id="search_selected_obj" onclick="event.preventDefault()")
+                        img(id="search_filter_icon" src=searchFilter)
                         ul( class="search_submenu")
+
+                            h4(class="search_filter_title") Что ищем
+
                             li
-                                a( href="" id="search_select_pin_vars" ) Пин
+                                a( href="" id="search_select_pin_vars" ) Пины
                             li
-                                a( href="" id="search_select_user_vars") Пользователь
-                li
-                    a( href="" id="search_selected_filter" onclick="event.preventDefault()") Условия поиска
-                        ul( class="search_submenu")
+                                a( href="" id="search_select_user_vars") Пользователей
+
+
+                            h4(class="search_filter_title" id="search_filter_most_title") Самые
+
+
                             li
                                 a( href="" id="search_popular") Популярные
                             li
                                 a( href="" id="search_most_comments") Комментируемые
                             li
-                                a( href="" id="search_default") По умолчанию
+                                a( href="" id="search_default") Без критерия
 
-                li
-                    a( href="" id="search_selected_time" onclick="event.preventDefault()") Время
-                        ul( class="search_submenu")
+
+                            h4(class="search_filter_title" id="search_filter_time_title") Время
+
+
                             li
                                 a( href="" id="search_day") За день
                             li
@@ -35,13 +40,22 @@ div.menu
                                 a( href="" id="search_month") За месяц
                             li
                                 a( href="" id="search_all_time") За все время
-                li
-                    a( href="" id="search_selected_order" onclick="event.preventDefault()") Обычный порядок
-                        ul( class="search_submenu")
+
+
+                            h4(class="search_filter_title" id="search_filter_order_title") Порядок
+
                             li
                                 a( href="" id="search_order_norm") Обычный
                             li
                                 a( href="" id="search_order_reverse") Обратный
+
+
+
+            input(id="search_main_input" type="text" class="search_input")
+            img(id="search_main_img" src=lupaImage)
+
+
+
 
 
     div.thirdpart#loginPart
