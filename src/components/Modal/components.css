@@ -6,6 +6,7 @@
 	width: 320px;
 	margin: 10px auto 10px auto;
 	text-align: center;
+	box-sizing: border-box;
 }
 
 input {
@@ -30,6 +31,7 @@ input:focus {
 	width: 320px;
 	margin: 10px auto 10px auto;
 	text-align: center;
+	box-sizing: border-box;
 }
 
 .line_area textarea {
@@ -40,6 +42,19 @@ input:focus {
 	font-size: 13px;
 	font-weight: bold;
 	width: 95%;
+}
+
+.selectDesk {
+	width: 95%;
+	height: 100%;
+	-webkit-appearance: none;
+	outline: none;
+	background: none;
+	color: rgba(0, 0, 0, 0.4);
+	border: none;
+	font-size: 13px;
+	font-weight: bold;
+	cursor: pointer;
 }
 
 .red_btn {

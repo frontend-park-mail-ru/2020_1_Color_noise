@@ -5,14 +5,21 @@ import loginTemplate from "./login.pug";
 import regTemplate from "./reg.pug";
 import followTemplate from './follow.pug';
 import followItemTemplate from './followItem.pug';
+import sharePinTemplate from './sharePin.pug'
+import savePinTemplate from './savePin.pug'
 
 import logoImage from '../../images/logo.svg';
+import whatsappImage from '../../images/share/whatsapp.svg';
+import twitterImage from '../../images/share/twitter.svg';
+import facebookImage from '../../images/share/facebook.svg';
 
 import FetchModule from "../Network/Network";
 import {serverLocate} from "../../utils/constants";
 import {validators} from '../../utils/validation';
 import Router from "../../utils/router";
 import {setDataUser} from "../Network/Requests"
+import CurrentUser from "../../utils/userDataSingl";
+import {createPageNewPin} from "../CreatePin/CreatePin";
 
 export const showLoginModal = () => {
     const modal = document.getElementById('modal');
@@ -315,7 +322,71 @@ const hideModal = (evt) => {
 
 export const showShareModal = (evt) => {
     const pinID = evt.currentTarget.getAttribute('pin_id');
-    alert(pinID);
+    const modal = document.getElementById('modal');
+    modal.innerHTML = sharePinTemplate({
+        logoImage : logoImage,
+        whatsappLink : 'https://web.whatsapp.com/send?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + pinID,
+        whatsappImage : whatsappImage,
+        twitterLink : 'http://twitter.com/share?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + pinID,
+        twitterImage : twitterImage,
+        facebookLink : 'http://www.facebook.com/sharer.php?&quote='+
+            'Взгляните на это… 👀 https://zinterest.ru/pin/' + pinID +'&u=https://zinterest.ru/pin/' + pinID,
+        facebookImage : facebookImage,
+    });
+
+    const backModal  = document.getElementById('backModal');
+    backModal.addEventListener('click', hideModal);
+};
+
+export const showSavePinModal = (evt) => {
+    const pinID = evt.currentTarget.getAttribute('pin_id');
+    const modal = document.getElementById('modal');
+
+    modal.innerHTML = savePinTemplate({
+        logoImage : logoImage,
+        pinID : pinID
+    });
+
+    FetchModule.fetchRequest({
+        url:serverLocate + '/api/board/user/' + CurrentUser.Data.id + "?start=0&limit=9999",
+        method: 'get',
+    }).then((res) => {
+        return res.ok ? res : Promise.reject(res);
+    }).then((response) => {
+        return response.json();
+    }).then((result) => {
+        if (result.status === 200) {
+            addDesksChoose(result.body);
+        } else {
+            //setInfoContent('Ошибка обработки запроса');
+        }
+    }).catch(function(error) {
+        //setInfoContent('Ошибка отправки запроса');
+    });
+
+    const saveChoosePin = document.getElementById('saveChoosePin');
+    saveChoosePin.addEventListener('click', saveChoosePinFunc);
+
+    const backModal  = document.getElementById('backModal');
+    backModal.addEventListener('click', hideModal);
+};
+
+const saveChoosePinFunc = (evt) => {
+    const pinID = evt.currentTarget.getAttribute('pin_id');
+    const deskSelect = document.getElementById("deskSelect");
+    const deskID = deskSelect.options[deskSelect.selectedIndex].id;
+
+
+};
+
+export const addDesksChoose = (desks) => {
+    const deskSelect = document.getElementById('deskSelect');
+    desks.forEach((item) => {
+        const option = document.createElement('option');
+        option.text = item.name;
+        option.setAttribute('id', item.id);
+        deskSelect.add(option);
+    });
 };
 
 export const showInfoModal = (info) => {

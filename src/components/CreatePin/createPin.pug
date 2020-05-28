@@ -2,7 +2,7 @@ div.page
      div.page_content
          div.backProfileLink(id="backProfileLink")
              img(src=backBtn)
-         h1.page_title Создать пин
+         h1.page_title Создание пина
          div(id="infoPageMessage")
          div.pin_block
             img(src=pinDefaultImage id="pinImage")
@@ -12,6 +12,6 @@ div.page
                  input#pinName(type="text" placeholder="Название пина")
              div.line_area
                  textarea#pinDesc(placeholder="Описание пина (необязательно)" maxlength="512" rows="14" cols="33")
-             select#deskSelect
-             div.desks
+             div.line
+                 select#deskSelect(class="selectDesk")
              input(type="submit" class="red_btn" value="Создать" id="sendNewPin")

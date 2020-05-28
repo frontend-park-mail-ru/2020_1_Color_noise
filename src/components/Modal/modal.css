@@ -96,3 +96,22 @@
 .follow_item .follow_login {
 	margin-left: 20px;
 }
+
+.networks a {
+	display: inline-block;
+}
+
+.networks .network {
+	margin: 20px;
+}
+
+.networks .network img {
+	width: 40px;
+	height: 40px;
+}
+
+.networks .network p {
+	margin: 10px 0;
+	color: #1A1A1A;
+	font-size: 12px;
+}

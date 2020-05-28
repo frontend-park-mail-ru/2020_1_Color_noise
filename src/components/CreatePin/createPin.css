@@ -7,12 +7,12 @@
 }
 
 .page_content .pin_block .line:first-child {
-    margin-top: 0px;
+    margin-top: 0;
 }
 
-.page_content .pin_block select {
-    width: 320px;
-}
+/*.page_content .pin_block .desks select {*/
+/*    */
+/*}*/
 
 .page_content .pin_block img {
     border-radius: 18px;
