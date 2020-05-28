@@ -17,7 +17,6 @@
 
 .chatG {
 
-
     /*background: #FFF; */
     background: white;
     min-height: 320px;
@@ -85,6 +84,8 @@
     overflow-y: scroll;
     max-height: 500px;
     text-align: left;
+
+    scrollbar-color: #dcdbdb white;
 }
 
 
@@ -183,7 +184,7 @@
 .chat_history {
     padding: 0px;
     border-bottom: 2px solid rgba(68, 57, 57, 0.57);
-    height: 430px;
+    height: 475px;
 }
 
 .message_data {
@@ -203,7 +204,7 @@
     font-size: 16px;
     border-radius: 7px;
     margin-bottom: 30px;
-    width: 50%;
+    width: 60%;
 
     display: inline-block;
 }
@@ -229,12 +230,10 @@
 .chat_textarea {
     width: 96%;
     border: none;
-    line-height: 40px;
-    height: 75px;
-    font-size: 20px;
+    line-height: 30px;
+    font-size: 18px;
     border-radius: 5px;
-    resize: none;
-    vertical-align: sub;
+
     outline: none;
     margin-left: 10px;
     box-shadow: 0 0 5px 0 rgba(0,0,0,0.20);
@@ -378,8 +377,7 @@
 
 
 .chat_message_input_area{
-    display: inline-block;
-    width: 70%;
+    display: flex;
     margin-top: 10px;
     margin-bottom: 15px;
 }
@@ -396,51 +394,48 @@
 
 
 .chat_message_btn_area {
-    width: 30%;
     display: inline-block;
     vertical-align: top;
-    padding-top: 10px;
+    padding-top: 2px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.chat_btns_second_area {
+    margin-left: auto;
+    margin-right: auto;
+    width: 110px;
 }
 
 .chat_message_btn_area img {
     display: inline-block;
-    width: 32%;
-    margin: 5px;
-    height: 33px;
-    width: 33px;
+    margin-left: 5px;
+    height: 26px;
+    width: 26px;
     cursor: pointer;
     text-align: left;
 }
 
 #chat_send_message_btn {
-    display: table-caption; /*  так получается то что я хочу */
-    margin-left: 13px;
-    margin-top: 10px;
+    margin-left: 9px;
+    margin-top: 6px;
+    float: left;
 }
 
 #chat_send_sticker {
-    margin-left: 10px;
     margin-top: 5px;
-    display: inline-block;
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
+    float: left;
 
 }
 
 #chat_emoji_img{
-    margin-left: 0px;
     margin-top: 5px;
-    display: inline-block;
-
-}
-
-.chat_div_for_stickers_and_emoji_btns {
-    margin-left: 0px;
-    display: inline-block;
-    width: 125px;
-    height: 40px;
     float: left;
+
 }
+
 
 
 
@@ -595,6 +590,3 @@
 
 }
 
-.chat_message_write {
-    height: 110px;
-}
