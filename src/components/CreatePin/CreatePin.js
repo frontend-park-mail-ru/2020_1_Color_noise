@@ -46,35 +46,28 @@ const chooseChoiceImageFunc = (evt) => {
         if (target.files && target.files[0]) {
             const reader = new FileReader();
             reader.onload = function (e) {
-                // const formData = new FormData();
-                //                 // formData.append('image', target.files[0]);
-                //                 //
-                //                 // FetchModule.fetchRequestSendImage({
-                //                 //     url:serverLocate + '/api/pin/image',
-                //                 //     method: 'post',
-                //                 //     body: formData
-                //                 // }).then((res) => {
-                //                 //     return res.ok ? res : Promise.reject(res);
-                //                 // }).then((response) => {
-                //                 //     return response.json();
-                //                 // }).then((result) => {
-                //                 //     if (result.status === 201) {
-                //                 //
-                //                 //
-                //                 //     } else {
-                //                 //         setInfoPage('Ошибка обработки запроса');
-                //                 //     }
-                //                 // }).catch(function(error) {
-                //                 //     setInfoPage('Ошибка отправки запроса');
-                //                 // });
+                const formData = new FormData();
+                formData.append('image', target.files[0]);
 
-
-
-
-
+                FetchModule.fetchRequestSendImage({
+                    url:serverLocate + '/api/pin/image',
+                    method: 'post',
+                    body: formData
+                    }).then((res) => {
+                        return res.ok ? res : Promise.reject(res);
+                    }).then((response) => {
+                        return response.json();
+                    }).then((result) => {
+                        if (result.status === 201) {
+                            pinImage.setAttribute('loaded', result.body.id);
+                        } else {
+                            setInfoPage('Ошибка обработки запроса');
+                        }
+                    }).catch(function(error) {
+                        setInfoPage('Ошибка отправки запроса');
+                    });
                 pinImage.src = e.target.result;
-                pinImage.setAttribute('loaded', 'true');
-                chooseImage.value = "Изменить изображение"
+                chooseImage.value = "Изменить изображение";
             };
             reader.readAsDataURL(target.files[0]);
         }
@@ -83,7 +76,8 @@ const chooseChoiceImageFunc = (evt) => {
 
 const sendNewPinFunc = (evt) => {
     const pinImage = document.getElementById('pinImage');
-    if (!pinImage.getAttribute('loaded')) {
+    const imageID = pinImage.getAttribute('loaded');
+    if (!imageID) {
         setInfoPage("Загрузите изображение");
         return;
     }
@@ -107,7 +101,7 @@ const sendNewPinFunc = (evt) => {
                 name : name,
                 description : description,
                 board_id: Number(deskID),
-                image : pinImage.src
+                id : Number(imageID)
             }
         }).then((res) => {
             return res.ok ? res : Promise.reject(res);

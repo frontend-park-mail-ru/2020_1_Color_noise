@@ -6,7 +6,7 @@ import {serverLocate} from "../../utils/constants";
 import Router from "../../utils/router";
 import FetchModule from "../Network/Network";
 import CurrentUser from "../../utils/userDataSingl";
-import {savePinModal, showLoginModal, showSavePinModal, showShareModal} from "../Modal/modal";
+import {showLoginModal, showSavePinModal, showShareModal} from "../Modal/modal";
 import backBtn from "../../images/backBtn.svg";
 
 export const createPagePin = (pin) => {
@@ -63,11 +63,11 @@ export const createPagePin = (pin) => {
     authorLink.addEventListener('click', goAuthor);
 };
 
-const savePin = () => {
+const savePin = (evt) => {
     if (CurrentUser.Data.id === -1)  {
         showLoginModal();
     } else {
-        showSavePinModal();
+        showSavePinModal(evt);
     }
 };
 

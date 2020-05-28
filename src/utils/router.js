@@ -56,9 +56,9 @@ class Router {
         }
         //console.log("path:", path, "   title:", title, " state:", state, "  needPush:", needPush)
 
-        console.log("go:", path)
-        console.log("window.location.pathname:", window.location.pathname)
-        console.log("title:", title)
+        console.log("go:", path);
+        console.log("window.location.pathname:", window.location.pathname);
+        console.log("title:", title);
         document.title = title;
 
         // не надо сохранять состояние, если уже на нужной странице

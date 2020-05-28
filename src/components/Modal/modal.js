@@ -20,6 +20,7 @@ import Router from "../../utils/router";
 import {setDataUser} from "../Network/Requests"
 import CurrentUser from "../../utils/userDataSingl";
 import {createPageNewPin} from "../CreatePin/CreatePin";
+import deskItemTemplate from "../User/deskItem.pug";
 
 export const showLoginModal = () => {
     const modal = document.getElementById('modal');
@@ -297,13 +298,20 @@ const sendDeskFunc = (evt) => {
             return response.json();
         }).then((result) => {
             if (result.status === 201) {
-
                 showInfoModal('Новая доска создана');
 
                 const deskBlock = document.getElementById('deskBlock');
+                const deskSelect = document.getElementById('deskSelect');
                 if (deskBlock && deskBlock.hasAttribute('mine')) {
                     deskBlock.dispatchEvent(new CustomEvent("newDesk",
-                        { detail:
+                        {
+                            detail:
+                                { 'nameDesk': name, 'idDesk': result.body.id }
+                        }));
+                } else if (deskSelect) {
+                    deskSelect.dispatchEvent(new CustomEvent("newDesk",
+                        {
+                            detail:
                                 { 'nameDesk': name, 'idDesk': result.body.id }
                         }));
                 }
@@ -325,12 +333,15 @@ export const showShareModal = (evt) => {
     const modal = document.getElementById('modal');
     modal.innerHTML = sharePinTemplate({
         logoImage : logoImage,
-        whatsappLink : 'https://web.whatsapp.com/send?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + pinID,
+        whatsappLink : 'https://web.whatsapp.com/send?text=Взгляните на это… 👀 '
+            + serverLocate + '/pin/' + pinID,
         whatsappImage : whatsappImage,
-        twitterLink : 'http://twitter.com/share?text=Взгляните на это… 👀 https://zinterest.ru/pin/' + pinID,
+        twitterLink : 'http://twitter.com/share?text=Взгляните на это… 👀 '
+            + serverLocate + '/pin/' + pinID,
         twitterImage : twitterImage,
         facebookLink : 'http://www.facebook.com/sharer.php?&quote='+
-            'Взгляните на это… 👀 https://zinterest.ru/pin/' + pinID +'&u=https://zinterest.ru/pin/' + pinID,
+            'Взгляните на это… 👀 ' + serverLocate + '/pin/' + pinID
+            +'&u=' + serverLocate + '/pin/' + pinID,
         facebookImage : facebookImage,
     });
 
@@ -376,7 +387,27 @@ const saveChoosePinFunc = (evt) => {
     const deskSelect = document.getElementById("deskSelect");
     const deskID = deskSelect.options[deskSelect.selectedIndex].id;
 
-
+    FetchModule.fetchRequest({
+        url:serverLocate + '/api/pin/saving/' + pinID,
+        method: 'post',
+        body: {
+            board_id: Number(deskID),
+        }
+    }).then((res) => {
+        return res.ok ? res : Promise.reject(res);
+    }).then((response) => {
+        return response.json();
+    }).then((result) => {
+        if (result.status === 201) {
+            showInfoModal("Пин сохранен");
+        } else if (result.status === 200) {
+            showInfoModal("Этот пин уже сохранен на этой доске");
+        } else {
+            setInfoModal('Ошибка обработки запроса');
+        }
+    }).catch(function(error) {
+        setInfoModal('Ошибка отправки запроса');
+    });
 };
 
 export const addDesksChoose = (desks) => {
@@ -387,6 +418,15 @@ export const addDesksChoose = (desks) => {
         option.setAttribute('id', item.id);
         deskSelect.add(option);
     });
+
+    deskSelect.addEventListener('newDesk', addOneDesk);
+};
+
+const addOneDesk = (evt) => {
+    const option = document.createElement('option');
+    option.text = evt.detail.nameDesk;
+    option.setAttribute('id', evt.detail.idDesk);
+    evt.currentTarget.add(option);
 };
 
 export const showInfoModal = (info) => {

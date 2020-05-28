@@ -113,8 +113,7 @@ const addUserIcons = () => {
 };
 
 const addOneDesk = (evt) => {
-    const deskBlock = document.getElementById('deskBlock');
-
+    const deskBlock = evt.currentTarget;
     const template = deskItemTemplate({ deskNameText : evt.detail.nameDesk,
         deskLink : '/desk/' + evt.detail.idDesk, deskAttrId : 'desk_' + evt.detail.idDesk,
         lastPinImg : serverLocate + '/' + "images/pinDefault.jpg" });
@@ -199,7 +198,7 @@ const followUser = (evt) => {
 
 const goChatsUser = (evt) => {
     evt.preventDefault();
-    Router.go("/chats/user/" + evt.currentTarget.getAttribute('user_id'),"Settings");
+    Router.go("/chats/user/" + evt.currentTarget.getAttribute('user_id'),"Chats");
 };
 
 const goSettings = (evt) => {
@@ -257,12 +256,12 @@ const addDeskItems = (desks) => {
 const goDesk = (evt) => {
     evt.preventDefault();
     const deskID = evt.currentTarget.getAttribute('id').split('_', 2)[1];
-    Router.go("/desk/" + deskID,"Desk", {id:"not null"}, true);
+    Router.go("/desk/" + deskID,"Desk");
 };
 
 const goAllUserPins = (evt) => {
     evt.preventDefault();
-    Router.go("/pins/user/" + evt.currentTarget.getAttribute('user_id'),"Settings");
+    Router.go("/pins/user/" + evt.currentTarget.getAttribute('user_id'), "Settings");
 };
 
 const goSubs = (evt) => {
