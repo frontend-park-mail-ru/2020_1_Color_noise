@@ -33,7 +33,7 @@ npm run lint-fix
 ```
 
 # Деплой 
-http://95.163.212.121/
+[Zinterest](https://zinterest.ru)
 
 ## Команда разработки
 * [@k-t-l-h](https://github.com/k-t-l-h)
