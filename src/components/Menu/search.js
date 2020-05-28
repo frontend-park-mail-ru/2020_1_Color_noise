@@ -212,114 +212,229 @@ function getInfoForShowing(pinIdArr) {
 
 
 function setSelectedVars() {
-
-
+    
     // Выбор объекта поиска
     const searchSelectedObj = document.getElementById("search_selected_obj")
 
+    const classIfSelected = "chat_filter_selected"
+
     const searchSelectPinVars = document.getElementById("search_select_pin_vars")
+    const searchSelectUserVars = document.getElementById("search_select_user_vars")
+
+    searchSelectPinVars.classList.add(classIfSelected) // начальное значение
+
+
+    // заранее чтоб скрывать при выборе юзера
+    const searchDay = document.getElementById("search_day")
+    const searchWeek = document.getElementById("search_week")
+    const searchMonth = document.getElementById("search_month")
+    const searchAllTime = document.getElementById("search_all_time")
+    const searchFilterTimeTitle = document.getElementById("search_filter_time_title")
+
+
+    const searchFilterMostTitle = document.getElementById("search_filter_most_title")
+    const searchPopular = document.getElementById("search_popular")
+    const searchMostComments = document.getElementById("search_most_comments")
+    const searchDefault = document.getElementById("search_default")
+
+    const searchFilterOrderTitle = document.getElementById("search_filter_order_title")
+    const searchOrderNorm = document.getElementById("search_order_norm")
+    const searchOrderReverse = document.getElementById("search_order_reverse")
+
+
+
     searchSelectPinVars.addEventListener("click", (evt)=>{
         evt.preventDefault();
         console.log(" searchSelectedObj.innerText = \"Пин\"")
-        searchSelectedObj.innerText = "Пин"
+        //searchSelectedObj.innerText = "Пин"
         CurrentDesk.State.searchObj = "pin"
+
+        searchSelectUserVars.classList.remove(classIfSelected) // что будет если удалить класс которого не было
+        searchSelectPinVars.classList.add(classIfSelected)
 
         const searchMostComments = document.getElementById("search_most_comments")
         searchMostComments.style.display = "block"
 
+        // показываем свойства для пина
+        searchFilterTimeTitle.style.display = "block"
+        searchDay.style.display = "block"
+        searchWeek.style.display = "block"
+        searchMonth.style.display = "block"
+        searchAllTime.style.display = "block"
+
+        //
+        searchFilterMostTitle.style.display = "block"
+        searchPopular.style.display = "block"
+        searchMostComments.style.display = "block"
+        searchDefault.style.display = "block"
+
+        //
+        searchFilterOrderTitle.style.display = "block"
+        searchOrderNorm.style.display = "block"
+        searchOrderReverse.style.display = "block"
+
+
     })
-    const searchSelectUserVars = document.getElementById("search_select_user_vars")
+
     searchSelectUserVars.addEventListener("click", evt=>{
         evt.preventDefault();
         console.log("searchSelectedObj.innerText = \"Пользователь\"")
-        searchSelectedObj.innerText = "Пользователь"
+        //searchSelectedObj.innerText = "Пользователь"
         CurrentDesk.State.searchObj = "user"
+
+        searchSelectPinVars.classList.remove(classIfSelected) // что будет если удалить класс которого не было
+        searchSelectUserVars.classList.add(classIfSelected)
+
         // строем самые комментируемые
         const searchMostComments = document.getElementById("search_most_comments")
         searchMostComments.style.display = "none"
         if (CurrentDesk.State.searchFilter === "comment") {
-            searchSelectedFilter.innerText = "По умолчанию"
+            //searchSelectedFilter.innerText = "По умолчанию"
             CurrentDesk.State.searchFilter = null
         }
 
+        // скрываем время для пользователя
+        searchDay.style.display = "none"
+        searchWeek.style.display = "none"
+        searchMonth.style.display = "none"
+        searchAllTime.style.display = "none"
+        searchFilterTimeTitle.style.display = "none"
+
+        //
+        searchFilterMostTitle.style.display = "none"
+        searchPopular.style.display = "none"
+        searchMostComments.style.display = "none"
+        searchDefault.style.display = "none"
+
+        //
+        searchFilterOrderTitle.style.display = "none"
+        searchOrderNorm.style.display = "none"
+        searchOrderReverse.style.display = "none"
+
     })
 
+
+
     //Выбор параметра поиска (популярные или комментируемые) если не выбоано то
-    const searchSelectedFilter = document.getElementById("search_selected_filter")
-    const searchPopular = document.getElementById("search_popular")
+
+    searchDefault.classList.add(classIfSelected) // начальное значение
+
     searchPopular.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedFilter.innerText = "Популярные"
+        //searchSelectedFilter.innerText = "Популярные"
+        searchMostComments.classList.remove(classIfSelected)
+        searchDefault.classList.remove(classIfSelected)
+        searchPopular.classList.add(classIfSelected)
+
         CurrentDesk.State.searchFilter = "popular"
 
     })
 
-    const searchMostComments = document.getElementById("search_most_comments")
+
     searchMostComments.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedFilter.innerText = "Комментируемые"
+        //searchSelectedFilter.innerText = "Комментируемые"
+        searchPopular.classList.remove(classIfSelected)
+        searchDefault.classList.remove(classIfSelected)
+        searchMostComments.classList.add(classIfSelected)
+
         CurrentDesk.State.searchFilter = "comment"
     })
 
-    const searchDefault = document.getElementById("search_default")
+
     searchDefault.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedFilter.innerText = "По умолчанию"
+        //searchSelectedFilter.innerText = "По умолчанию"
+        searchMostComments.classList.remove(classIfSelected)
+        searchPopular.classList.remove(classIfSelected)
+        searchDefault.classList.add(classIfSelected)
+
         CurrentDesk.State.searchFilter = null
     })
 
 
 
     // выбор времени поиска
-    const searchSelectedTime = document.getElementById("search_selected_time")
 
-    const searchDay = document.getElementById("search_day")
+    searchAllTime.classList.add(classIfSelected) // начальное состояние
+
     searchDay.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedTime.innerText = "За день"
+        //searchSelectedTime.innerText = "За день"
+        searchWeek.classList.remove(classIfSelected)
+        searchMonth.classList.remove(classIfSelected)
+        searchAllTime.classList.remove(classIfSelected)
+        searchDay.classList.add(classIfSelected)
+
         CurrentDesk.State.searchTime = "day"
 
     })
-    const searchWeek = document.getElementById("search_week")
+
     searchWeek.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedTime.innerText = "За неделю"
+        //searchSelectedTime.innerText = "За неделю"
+        searchDay.classList.remove(classIfSelected)
+        searchMonth.classList.remove(classIfSelected)
+        searchAllTime.classList.remove(classIfSelected)
+        searchWeek.classList.add(classIfSelected)
+
         CurrentDesk.State.searchTime = "week"
 
     })
-    const searchMonth = document.getElementById("search_month")
+
     searchMonth.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedTime.innerText = "За месяц"
+        //searchSelectedTime.innerText = "За месяц"
+        searchDay.classList.remove(classIfSelected)
+        searchWeek.classList.remove(classIfSelected)
+        searchAllTime.classList.remove(classIfSelected)
+        searchMonth.classList.add(classIfSelected)
+
         CurrentDesk.State.searchTime = "month"
     })
-    const searchAllTime = document.getElementById("search_all_time")
+
     searchAllTime.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedTime.innerText = "За все время"
+        //searchSelectedTime.innerText = "За все время"
+        searchDay.classList.remove(classIfSelected)
+        searchWeek.classList.remove(classIfSelected)
+        searchMonth.classList.remove(classIfSelected)
+        searchAllTime.classList.add(classIfSelected)
+
         CurrentDesk.State.searchTime = null
     })
 
 
 
     // выбор порядка
-    const searchSelectedOrder = document.getElementById("search_selected_order")
-    const searchOrderNorm = document.getElementById("search_order_norm")
+
+
+    searchOrderNorm.classList.add(classIfSelected)
+
     searchOrderNorm.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedOrder.innerText = "Обычный порядок"
+        //searchSelectedOrder.innerText = "Обычный порядок"
+        searchOrderReverse.classList.remove(classIfSelected)
+        searchOrderNorm.classList.add(classIfSelected)
+
         CurrentDesk.State.searchOrderDesc = 0
     })
 
-    const searchOrderReverse = document.getElementById("search_order_reverse")
+
     searchOrderReverse.addEventListener("click", evt=>{
         evt.preventDefault();
-        searchSelectedOrder.innerText = "Обратный порядок"
+        //searchSelectedOrder.innerText = "Обратный порядок"
+        searchOrderNorm.classList.remove(classIfSelected)
+        searchOrderReverse.classList.add(classIfSelected)
+
         CurrentDesk.State.searchOrderDesc = 1
     })
 
 
 }
+
+
+
 
 export function setDateBtns(){
 
@@ -337,6 +452,7 @@ export function setDateBtns(){
  * @return {void}
  */
 export function setSearch() {
+
     console.log("set search!")
 
     const searchImg = document.getElementById("search_main_img");
