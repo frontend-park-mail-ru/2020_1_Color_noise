@@ -58,7 +58,8 @@ class Router {
 
         console.log("go:", path)
         console.log("window.location.pathname:", window.location.pathname)
-
+        console.log("title:", title)
+        document.title = title;
 
         // не надо сохранять состояние, если уже на нужной странице
         if (needPush === true && path !== window.location.pathname) {
@@ -75,7 +76,6 @@ class Router {
         }
         //alert("Go : path:" + path);
 
-        document.title = title;
         const func = this.routs[path];
         if (func === undefined) {
             if (validators.pinLink(path)) {
@@ -138,9 +138,6 @@ class Router {
 
         Requests.getUserProfile(false).then((result) => {
             createMenu(result);
-
-
-
         });
     }
 } export default new Router();
