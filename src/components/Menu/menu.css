@@ -135,6 +135,7 @@
 	height: 200px;
 	object-fit: cover;
 	cursor: pointer;
+	margin-top: 10px;
 }
 
 .find_user_user_info {
