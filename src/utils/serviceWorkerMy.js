@@ -30,7 +30,7 @@ workbox.routing.registerRoute(
         plugins: [
             new workbox.expiration.Plugin({
                 maxAgeSeconds: 60 * 5, // 5 минут
-                maxEntries: 60,
+                maxEntries: 110,
                 purgeOnQuotaError: true
             })
         ]
