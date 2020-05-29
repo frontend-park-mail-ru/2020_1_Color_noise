@@ -4,7 +4,13 @@ import {createContent} from "../components/Content/Content";
 import {createChatView} from "../views/createChat"
 import {createUserView} from "../views/createUser";
 import {createSettingsView} from "../views/createSettings";
-import {createSubDeskView, createDeskView, createUserPinsDeskView, createBoardDeskView} from "../views/createDesk";
+import {
+    createSubDeskView,
+    createDeskView,
+    createUserPinsDeskView,
+    createBoardDeskView,
+    createSmartDeskView
+} from "../views/createDesk";
 import {createNotificationsView} from "../views/createNotifications"
 import {createNewPinView} from "../views/createNewPin";
 import {createPinView} from "../views/createPin"
@@ -17,6 +23,7 @@ class Router {
     constructor() {
         this.routs = {
             "/": createDeskView,
+            "/smart":createSmartDeskView,
             "/subs": createSubDeskView,
             "/newpin": createNewPinView,
             "/settings": createSettingsView,

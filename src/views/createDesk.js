@@ -1,6 +1,6 @@
 import DeskTemplate from "../components/Desk/desk.pug";
 import findIcon from "../images/find.svg";
-import {getMainPins, getSubPins, setScroll, getUserPins, getBoardPins} from "../components/Desk/Desk.js";
+import {getMainPins, getSubPins, setScroll, getUserPins, getBoardPins, getSmartPins} from "../components/Desk/Desk.js";
 import {setSearch} from "../components/Menu/search.js"
 import {clearColumns, unSetScroll} from "../components/Desk/Desk";
 import {default as CurrentDesk} from "../components/Desk/CurrentDesk";
@@ -24,6 +24,26 @@ export function createDeskView() {
 
 
    // setSearch();
+
+}
+
+export function createSmartDeskView() {
+    const root = document.getElementById('content');
+    root.innerHTML = DeskTemplate({image : serverLocate +"/"+findIcon});
+
+    // try that way
+    unSetScroll();
+    clearColumns();
+    CurrentDesk.State.numberOfPins = 0;
+    getSmartPins();
+
+
+    setTimeout(() => {
+        setScroll(getSmartPins);
+    }, 1000);
+
+
+    // setSearch();
 
 }
 

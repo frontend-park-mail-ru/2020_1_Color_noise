@@ -33,6 +33,40 @@ export function getMainPins() {
         });
 }
 
+
+/**
+ *  getSmartPins
+ *  fetch request and call showPins(result of request)
+ *  @return {void}
+ */
+export function getSmartPins() {
+    FetchModule.fetchRequest({ url: serverLocate + '/api/list/recommendation?start=' + ( CurrentDesk.State.numberOfPins )
+            + '&limit=25', method:'get', body:null})
+        .then((res) => {
+            return res.ok ? res : Promise.reject(res);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((result) => {
+            if (result.body.length === 0) {
+                setInfoDesk("Мы ещё не успели понять, что Вам нравится");
+                return;
+            }
+            showPins(result.body)
+        })
+
+        .catch(function(error) {
+            console.log('ERR_MAIN_DESK',error);
+
+            setInfoDesk("Что-то пошло не так с умной лентой");
+        });
+}
+
+
+
+
+
 /**
  *  getSubPins
  *  fetch request and call showPins(result of request)
@@ -239,5 +273,8 @@ export function clearColumns() {
  */
 function setInfoDesk(message) {
     const info = document.getElementById('main_page_info');
-    info.innerHTML = message;
+    if (info.innerHTML !== message) {
+        info.innerHTML = message;
+    }
+
 }
