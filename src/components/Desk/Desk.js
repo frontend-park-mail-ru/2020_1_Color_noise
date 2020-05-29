@@ -23,7 +23,13 @@ export function getMainPins() {
         })
         .then((result) => {
             console.log("PINS:", result);
-            showPins(result.body)
+            if (result.body.length === 0 && CurrentDesk.State.numberOfPins === 0) {
+                setInfoDesk("Пинов еще нет");
+                return;
+            }
+            if (result.body.length !== 0) {
+                showPins(result.body)
+            }
        })
 
         .catch(function(error) {
@@ -49,11 +55,13 @@ export function getSmartPins() {
             return response.json();
         })
         .then((result) => {
-            if (result.body.length === 0) {
+            if (result.body.length === 0 && CurrentDesk.State.numberOfPins === 0) {
                 setInfoDesk("Мы ещё не успели понять, что Вам нравится");
                 return;
             }
-            showPins(result.body)
+            if (result.body.length !== 0) {
+                showPins(result.body)
+            }
         })
 
         .catch(function(error) {
@@ -83,11 +91,13 @@ export function getSubPins() {
         })
         .then((result) => {
             console.log("SUB PINS:", result);
-            if (result.body.length === 0) {
+            if (result.body.length === 0 && CurrentDesk.State.numberOfPins === 0) {
                 setInfoDesk("Нет ничего нового в ваших подписках");
                 return;
             }
-            showPins(result.body)
+            if (result.body.length !== 0) {
+                showPins(result.body)
+            }
         })
         .catch(function(error) {
             console.log("ERR_SUB", error);
@@ -117,12 +127,13 @@ export function getUserPins() {
         })
         .then((result) => {
             console.log("USER PINS:", result);
-            if (result.body.length === 0) {
+            if (result.body.length === 0 && CurrentDesk.State.numberOfPins === 0) {
                 setInfoDesk("Нет пинов у данного пользователя");
                 return;
             }
-            console.log("GOOD REQUEST ");
-            showPins(result.body)
+            if (result.body.length !== 0) {
+                showPins(result.body)
+            }
         })
         .catch(function(error) {
             console.log("ERR_UserPins", error);
