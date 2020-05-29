@@ -10,6 +10,7 @@ import notifImage from '../../images/menu/notifIcon.svg';
 import profileImage from '../../images/menu/profileIcon.svg';
 import plusImage from '../../images/menu/plusIcon.svg';
 import searchFilter from  '../../images/menu/searchFilter.svg'
+import smartImage from '../../images/smartDeskIcon.svg'
 
 import {showLoginModal, showRegModal, showChooseModal} from "../Modal/modal"
 import Router from "../../utils/router"
@@ -42,7 +43,8 @@ export const createMenu = (login = false) => {
 const addLogin = () => {
     const menuLoginTemplate = MenuLoginTemplate({
         chatsImage : chatsImage,  notifImage : notifImage,
-        profileImage : profileImage, plusImage : plusImage, userLink : '/user/' + CurrentUser.Data.id });
+        profileImage : profileImage, plusImage : plusImage, userLink : '/user/' + CurrentUser.Data.id,
+        smartImage:smartImage});
 
     const loginPart = document.getElementById('loginPart');
     loginPart.innerHTML = menuLoginTemplate;
@@ -61,6 +63,10 @@ const addLogin = () => {
 
     const addNewModal  = document.getElementById('addNewModal');
     addNewModal.addEventListener('click', showChooseModal);
+
+    const smartLink = document.getElementById("smartLink")
+    smartLink.addEventListener("click", goSmart)
+
 };
 
 const addReg = () => {
@@ -94,4 +100,9 @@ const goNotif = (evt) => {
 const goProfile = (evt) => {
     evt.preventDefault();
     Router.go('/user/' + CurrentUser.Data.id,'Profile');
+};
+
+const goSmart = (evt) => {
+    evt.preventDefault();
+    Router.go('/smart','Умная лента', null, true);
 };
