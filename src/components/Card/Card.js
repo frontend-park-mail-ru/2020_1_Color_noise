@@ -2,6 +2,7 @@ import CardTemplate from './card.pug';
 import {unSetScroll} from '../Desk/Desk.js'
 import {serverLocate} from "../../utils/constants.js";
 import {default as Router} from "../../utils/router.js"
+import CurrentDesk from "../Desk/CurrentDesk";
 /**
  * addCard
  *  Добавляет картинку в указанную колонку
@@ -13,7 +14,9 @@ import {default as Router} from "../../utils/router.js"
  */
 export const addCard = (pin, idColumn) => {
 
-    const card = CardTemplate( { image: serverLocate + "/" + pin.image, pinId: pin.id });
+    const pinId = pin.id +"_" + CurrentDesk.State.numberOfPins.toString()
+
+    const card = CardTemplate( { image: serverLocate + "/" + pin.image, pinId: pinId });
 
     const root = document.getElementById(idColumn);
 
@@ -22,7 +25,7 @@ export const addCard = (pin, idColumn) => {
     div.innerHTML = card.trim();
     root.append(div);
 
-    const addedCard = document.getElementById(pin.id);
+    const addedCard = document.getElementById(pinId);
 
     const pinClickFunc = (evt) => {
 

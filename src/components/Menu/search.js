@@ -89,12 +89,15 @@ function getSearchFilter() {
 
 
                 if (result.body.length === 0) {
-                    if (CurrentDesk.State.searchObj === "user") {
-                        setInfoDesk("Пользователи не найдены");
-                    } else {
-                        setInfoDesk("Пины не найдены");
+                    if (CurrentDesk.State.numberOfPins === 0) {
+                        if (CurrentDesk.State.searchObj === "user") {
+                            setInfoDesk("Пользователи не найдены");
+                        } else {
+                            setInfoDesk("Пины не найдены");
+                        }
                     }
-                    return;
+                        return;
+
                 }
                 if (CurrentDesk.State.searchObj === "user") {
                     console.log("show users:", result.body)
