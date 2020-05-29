@@ -95,13 +95,12 @@ const sendNewPinFunc = (evt) => {
 
     FetchModule.fetchRequest(
         {
-            url:serverLocate + '/api/pin',
+            url:serverLocate + '/api/pin/' + imageID,
             method: 'post',
             body: {
                 name : name,
                 description : description,
-                board_id: Number(deskID),
-                id : Number(imageID)
+                board_id: Number(deskID)
             }
         }).then((res) => {
             return res.ok ? res : Promise.reject(res);
