@@ -25,11 +25,11 @@ export const createPageNewPin = (desks) => {
     const backProfileLink = document.getElementById('backProfileLink');
     backProfileLink.addEventListener('click', goBack);
 
-    const pinName = document.getElementById('smartClick');
-    pinName.addEventListener('click', smartSelectFunc);
+    // const pinName = document.getElementById('smartClick');
+    // pinName.addEventListener('click', smartSelectFunc);
 
-    const selectSmart = document.getElementById("smartSelect");
-    selectSmart.addEventListener("change", smartSelectChange);
+    // const selectSmart = document.getElementById("smartSelect");
+    // selectSmart.addEventListener("change", smartSelectChange);
 };
 
 const smartSelectFunc = () => {
@@ -54,6 +54,10 @@ const chooseImageFunc = (evt) => {
     input.click();
 };
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
+
 const chooseChoiceImageFunc = (evt) => {
     const pinImage = document.getElementById('pinImage');
     const chooseImage = document.getElementById('chooseImage');
@@ -76,14 +80,15 @@ const chooseChoiceImageFunc = (evt) => {
                     }).then((result) => {
                         if (result.status === 201) {
                             pinImage.setAttribute('loaded', result.body.id);
-                            const selectSmart = document.getElementById("smartSelect");
-                            selectSmart.innerHTML = "";
 
-                            result.body.names.forEach((element) => {
-                                const option = document.createElement('option');
-                                option.text = String(element);
-                                selectSmart.add(option);
-                            });
+                            const pinName = document.getElementById("pinName");
+                            pinName.value = result.body.names[getRandomInt(result.body.names.length)];
+
+                            // result.body.names.forEach((element) => {
+                            //     const option = document.createElement('option');
+                            //     option.text = String(element);
+                            //     selectSmart.add(option);
+                            // });
                         } else {
                             setInfoPage('Ошибка обработки запроса');
                         }
