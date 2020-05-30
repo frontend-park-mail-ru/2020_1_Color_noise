@@ -6,7 +6,7 @@ import {registerServiceWorker} from "./utils/serviceWorker.js"
 
 
 
-//registerServiceWorker();
+registerServiceWorker();
 
 
 
