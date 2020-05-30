@@ -24,6 +24,22 @@ export const createPageNewPin = (desks) => {
     sendNewPin.addEventListener('click', sendNewPinFunc);
     const backProfileLink = document.getElementById('backProfileLink');
     backProfileLink.addEventListener('click', goBack);
+
+    const pinName = document.getElementById('smartClick');
+    pinName.addEventListener('click', smartSelectFunc);
+
+    const selectSmart = document.getElementById("smartSelect");
+    selectSmart.addEventListener("change", smartSelectChange);
+};
+
+const smartSelectFunc = () => {
+    const selectSmart = document.getElementById("smartSelect");
+    selectSmart.dispatchEvent(new MouseEvent('mousedown'));
+};
+
+const smartSelectChange = (evt) => {
+    const pinName = document.getElementById('pinName');
+    pinName.value = evt.currentTarget.options[evt.currentTarget.selectedIndex].text;
 };
 
 const goBack = () => {
@@ -41,7 +57,7 @@ const chooseImageFunc = (evt) => {
 const chooseChoiceImageFunc = (evt) => {
     const pinImage = document.getElementById('pinImage');
     const chooseImage = document.getElementById('chooseImage');
-    const target = evt.target;
+    const target = evt.currentTarget;
     if (target.value !== '') {
         if (target.files && target.files[0]) {
             const reader = new FileReader();
@@ -60,6 +76,14 @@ const chooseChoiceImageFunc = (evt) => {
                     }).then((result) => {
                         if (result.status === 201) {
                             pinImage.setAttribute('loaded', result.body.id);
+                            const selectSmart = document.getElementById("smartSelect");
+                            selectSmart.innerHTML = "";
+
+                            result.body.names.forEach((element) => {
+                                const option = document.createElement('option');
+                                option.text = String(element);
+                                selectSmart.add(option);
+                            });
                         } else {
                             setInfoPage('Ошибка обработки запроса');
                         }

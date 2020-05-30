@@ -10,7 +10,7 @@ import notifImage from '../../images/menu/notifIcon.svg';
 import profileImage from '../../images/menu/profileIcon.svg';
 import plusImage from '../../images/menu/plusIcon.svg';
 import searchFilter from  '../../images/menu/searchFilter.svg'
-import smartImage from '../../images/smartDeskIcon.svg'
+import smartImage from '../../images/menu/fireIcon.svg'
 
 import {showLoginModal, showRegModal, showChooseModal} from "../Modal/modal"
 import Router from "../../utils/router"

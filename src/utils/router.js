@@ -115,8 +115,8 @@ class Router {
             }  else {
                 // не страница пина - по дефолту главная
                 createDeskView();
-                document.title = 'Bug route!';
-                alert('Bug route, сообщите отделу фротенда об этом!\n' + path); /* на защите убрать */
+                //document.title = 'Bug route!';
+               // alert('Bug route, сообщите отделу фротенда об этом!\n' + path); /* на защите убрать */
             }
         } else {
             console.log("ROUTE FUNC:",func);

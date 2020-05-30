@@ -8,8 +8,9 @@ div.page
             img(src=pinDefaultImage id="pinImage")
             input(type="submit" class="red_btn" value="Добавить изображение" id="chooseImage")
          div.pin_block
-             div.line
+             div.line(id="smartClick")
                  input#pinName(type="text" placeholder="Название пина")
+                 select#smartSelect(class="selectSmart")
              div.line_area
                  textarea#pinDesc(placeholder="Описание пина (необязательно)" maxlength="512" rows="14" cols="33")
              div.line

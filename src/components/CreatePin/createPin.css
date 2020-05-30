@@ -22,6 +22,23 @@
     object-fit: cover;
 }
 
+.pin_block .line {
+    position: relative;
+}
+
+.line .selectSmart {
+    position: absolute;
+    outline: none;
+    opacity: 0;
+    background: none;
+    bottom: 3px;
+    left: 10px;
+    height: 0;
+    width: 0;
+    margin: 0;
+    -webkit-appearance: none;
+}
+
 @media (max-width: 810px) {
     .page_content .pin_block {
         width: 100%;
